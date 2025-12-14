@@ -77,15 +77,11 @@ def build_language_metadata(language: str) -> str:
 # PUBLIC FUNCTION
 # ---------------------------------------------------------
 
-def build_grammar_info(language: str, max_lines: int = 30) -> str:
+def build_grammar_info(language: str, max_lines: int = None) -> str:
   """
   Create a block of grammar text for a given language to feed the LLM.
 
-  Reads the grammar sheet and selects only the most relevant categories:
-  - Phoneme Inventory, Consonant Inventory, Vowel Inventory
-  - Syllable Structure, Phonotactics
-  - Gemination, Aspiration, Length Distinction, Allophony
-  - Derivation (critical for suffixes), Compounding, Reduplication
+  Reads the grammar sheet and includes ALL grammar categories (no filtering).
 
   The sheet should contain columns:
       "Unnamed: 0" (optional section header)
@@ -97,22 +93,6 @@ def build_grammar_info(language: str, max_lines: int = 30) -> str:
 
   if language not in df.columns:
     return f"(No Grammar Sheet column exists for '{language}')"
-
-  # Define relevant grammar categories to include
-  relevant_categories = {
-    "Phoneme Inventory",
-    "Consonant Inventory",
-    "Vowel Inventory",
-    "Syllable Structure",
-    "Phonotactics",
-    "Gemination",
-    "Aspiration",
-    "Length Distinction",
-    "Allophony",
-    "Derivation",
-    "Compounding",
-    "Reduplication",
-  }
 
   lines = []
   current_section = None
@@ -130,11 +110,6 @@ def build_grammar_info(language: str, max_lines: int = 30) -> str:
     if not isinstance(value, str) or not value.strip():
       continue
 
-    # Filter: only include relevant categories
-    if isinstance(category, str) and category.strip():
-      if category.strip() not in relevant_categories:
-        continue
-
     prefix = f"[{current_section}] " if current_section else ""
 
     if isinstance(category, str) and category.strip():
@@ -144,7 +119,8 @@ def build_grammar_info(language: str, max_lines: int = 30) -> str:
 
     lines.append(line)
 
-  if len(lines) > max_lines:
+  # Only limit lines if max_lines is specified
+  if max_lines and len(lines) > max_lines:
     lines = lines[:max_lines]
 
   return "\n".join(lines)

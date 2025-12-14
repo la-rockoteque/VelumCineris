@@ -1,4 +1,4 @@
-def new_lexem_prompt(concept, language, grammar_info, examples, language_metadata=None):
+def new_lexem_prompt(concept, language, grammar_info, examples, language_metadata=None, root_words=None, deviation=10.0):
   """
   Create a natural-language prompt for LLM lexeme creation.
   """
@@ -12,10 +12,42 @@ Language metadata:
 
 """
 
+  # Build root words section if provided
+  root_section = ""
+  if root_words:
+    root_list = [f'  - "{word}" (from {lang})' for lang, word in root_words.items()]
+    root_lines = "\n".join(root_list)
+    root_section = f"""
+Root words (use ALL as blended inspiration):
+{root_lines}
+
+IMPORTANT - Blended derivation approach:
+- These roots provide INSPIRATION, not prescription
+- Blend phonological and morphological elements from ALL provided roots
+- Create a word that feels like it evolved from this mixed ancestry
+- Apply the phonotactic rules of {language} to create a natural-sounding result
+- The blend should honor the sound patterns and style of all root languages
+- Think of this as creating a word in a creole or mixed language
+- The word should feel related to the roots but adapted to {language}'s system
+
+"""
+
+  # Build deviation section
+  deviation_section = f"""
+IMPORTANT - Grammar deviation allowed ({deviation:.1f}%):
+- You are ALLOWED to deviate from the strict grammar rules by up to {deviation:.1f}%
+- This helps prevent duplicate words and adds natural variation
+- Minor phonological variations are encouraged (different consonants, vowel qualities, stress patterns)
+- You can slightly bend phonotactic rules, syllable structures, or morphological patterns
+- The result should still sound like it belongs to {language}, but with creative flexibility
+- This deviation is ESSENTIAL to avoid generating the same word repeatedly
+
+"""
+
   return f"""
 You are generating new vocabulary for the constructed language "{language}".
 
-{metadata_section}Language guidelines:
+{metadata_section}{root_section}{deviation_section}Language guidelines:
 {grammar_info}
 
 Task:
@@ -27,6 +59,7 @@ Requirements:
 - Do NOT reuse the same base root for different concepts.
 - Every new word must have a unique root.
 - Avoid outputs that differ only by small vowel changes.
+- Use the allowed {deviation:.1f}% deviation to ensure uniqueness.
 """
 
 def script_symbol_prompt(language, unicode_range, symbol, category, place_or_height, manner_or_backness, voicing, allow_deduplication=False):

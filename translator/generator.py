@@ -32,7 +32,7 @@ def random_lexeme(word, language):
   base = "".join(syllables)
   return base + language[0].lower()
 
-def llm_lexeme(word, language):
+def llm_lexeme(word, language, root_words=None, deviation=10.0):
   try:
     from llm_wordgen.local_llm_ollama import OllamaLexemeGenerator
     LLM = OllamaLexemeGenerator()
@@ -41,7 +41,7 @@ def llm_lexeme(word, language):
     examples = df[language].dropna().tolist()[:20]
     grammar_info = build_grammar_info(language)
     language_metadata = build_language_metadata(language)
-    return LLM.generate(word, language, grammar_info, examples, language_metadata)
+    return LLM.generate(word, language, grammar_info, examples, language_metadata, root_words=root_words, deviation=deviation)
   except Exception as e:
     print(f"LLM failed to generate a lexeme for {word} in {language}")
     print(f"Exception: {e}")
