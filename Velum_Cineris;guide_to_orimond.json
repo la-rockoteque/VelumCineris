@@ -30,12 +30,32 @@
                     "Velum Cineris"
                 ],
                 "version": "1.0"
+            },
+            {
+                "json": "WindsOfTheDistantLands",
+                "abbreviation": "ORIWotDL",
+                "full": "Winds Of The Distant Lands",
+                "url": "https://raw.githubusercontent.com/la-rockoteque/Vestigium/refs/heads/main/Velum_Cineris;guide_to_orimond.json",
+                "authors": [
+                    "Velum Cineris"
+                ],
+                "version": "1.0"
+            },
+            {
+                "json": "ToBeDeterminerd",
+                "abbreviation": "TDB",
+                "full": "To Be Determinerd",
+                "url": "https://raw.githubusercontent.com/la-rockoteque/Vestigium/refs/heads/main/Velum_Cineris;guide_to_orimond.json",
+                "authors": [
+                    "Velum Cineris"
+                ],
+                "version": "1.0"
             }
         ],
         "unlisted": true,
         "dateAdded": 1743879729,
-        "dateLastModified": 1765747062,
-        "_dateLastModifiedHash": "6aef2ca0d1",
+        "dateLastModified": 1765747400,
+        "_dateLastModifiedHash": "77983287df",
         "edition": "classic",
         "currencyConversions": {
             "credit": [
@@ -202,7 +222,7 @@
         },
         {
             "name": "Aquilani",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -471,7 +491,7 @@
         },
         {
             "name": "Azurini",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -541,7 +561,7 @@
         },
         {
             "name": "Canid",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -787,7 +807,7 @@
         },
         {
             "name": "Corvani",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -855,7 +875,7 @@
         },
         {
             "name": "Custodian",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -1004,7 +1024,7 @@
         },
         {
             "name": "Cygnari",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -1225,7 +1245,7 @@
         },
         {
             "name": "Dentari",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -1442,7 +1462,7 @@
         },
         {
             "name": "Eidolons",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -1510,7 +1530,7 @@
         },
         {
             "name": "Emanants",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -1580,7 +1600,7 @@
         },
         {
             "name": "Felkin",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -1677,7 +1697,7 @@
         },
         {
             "name": "Gruii",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -1745,7 +1765,7 @@
         },
         {
             "name": "Hirundari",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -1980,7 +2000,7 @@
         },
         {
             "name": "Ithilari",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -2051,7 +2071,7 @@
         },
         {
             "name": "Kairos",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -2130,7 +2150,7 @@
         },
         {
             "name": "Kerevhan",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -2353,7 +2373,7 @@
         },
         {
             "name": "Luminari",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -2580,7 +2600,7 @@
         },
         {
             "name": "Mireborn",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -2811,7 +2831,7 @@
         },
         {
             "name": "Myrleth",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -3041,7 +3061,7 @@
         },
         {
             "name": "Necari",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -3109,7 +3129,7 @@
         },
         {
             "name": "Orphai",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -3180,7 +3200,7 @@
         },
         {
             "name": "Oteisha",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -3251,7 +3271,7 @@
         },
         {
             "name": "Pavani",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -3465,7 +3485,7 @@
         },
         {
             "name": "Rascan",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -3603,7 +3623,7 @@
         },
         {
             "name": "Rubrini",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -3823,7 +3843,7 @@
         },
         {
             "name": "Strigani",
-            "source": NaN,
+            "source": "ORIWotDL",
             "page": 1,
             "ability": [
                 {
@@ -3891,7 +3911,7 @@
         },
         {
             "name": "Thornkin",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -3959,7 +3979,7 @@
         },
         {
             "name": "Tyrikai",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -4515,7 +4535,7 @@
         },
         {
             "name": "Veilborn",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -4583,7 +4603,7 @@
         },
         {
             "name": "Veithyn",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -4651,7 +4671,7 @@
         },
         {
             "name": "Velthask",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -4719,7 +4739,7 @@
         },
         {
             "name": "Vessels",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -5411,7 +5431,7 @@
         },
         {
             "name": "Zakariss",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
@@ -5642,7 +5662,7 @@
         },
         {
             "name": "Zyrrkhal",
-            "source": NaN,
+            "source": "TDB",
             "page": 1,
             "ability": [
                 {
