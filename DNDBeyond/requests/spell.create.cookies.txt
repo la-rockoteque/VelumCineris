@@ -1,0 +1,47 @@
+
+Disable Cache
+86 requests
+5.19 MB / 130.51 kB transferred
+Finish: 3.67 s
+DOMContentLoaded: 2.56 s
+load: 2.65 s
+
+    	
+    AWSALB	
+    expires	"2025-12-30T14:47:13.000Z"
+    path	"/"
+    value	"GBoqRuxnUWiDheFGtgELuTKGn49YPgJdfhqoYo0ZceVbBn5+DZeNpfNNJ757daNhJ6DmznIqctqijBOOE2JLjL+bWQDvhb7IONyi1V+Cjf7xXdP35h58QpZrKiX9"
+    AWSALBCORS	
+    expires	"2025-12-30T14:47:13.000Z"
+    path	"/"
+    samesite	"None"
+    secure	true
+    value	"GBoqRuxnUWiDheFGtgELuTKGn49YPgJdfhqoYo0ZceVbBn5+DZeNpfNNJ757daNhJ6DmznIqctqijBOOE2JLjL+bWQDvhb7IONyi1V+Cjf7xXdP35h58QpZrKiX9"
+    	
+    _dd_s	"aid=de9ccc58-8e13-4fed-af4d-f8a8803ebeea&rum=0&expire=1766501756997"
+    _ga	"GA1.2.299146768.1739101198"
+    _gcl_au	"1.1.235369019.1766500827"
+    _gsid	"a03bf0d6a9a3456bb54d079e730bae3e"
+    _pxhd	"PQ/qoKAoCogxxx1-vsTXz/ULpK5j8JUBz9hRrkWCYiib5KEoXdqrG0TfrC1sW3ZsNyfvempb-QNw9eGp7MMvmA==:3tq0Zk/-MxlMgdCz9QRMUf6uKjwwhlbq0oruLmZuIxJfpVW8FQYPuYGXUWZYvZ6HdwcW5ZTKM2INFRRiyLZg7kPZZKRy7/TUhLPzrXtbLfw="
+    _swb	"181c66c9-d81b-499d-bd23-b8630529b73a"
+    AWSALB	"YWg2EpgEk03HshgpJhV+lZf/0KMzS2YSYKPjq7K3xGU+2+x/omOINstKixoVUOaTLcDW5re41Zq9GSVOLWJG4ntTfB7ldx7dS8rp8AytHSeYEcx9Cj6p67eRdNZ0"
+    AWSALBCORS	"YWg2EpgEk03HshgpJhV+lZf/0KMzS2YSYKPjq7K3xGU+2+x/omOINstKixoVUOaTLcDW5re41Zq9GSVOLWJG4ntTfB7ldx7dS8rp8AytHSeYEcx9Cj6p67eRdNZ0"
+    CobaltSession	"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..cEIaVPBQQBMWcXO6h_TutQ.we_PzUm05tVDfSt54DtGmxsNwFR4SC2AzTXoZo8-uy5neWS_O3zsfW1KpteACO9H.L85HjtaOjs_OUtWjd3dKEA"
+    ddb_sid	"30e578a9-6731-4cb6-8d55-74d27ad3cc4a"
+    ddb_vid	"b0c44884-c9f1-45bc-bce2-64a98c848c63"
+    ddb.toast.spell.homebrew-create.hide-toast	"true"
+    ddb.toast.spell.homebrew-edit.hide-toast	"true"
+    g_state	'{"i_l":0,"i_ll":1766500891465}'
+    Geo	'{"region":"QC","country":"CA","continent":"NA"}'
+    LoginState	"7c207547-4516-49e3-b73b-3b6173e7ddbd"
+    LoginStateWizards	"M3xmZmRlMmY0NTA0Mzc0ZWNlYmNlMjA2ZTE3Y2I1NmJjMHwvY2hhcmFjdGVycw"
+    Platform	"ddb.web"
+    Preferences	"undefined"
+    Preferences.Language	"1"
+    Preferences.TimeZoneID	"1"
+    ResponsiveSwitch.DesktopMode	"1"
+    sublevel	"MASTER"
+    User.ID	"110746825"
+    User.Username	"Rockoteque"
+    UserInfo	'{"UserId":110746825,"UserJoinDate":"2021-07-13","UserSessionId":"667ae0ed-b6fa-4094-b255-ff429bab2bfe"}'
+

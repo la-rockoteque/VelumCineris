@@ -1,0 +1,19 @@
+
+Disable Cache
+73 requests
+1.39 MB / 97.39 kB transferred
+Finish: 2.77 s
+DOMContentLoaded: 1.54 s
+load: 1.67 s
+
+	
+security-token	"c531e7637b68a8ae18949c8e94916c5f"
+authenticity-token	"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..MiiSHTg1eQNdKWhFDP_xKQ.1Hc6OU_h82K1-KXahlRCPLbxmLjOxdbN9QJ0bhiLs8BsV-CmuB6cAtGyT7BPiQ6D.OUYzByUrUvbFtA-qIQdI3g"
+name	"Trait+name"
+snippet	"This+is+a+snipper"
+racial-trait-mapping-description-type	"1"
+racial-trait-mapping-description-wysiwyg	"<p>This+is+a+descrption</p>"
+racial-trait-mapping-description	"<p>This+is+a+descrption</p>"
+display-order-field	""
+racial-trait-option-known	""
+required-character-level	""

@@ -1,0 +1,118 @@
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="security-token"
+
+7e1dfe39c37d9c14e004f627ef224fcd
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="authenticity-token"
+
+eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..KB_i349qOKr-LwK2xUyw6A.0MiZeHjKPqayW05boOWblWhMCZVeFAEZBgKk8GWaR6KOf4kwk2GTtgJHj6YMuLPI.quag4lR7ZXXJTsA5oDlJ_w
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="Name"
+
+Ashen Breath
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="version"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-level"
+
+0
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-school"
+
+7
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-casting-time"
+
+1
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-activation"
+
+1
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-casting-time-description"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="verbal-field"
+
+y
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-components"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="origin"
+
+1
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-range"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-duration"
+
+1
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-duration-interval"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-duration-unit"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-description-type"
+
+1
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-description-wysiwyg"
+
+<p>You exhale a puff of grayish smoke, which spreads in a small cone before quickly vanishing. Creatures in the area must make a Constitution saving throw or briefly choke on the acrid air. On a failed save, a creature cannot take reactions until the start of its next turn. This effect does not work against creatures that do not need to breathe.</p>
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-description"
+
+<p>You exhale a puff of grayish smoke, which spreads in a small cone before quickly vanishing. Creatures in the area must make a Constitution saving throw or briefly choke on the acrid air. On a failed save, a creature cannot take reactions until the start of its next turn. This effect does not work against creatures that do not need to breathe.</p>
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="higher-level-scale"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="class-mapping"
+
+2190884
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="f6483e23105ba98547c137d6c5eed3bb0"; filename=""
+Content-Type: application/octet-stream
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-aoe"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-aoe-size"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="attack-type"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-save-type"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="on-miss"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-save-success"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca
+Content-Disposition: form-data; name="spell-save-fail"
+
+
+------geckoformboundary31956556b0dbdeec72255188ffdcf9ca--

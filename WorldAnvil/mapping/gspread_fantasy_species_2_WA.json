@@ -1,0 +1,50 @@
+{
+	"title": "Name",
+	"world.title": "Source",
+	"title_demonym": "Demonym",
+	"tags": "Tag",
+	"subheading": "Alias",
+	"slogan": "Slogan",
+	"quotes": "Quote",
+
+	"content.Intro": "Intro",
+	"content.Origin": "Origin",
+	"content.Appearance": "Appearance",
+	"content.Culture & Identity": "Culture & Identity",
+	"content.Societal Roles": "Societal Roles",
+	"content.Naming Conventions": "Naming Conventions",
+	"content.Life in Orimond": "Life in Orimond",
+	"content.Playstyle & Roleplaying": "Playstyle & Roleplaying",
+
+	"traits[0].ability": "Ability 1",
+	"traits[0].score": "Score 1",
+	"traits[1].ability": "Ability 2",
+	"traits[1].score": "Score 2",
+
+	"size": "Size",
+	"size_abbreviation": "Size ABRV",
+
+	"languages.list": "Languages",
+	"languages.optional": "Language Choices",
+	"languages.count": "Number of Languages",
+	"languages.exotic": "Number of Exotic Language",
+
+	"speed.walk": "Walk Speed",
+	"speed.fly": "Fly Speed",
+
+	"lifespan": "Age",
+	"alignment": "Alignement",
+	"senses.vision": "Vision",
+
+	"traits[0].name": "Trait 1",
+	"traits[1].name": "Trait 2",
+	"traits[2].name": "Trait 3",
+	"traits[3].name": "Trait 4",
+	"traits[4].name": "Trait 5",
+	"traits[5].name": "Trait 6",
+
+	"chargen.prompt": "CharGen",
+
+	"images.male": "Image Male",
+	"images.female": "Image Female"
+}

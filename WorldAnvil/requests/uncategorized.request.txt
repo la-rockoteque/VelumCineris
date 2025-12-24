@@ -1,0 +1,82 @@
+
+Disable Cache
+3 requests
+186.68 kB / 12.62 kB transferred
+Finish: 5.94 s
+
+	
+POST
+	https://www.worldanvil.com/api/internal/aboleth/athena/search
+Status
+200
+VersionHTTP/2
+Transferred12.62 kB (186.68 kB size)
+Referrer Policystrict-origin-when-cross-origin
+Request PriorityHighest
+DNS ResolutionDNS over HTTPS
+
+    	
+    access-control-allow-credentials
+    	*
+    access-control-allow-headers
+    	*
+    access-control-allow-methods
+    	*
+    access-control-allow-origin
+    	*
+    alt-svc
+    	h3=":443"; ma=86400
+    cache-control
+    	max-age=0, must-revalidate, private
+    cf-cache-status
+    	DYNAMIC
+    cf-ray
+    	9b27cd51ed62a310-YUL
+    content-encoding
+    	br
+    content-type
+    	application/json
+    date
+    	Tue, 23 Dec 2025 12:18:32 GMT
+    expires
+    	Tue, 23 Dec 2025 12:18:32 GMT
+    server
+    	cloudflare
+    X-Firefox-Spdy
+    	h2
+    	
+    Accept
+    	application/json
+    Accept-Encoding
+    	gzip, deflate, br, zstd
+    Accept-Language
+    	en-US,en;q=0.9
+    Connection
+    	keep-alive
+    Content-Length
+    	96
+    content-type
+    	application/json
+    Cookie
+    	cf_clearance=Wvz8cAr3JQ09XL7CAXLbEhC4zVFgxrrmcHV1DX5nQJo-1766491594-1.2.1.1-1omED5VLzI0fE3HKt0tRQ34fI4W1kJinUOyqFxVQC94SVMHtaMhe2teDSAKN5lnv_pNyF71Rt.cm6L__F0sy7.6Ef5D5n5vnjXvEFC0xo27i7MJcbAOmKG.wPkspEhbDRUpKG0.zTjT4b2raA0uxrUJcSlbj5h8LSSfv3KmIaJXlJzF9sDIOGPJcpNH2P3Gtbv6sBARj20032ljIz35u83Fl7oyBf2RgflrCpvDR7AE; _gcl_au=1.1.1796744563.1766427471; PHPSESSID=dipghhq7tah2q7bn5o271pu96a; REMEMBERME=QXBwQnVuZGxlXEVudGl0eVxVc2VyOlIyOW5iSFZ1WlhOejoxNzY3MDk2Mzk4OmM5MTRhMzU2MmY5NTUyODhlODgzNWU0MmRkMzJjODFjYTQxY2U3MjM4NjI4ZjVkMzA3MWRmY2JjNjEzZTI4NTQ%3D
+    Host
+    	www.worldanvil.com
+    Origin
+    	https://www.worldanvil.com
+    Priority
+    	u=0
+    Referer
+    	https://www.worldanvil.com/p/athena
+    Sec-Fetch-Dest
+    	empty
+    Sec-Fetch-Mode
+    	cors
+    Sec-Fetch-Site
+    	same-origin
+    Sec-GPC
+    	1
+    TE
+    	trailers
+    User-Agent
+    	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0
+

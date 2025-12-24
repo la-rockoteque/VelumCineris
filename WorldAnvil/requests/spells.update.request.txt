@@ -1,0 +1,89 @@
+
+Disable Cache
+19 requests
+33.69 kB / 21.40 kB transferred
+Finish: 4.73 min
+
+	
+PATCH
+	
+scheme
+	https
+host
+	www.worldanvil.com
+filename
+	/api/internal/aboleth/article
+id
+	7ab43af7-57a7-4989-95e8-d3d584ba80d6
+Address
+	172.66.167.62:443
+Status
+200
+VersionHTTP/2
+Transferred761 B (431 B size)
+Referrer Policystrict-origin-when-cross-origin
+DNS ResolutionDNS over HTTPS
+
+    	
+    access-control-allow-credentials
+    	*
+    access-control-allow-headers
+    	*
+    access-control-allow-methods
+    	*
+    access-control-allow-origin
+    	*
+    alt-svc
+    	h3=":443"; ma=86400
+    cache-control
+    	max-age=0, must-revalidate, private
+    cf-cache-status
+    	DYNAMIC
+    cf-ray
+    	9b21a5b44b9fb687-YYZ
+    content-encoding
+    	br
+    content-type
+    	application/json
+    date
+    	Mon, 22 Dec 2025 18:22:54 GMT
+    expires
+    	Mon, 22 Dec 2025 18:22:54 GMT
+    server
+    	cloudflare
+    X-Firefox-Spdy
+    	h2
+    	
+    Accept
+    	application/json
+    Accept-Encoding
+    	gzip, deflate, br, zstd
+    Accept-Language
+    	en-US,en;q=0.9
+    Connection
+    	keep-alive
+    Content-Length
+    	1147
+    content-type
+    	application/json
+    Cookie
+    	cf_clearance=IgIjfggoWePbjJQpa5Zi_D3vQVzNTjFEzz_iiVxpFiw-1766427471-1.2.1.1-vpdX2a3YfRO0SlnALXw8LDVoFto4aLCmTavxMo6jsh_vZ_4eo3kv8kwhGX8JHEAsCZyTONvJpLsUF10jn.Xz5eU0u6nTGKzbXdw5FnHspXwqDUtmIhksm6834ioJfoiXs4Hx9lsn3KSvvuSWB0AOcwjEU_uPCMej0LZvLZddHV30xz8DbTbdzvGO8hEE0KhEIYyHxgmMq4PKjbszoQ1dcxO27eiSwU8OFBlm_qSzE.0; _gcl_au=1.1.1796744563.1766427471; PHPSESSID=3leuhpl8ea6dghk2o5i98ibooc; REMEMBERME=QXBwQnVuZGxlXEVudGl0eVxVc2VyOlIyOW5iSFZ1WlhOejoxNzY3MDMyMjc1OmE3NTY4NjBkM2RiNjgyY2YzZGRjNTg0MDQwY2VkN2NkMGU4NzgzZDA0YTQ2MmY5ZmZlZmEzNWI3ZGQzYjQwOTE%3D
+    Host
+    	www.worldanvil.com
+    Origin
+    	https://www.worldanvil.com
+    Priority
+    	u=4
+    Referer
+    	https://www.worldanvil.com/p/athena/article/7ab43af7-57a7-4989-95e8-d3d584ba80d6/edit?keepDefaults=true
+    Sec-Fetch-Dest
+    	empty
+    Sec-Fetch-Mode
+    	cors
+    Sec-Fetch-Site
+    	same-origin
+    Sec-GPC
+    	1
+    User-Agent
+    	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0
+

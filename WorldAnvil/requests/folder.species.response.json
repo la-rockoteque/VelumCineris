@@ -1,0 +1,65 @@
+{
+	"success": true,
+	"entities": [
+		{
+			"id": "a4f3dafe-c3f4-4650-b4c8-ebac62ea1e8d",
+			"title": "Aestari",
+			"slug": "aestari-species",
+			"state": "private",
+			"isWip": true,
+			"isDraft": true,
+			"entityClass": "Species",
+			"icon": "fa-solid fa-file",
+			"url": "https://www.worldanvil.com/w/orimond-gogluness/a/aestari-species",
+			"subscribergroups": [],
+			"folderId": "39dd77b9-a867-4b8f-aba5-4448233ec625",
+			"tags": "",
+			"updateDate": {
+				"date": "2025-12-22 17:22:02.000000",
+				"timezone_type": 3,
+				"timezone": "Europe/London"
+			},
+			"position": null
+		},
+		{
+			"id": "50078953-8c91-47f5-9cd8-90dce647e2e1",
+			"title": "Humans",
+			"slug": "humans-species",
+			"state": "private",
+			"isWip": true,
+			"isDraft": true,
+			"entityClass": "Species",
+			"icon": "fa-solid fa-file",
+			"url": "https://www.worldanvil.com/w/orimond-gogluness/a/humans-species",
+			"subscribergroups": [],
+			"folderId": "39dd77b9-a867-4b8f-aba5-4448233ec625",
+			"tags": "",
+			"updateDate": {
+				"date": "2025-12-22 14:32:05.000000",
+				"timezone_type": 3,
+				"timezone": "Europe/London"
+			},
+			"position": null
+		},
+		{
+			"id": "cfe03d04-0e3f-418e-bf28-09ee7da6022b",
+			"title": "Vorraki",
+			"slug": "vorraki-species",
+			"state": "private",
+			"isWip": true,
+			"isDraft": true,
+			"entityClass": "Species",
+			"icon": "fa-solid fa-file",
+			"url": "https://www.worldanvil.com/w/orimond-gogluness/a/vorraki-species",
+			"subscribergroups": [],
+			"folderId": "39dd77b9-a867-4b8f-aba5-4448233ec625",
+			"tags": "",
+			"updateDate": {
+				"date": "2025-12-22 14:32:11.000000",
+				"timezone_type": 3,
+				"timezone": "Europe/London"
+			},
+			"position": null
+		}
+	]
+}

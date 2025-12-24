@@ -1,0 +1,118 @@
+
+Disable Cache
+72 requests
+1.35 MB / 95.90 kB transferred
+Finish: 2.87 s
+DOMContentLoaded: 1.88 s
+load: 1.95 s
+
+	
+POST
+	
+scheme
+	https
+host
+	www.dndbeyond.com
+filename
+	/homebrew/creations/species/2067233-test-species/edit
+Address
+	151.101.125.91:443
+Status
+302
+VersionHTTP/2
+Transferred35.67 kB (148.07 kB size)
+Referrer Policystrict-origin-when-cross-origin
+Request PriorityHighest
+DNS ResolutionDNS over HTTPS
+
+    	
+    accept-ranges
+    	bytes
+    access-control-allow-credentials
+    	true
+    access-control-allow-origin
+    	https://www.dndbeyond.com
+    cache-control
+    	no-cache, no-store, must-revalidate
+    content-length
+    	170
+    content-security-policy
+    	frame-src 'self' https://www.youtube-nocookie.com https://linkst.dndbeyond.com https://*.cdn.optimizely.com https://accounts.google.com/ https://www.googletagmanager.com/ https://ct.pinterest.com https://family.test.k-id.com https://family.k-id.com
+    content-type
+    	text/html; charset=utf-8
+    date
+    	Tue, 23 Dec 2025 23:43:11 GMT
+    expires
+    	-1
+    location
+    	/homebrew/creations/species/2067233-test-species/edit
+    pragma
+    	no-cache
+    server
+    	Microsoft-IIS/10.0
+    set-cookie
+    	AWSALB=0VCUaSukNtrQeNTInAWW1wd0ouodtbcLz8vmFax3NdFvAzg/OaY6LWfC+3XxvJqfAWmrKQmnoeK8cM+TUBgOUNOjRZk2QEsHq/+SvgNtSQmd8f6toluNfHxvMeWV; Expires=Tue, 30 Dec 2025 23:43:11 GMT; Path=/
+    set-cookie
+    	AWSALBCORS=0VCUaSukNtrQeNTInAWW1wd0ouodtbcLz8vmFax3NdFvAzg/OaY6LWfC+3XxvJqfAWmrKQmnoeK8cM+TUBgOUNOjRZk2QEsHq/+SvgNtSQmd8f6toluNfHxvMeWV; Expires=Tue, 30 Dec 2025 23:43:11 GMT; Path=/; SameSite=None; Secure
+    strict-transport-security
+    	max-age=300
+    vary
+    	Origin, Origin, Access-Control-Allow-Origin, Cookie
+    via
+    	1.1 varnish
+    x-cache
+    	MISS
+    x-cache-hits
+    	0
+    X-Firefox-Spdy
+    	h2
+    x-frame-options
+    	SAMEORIGIN
+    x-frame-options
+    	SAMEORIGIN
+    x-served-by
+    	cache-yyz4565-YYZ
+    x-timer
+    	S1766533391.015075,VS0,VE665
+    x-ua-compatible
+    	IE=edge,chrome=1
+    	
+    Accept
+    	text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Encoding
+    	gzip, deflate, br, zstd
+    Accept-Language
+    	en-US,en;q=0.9
+    Connection
+    	keep-alive
+    Content-Length
+    	2906
+    Content-Type
+    	multipart/form-data; boundary=----geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+    Cookie
+    	_pxhd=PQ/qoKAoCogxxx1-vsTXz/ULpK5j8JUBz9hRrkWCYiib5KEoXdqrG0TfrC1sW3ZsNyfvempb-QNw9eGp7MMvmA==:3tq0Zk/-MxlMgdCz9QRMUf6uKjwwhlbq0oruLmZuIxJfpVW8FQYPuYGXUWZYvZ6HdwcW5ZTKM2INFRRiyLZg7kPZZKRy7/TUhLPzrXtbLfw=; ResponsiveSwitch.DesktopMode=1; _swb=181c66c9-d81b-499d-bd23-b8630529b73a; _ga=GA1.2.299146768.1739101198; LoginState=7c207547-4516-49e3-b73b-3b6173e7ddbd; Geo={%22region%22:%22QC%22%2C%22country%22:%22CA%22%2C%22continent%22:%22NA%22}; ddb_vid=b0c44884-c9f1-45bc-bce2-64a98c848c63; ddb_sid=30e578a9-6731-4c…nfo={"UserId":110746825,"UserJoinDate":"2021-07-13","UserSessionId":"667ae0ed-b6fa-4094-b255-ff429bab2bfe"}; Preferences.TimeZoneID=1; Preferences=undefined; sublevel=MASTER; ddb.toast.spell.homebrew-create.hide-toast=true; ddb.toast.spell.homebrew-edit.hide-toast=true; RequestVerificationToken=acfa0630-890d-493a-8572-a12bf2933551; ddbSiteBanner:d3eb8c76-93aa-4a89-aaff-795f1d14b52e=true; WarningNotification.Lock=1; ddb.toast.race.homebrew-create.hide-toast=true; ddb.toast.race.homebrew-edit.hide-toast=true
+    Host
+    	www.dndbeyond.com
+    Origin
+    	https://www.dndbeyond.com
+    Priority
+    	u=0, i
+    Referer
+    	https://www.dndbeyond.com/homebrew/creations/species/2067233-test-species/edit
+    Sec-Fetch-Dest
+    	document
+    Sec-Fetch-Mode
+    	navigate
+    Sec-Fetch-Site
+    	same-origin
+    Sec-Fetch-User
+    	?1
+    Sec-GPC
+    	1
+    TE
+    	trailers
+    Upgrade-Insecure-Requests
+    	1
+    User-Agent
+    	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0
+

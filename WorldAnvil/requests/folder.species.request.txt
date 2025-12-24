@@ -1,0 +1,52 @@
+7
+46
+2.34 MB
+4.17 MB
+0
+49.06s
+Summary
+URL: https://www.worldanvil.com/api/internal/aboleth/world/articles?id=ff8434dd-4881-488d-bf71-8766c5851a12
+Status: 200 OK
+Source: Network
+Address: 104.20.41.251:443
+
+Request
+Accept: application/json
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-CA,en-US;q=0.9,en;q=0.8
+Connection: keep-alive
+Content-Length: 58
+Content-Type: application/json
+Cookie: cf_clearance=Rsv8DObwDzQBxmVa2Goo3oU7ryeuab32LcDd0c52QXQ-1766426441-1.2.1.1-iSHr3oKCKWhT8v9RDmYp_SEQsSuYiErzOHX2FiuzIrtJdSrhZ.PHZkhnF4s6tU0Aws0lQHtf3c52I0hJh_pwx1TD.Yq_Gl7UYG9YGjx4C9hz9e97OyVoNOwQmUPnb5.hDfralbL49feUx31X7QMJzSCt4j1JGBldgjIbHk.eOf5YyPTEKRZlYXOE6XA1Yc_lHV9lNpQ7VoCQDTVkSU7OdgqTIyLvj3Oaa58cV3c31k8; PHPSESSID=ei2aouubdhclbm2fffi4cvrkl9; REMEMBERME=QXBwQnVuZGxlXEVudGl0eVxVc2VyOlIyOW5iSFZ1WlhOejoxNzY3MDI2NzA4OmYyNjJlNmVkOThjZDgzY2UxMmM5Y2QyZDdlNGZjYzJiMjlhMDYwNzYyMDBmY2Y4NGYwOWE4MTNlNzcwMTA1ZTM%3D; _gcl_au=1.1.1477590654.1763815354
+Host: www.worldanvil.com
+Origin: https://www.worldanvil.com
+Priority: u=3, i
+Referer: https://www.worldanvil.com/p/athena/category/39dd77b9-a867-4b8f-aba5-4448233ec625/edit
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15 Ddg/18.6
+
+Response
+Access-Control-Allow-Credentials: *
+Access-Control-Allow-Headers: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Origin: *
+Alt-Svc: h3=":443"; ma=86400
+Cache-Control: max-age=0, must-revalidate, private
+cf-cache-status: DYNAMIC
+cf-ray: 9b218cbf8d8bb687-YYZ
+Content-Encoding: br
+Content-Type: application/json
+Date: Mon, 22 Dec 2025 18:05:52 GMT
+Expires: Mon, 22 Dec 2025 18:05:52 GMT
+Priority: u=3,i
+Server: cloudflare
+Server-Timing: cfExtPri
+
+Query String Parameters
+id: ff8434dd-4881-488d-bf71-8766c5851a12
+
+Request Data
+MIME Type: application/json
+Request Data: 

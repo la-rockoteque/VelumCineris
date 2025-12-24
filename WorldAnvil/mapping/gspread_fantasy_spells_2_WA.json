@@ -1,0 +1,33 @@
+{
+	"title": "Spell Name",
+	"source": "Source",
+	"tags": "Tag",
+	"element": "Theme",
+	"discipline": "Class",
+	"level": "Level",
+	"school": "School",
+
+	"content": "Description",
+	"authornotes": "Notes",
+	"restrictions": "Clarification",
+	"scaling": "Scaling",
+	"manifestation": "Flavor",
+	"quotes": "Quotes",
+	"effect": "Anomaly Effect",
+	"damage": "Damage",
+	"sideeffects": "Condition",
+
+	"restrictions.savingthrow": "Saving Throw",
+	"restrictions.ritual": "Ritual",
+	"restrictions.concentration": "Concentration",
+
+	"castingtime": "Casting Time",
+	"trigger": "Trigger",
+	"duration": "Duration",
+	"spellrange": "Range",
+
+	"material": "Component Description",
+	"discovery": "Acquisition Note",
+
+	"cover": "Image Url"
+}

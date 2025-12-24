@@ -1,0 +1,111 @@
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="security-token"
+
+993df6d77d9279f141f742780aeca75e
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="authenticity-token"
+
+eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..QPoFFeZQF4MGUeD4yT5rBA.kujDsQN0tkVTUx45Cb_Mp37igjBgcvjv3GILUONPU8-GvbmTr4UFUdpFhPOa3fNw.WWoDQ8T2fWwyDuadGVbhSw
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="Name"
+
+Fingerbang
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="version"
+
+
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-level"
+
+1
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-school"
+
+7
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-casting-time"
+
+1
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-activation"
+
+3
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-casting-time-description"
+
+
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="verbal-field"
+
+y
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="somatic-field"
+
+y
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-components"
+
+
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="origin"
+
+3
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-range"
+
+60
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-duration"
+
+1
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-duration-interval"
+
+
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-duration-unit"
+
+
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-description-type"
+
+1
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-description-wysiwyg"
+
+<p><span style="font-size: 9pt; font-family: Consolas,Arial; font-weight: normal; font-style: normal;" data-sheets-root="1">You snap your hand into a confident finger gun and unleash a crackling projectile of arcane force shaped like a bullet. Choose one creature within range. Make a ranged spell attack against the target.<br /><br />- On a hit, the target takes 2d6 ballistic damage.<br />- The projectile leaves behind a faint trail of cigarette smoke and the smell of ozone.<br />- If cast while wearing sunglasses or leaning on something cool, you may deal an additional +1 damage (DM discretion, style points encouraged).</span></p>
+<p><span style="font-size: 9pt; font-family: Consolas,Arial; font-weight: normal; font-style: normal;" data-sheets-root="1"><span style="font-size: 9pt; font-family: Consolas,Arial; font-weight: normal; font-style: normal;" data-sheets-root="1">At Higher Levels. <br />When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d6 for each slot level above 1st.</span></span></p>
+<p><span style="font-size: 9pt; font-family: Consolas,Arial; font-weight: normal; font-style: normal;" data-sheets-root="1"><span style="font-size: 9pt; font-family: Consolas,Arial; font-weight: normal; font-style: normal;" data-sheets-root="1"><span style="font-size: 9pt; font-family: Consolas,Arial; font-weight: normal; font-style: normal;" data-sheets-root="1">&ldquo;Bang.&rdquo; <br />&mdash;Last words of Agent V before exiting the parking garage standoff.</span></span></span></p>
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="spell-description"
+
+
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="can-cast-at-higher-level"
+
+y
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="higher-level-scale"
+
+3
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="class-mapping"
+
+2190876
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="class-mapping"
+
+2190882
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="class-mapping"
+
+2190884
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="class-mapping"
+
+2190885
+------geckoformboundary6189e1e32e22f298ec152f5943876294
+Content-Disposition: form-data; name="class-mapping"
+
+2190886
+------geckoformboundary6189e1e32e22f298ec152f5943876294--

@@ -1,0 +1,18 @@
+
+Disable Cache
+70 requests
+1.33 MB / 126.50 kB transferred
+Finish: 4.09 s
+DOMContentLoaded: 2.74 s
+load: 2.83 s
+
+	
+security-token	"c0ca27e804aee89cec2854fe3b3d8dd9"
+authenticity-token	"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..naneCTiNBJC15yYzizYiwQ.xdkGzfk-S9UnBN0w_bzUzFz7uIVimiL5WdF8u1PofbTC76tR0e1QDrFjCGZCwHJo.6peXnkokM5USe49db473Jw"
+level	""
+modifier	""
+effect-type	"16"
+dice-count	""
+dice-value	""
+dice-fixed	""
+dice-details	""

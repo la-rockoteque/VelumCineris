@@ -1,0 +1,33 @@
+
+Disable Cache
+86 requests
+5.19 MB / 130.51 kB transferred
+Finish: 3.67 s
+DOMContentLoaded: 2.56 s
+load: 2.65 s
+
+	
+Connection:	
+Protocol version:	"TLSv1.3"
+Cipher suite:	"TLS_AES_128_GCM_SHA256"
+Key Exchange Group:	"mlkem768x25519"
+Signature Scheme:	"RSA-PSS-SHA256"
+Host www.dndbeyond.com:	
+HTTP Strict Transport Security:	"Disabled"
+Public Key Pinning:	"Disabled"
+Certificate:	
+Issued To	
+Common Name (CN):	"dndbeyond.com"
+Organization (O):	"<Not Available>"
+Organizational Unit (OU):	"<Not Available>"
+Issued By	
+Common Name (CN):	"GlobalSign Atlas R3 DV TLS CA 2025 Q1"
+Organization (O):	"GlobalSign nv-sa"
+Organizational Unit (OU):	"<Not Available>"
+Period of Validity	
+Begins On:	"Mon, 24 Feb 2025 16:34:21 GMT"
+Expires On:	"Sat, 28 Mar 2026 16:34:20 GMT"
+Fingerprints	
+SHA-256 Fingerprint:	"11:74:D1:1B:67:CF:0A:B9:58:FD…C:37:5A:00:AE:24:B2:DC:CB:5F"
+SHA1 Fingerprint:	"F5:4A:6C:B7:F9:D2:4D:F9:FA:A8:DB:39:FB:4B:CF:5B:17:42:04:39"
+Transparency:	"Valid SCT records"

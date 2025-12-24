@@ -1,0 +1,118 @@
+
+Disable Cache
+47 requests
+720.21 kB / 65.74 kB transferred
+Finish: 2.62 s
+DOMContentLoaded: 1.17 s
+load: 1.30 s
+
+	
+POST
+	
+scheme
+	https
+host
+	www.dndbeyond.com
+filename
+	/homebrew/creations/delete
+entityTypeId
+	1118725998
+id
+	3136408
+Address
+	151.101.125.91:443
+Status
+200
+VersionHTTP/2
+Transferred0 GB (0 GB size)
+Referrer Policystrict-origin-when-cross-origin
+Request PriorityHighest
+DNS ResolutionDNS over HTTPS
+
+    	
+    accept-ranges
+    	bytes
+    access-control-allow-credentials
+    	true
+    access-control-allow-origin
+    	https://www.dndbeyond.com
+    cache-control
+    	no-cache, no-store, must-revalidate
+    content-length
+    	31
+    content-security-policy
+    	frame-src 'self' https://www.youtube-nocookie.com https://linkst.dndbeyond.com https://*.cdn.optimizely.com https://accounts.google.com/ https://www.googletagmanager.com/ https://ct.pinterest.com https://family.test.k-id.com https://family.k-id.com
+    content-type
+    	application/json; charset=utf-8
+    date
+    	Wed, 24 Dec 2025 13:26:53 GMT
+    expires
+    	-1
+    pragma
+    	no-cache
+    server
+    	Microsoft-IIS/10.0
+    set-cookie
+    	AWSALB=5b1k20x1/EAI/bFDZKikKV2RkNuWGh5zGRikTpJcnJmR0P7QYdps33rUes5HEP2zO2B5CH67uCb9sPLPNlQzHWaPpSPe+VEtJURPtr0o59+A2MFiSQEgql4UnKIx; Expires=Wed, 31 Dec 2025 13:26:52 GMT; Path=/
+    set-cookie
+    	AWSALBCORS=5b1k20x1/EAI/bFDZKikKV2RkNuWGh5zGRikTpJcnJmR0P7QYdps33rUes5HEP2zO2B5CH67uCb9sPLPNlQzHWaPpSPe+VEtJURPtr0o59+A2MFiSQEgql4UnKIx; Expires=Wed, 31 Dec 2025 13:26:52 GMT; Path=/; SameSite=None; Secure
+    strict-transport-security
+    	max-age=300
+    vary
+    	Accept-Encoding,Origin, Origin, Access-Control-Allow-Origin
+    via
+    	1.1 varnish
+    x-cache
+    	MISS
+    x-cache-hits
+    	0
+    X-Firefox-Spdy
+    	h2
+    x-frame-options
+    	SAMEORIGIN
+    x-frame-options
+    	SAMEORIGIN
+    x-served-by
+    	cache-yyz4559-YYZ
+    x-timer
+    	S1766582813.873836,VS0,VE161
+    x-ua-compatible
+    	IE=edge,chrome=1
+    	
+    Accept
+    	*/*
+    Accept-Encoding
+    	gzip, deflate, br, zstd
+    Accept-Language
+    	en-US,en;q=0.9
+    Connection
+    	keep-alive
+    Content-Length
+    	63
+    Content-Type
+    	application/x-www-form-urlencoded; charset=UTF-8
+    Cookie
+    	_pxhd=PQ/qoKAoCogxxx1-vsTXz/ULpK5j8JUBz9hRrkWCYiib5KEoXdqrG0TfrC1sW3ZsNyfvempb-QNw9eGp7MMvmA==:3tq0Zk/-MxlMgdCz9QRMUf6uKjwwhlbq0oruLmZuIxJfpVW8FQYPuYGXUWZYvZ6HdwcW5ZTKM2INFRRiyLZg7kPZZKRy7/TUhLPzrXtbLfw=; ResponsiveSwitch.DesktopMode=1; _swb=181c66c9-d81b-499d-bd23-b8630529b73a; _ga=GA1.2.299146768.1739101198; LoginState=7c207547-4516-49e3-b73b-3b6173e7ddbd; ddb_vid=b0c44884-c9f1-45bc-bce2-64a98c848c63; _gcl_au=1.1.235369019.1766500827; AWSALB=0O7Qp7PJHwiXhMxTcz+CHJ2yFbq2gg89ChrSiURl3IfCOI7hETw//4pOqWC1D0Ug…-4a89-aaff-795f1d14b52e=true; ddb.toast.race.homebrew-create.hide-toast=true; ddb.toast.race.homebrew-edit.hide-toast=true; ddb_sid=3db141f0-3d1b-429f-9cb7-cee6297879ec; Geo={%22region%22:%22QC%22%2C%22country%22:%22CA%22%2C%22continent%22:%22NA%22}; User.ID=110746825; User.Username=Rockoteque; UserInfo={"UserId":110746825,"UserJoinDate":"2021-07-13","UserSessionId":"667ae0ed-b6fa-4094-b255-ff429bab2bfe"}; Preferences=undefined; sublevel=MASTER; RequestVerificationToken=acfa0630-890d-493a-8572-a12bf2933551
+    Host
+    	www.dndbeyond.com
+    Origin
+    	https://www.dndbeyond.com
+    Priority
+    	u=0
+    Referer
+    	https://www.dndbeyond.com/my-creations?filter-name=&filter-status=1&filter-status=2&filter-type=1118725998
+    Sec-Fetch-Dest
+    	empty
+    Sec-Fetch-Mode
+    	cors
+    Sec-Fetch-Site
+    	same-origin
+    Sec-GPC
+    	1
+    TE
+    	trailers
+    User-Agent
+    	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0
+    X-Requested-With
+    	XMLHttpRequest
+

@@ -1,0 +1,83 @@
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="security-token"
+
+d879d7ebde1ea48d31e61a8594fc187d
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="authenticity-token"
+
+eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..yowJIkt5bNvdjR1qYRIorg.6ne-E_WyAgY5cP7HbmwG8T_k7kCoPy5DSa-pW5jTmjPYWB19SaNmuB2l5Nb_mWwc.rDc2wtGUntsIdEdzhFREWw
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="name"
+
+Test Species
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="version"
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="size"
+
+4
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="speed-walking"
+
+20
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="speed-burrowing"
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="speed-climbing"
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="speed-flying"
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="speed-swimming"
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="short-description-type"
+
+1
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="short-description-wysiwyg"
+
+<p>This is the short description</p>
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="short-description"
+
+<p>This is the short description</p>
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="race-group"
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="description-type"
+
+1
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="description-wysiwyg"
+
+<p>This is the long description</p>
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="description"
+
+<p>This is the long description</p>
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="racial-trait-introduction"
+
+This is the species intro
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="fb5ed7fd7193ab1f62d62b854e457a638"; filename=""
+Content-Type: application/octet-stream
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c
+Content-Disposition: form-data; name="fd3724eb79084a2e86651485157463c1b"; filename=""
+Content-Type: application/octet-stream
+
+
+------geckoformboundaryd1a97b85fa5396846244eeb20364eb7c--

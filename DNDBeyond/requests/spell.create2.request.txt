@@ -1,0 +1,94 @@
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="security-token"
+
+a130097b9cb8abd3e3045a91b103d458
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="authenticity-token"
+
+eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..nfMtCOj6WFY3EQ83irZxiA.2OdB9-1Qz_IIcglQZGjRsoXLRz5dkUhhz5_Y6tuY8RIEUi8jJUEjndJfXaYwuMmi.qdmalCL3jfH1Qn3esM5jDQ
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="Name"
+
+Blink and You Missed It
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="version"
+
+
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-level"
+
+0
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-school"
+
+7
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-casting-time"
+
+1
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-activation"
+
+1
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-casting-time-description"
+
+
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="verbal-field"
+
+y
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="somatic-field"
+
+y
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-components"
+
+
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="origin"
+
+1
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-range"
+
+
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-duration"
+
+3
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-duration-interval"
+
+1
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-duration-unit"
+
+1
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-description-type"
+
+1
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-description-wysiwyg"
+
+<p><span style="font-size: 9pt; font-family: Consolas,Arial; font-weight: normal; font-style: normal;" data-sheets-root="1">You momentarily sync out of step with the immediate flow of time, creating a minor delay in perception.<br /> <br />Until the start of your next turn:<br />- Creatures that would notice you must make an Intelligence saving throw or fail to recall any details about your presence until you interact with them directly.<br />- If you attack or speak, the effect immediately ends for that creature.</span></p>
+<p>&nbsp;</p>
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="spell-description"
+
+
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="higher-level-scale"
+
+
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="class-mapping"
+
+2190884
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163
+Content-Disposition: form-data; name="class-mapping"
+
+2190886
+------geckoformboundaryc711268d94bb44029a5da2d9e68f163--

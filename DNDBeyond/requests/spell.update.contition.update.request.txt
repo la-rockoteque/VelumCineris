@@ -1,0 +1,16 @@
+
+Disable Cache
+115 requests
+1.95 MB / 180.11 kB transferred
+Finish: 10.77 s
+DOMContentLoaded: 2.22 s
+load: 2.30 s
+
+	
+security-token	"2579c7be1591fdf58de62b67827ed3c7"
+authenticity-token	"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..-O-_6Ryft35V69ZdkPvmDg.lE7CuUUQWlG7oGoSFTk0DjPusWR-iOOBjR1q68YJfAzOowJ_KXkJJxMhE2X2xApN.l2QiKIFk8oMd1T69N6jQUw"
+condition-effect	"1"
+condition	"1"
+condition-duration	"1"
+duration-unit	"1"
+condition-exception	""
