@@ -1,5 +1,6 @@
 import pandas as pd
 from src.sources import source, json_source
+from FiveETools.gsheets_client import modern_sheets
 
 def row_to_markdown(row):
     spell_name = row["Spell Name"].strip()
@@ -25,8 +26,7 @@ def row_to_markdown(row):
 ---
 """
 
-spells_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=625265890"
-df_spells = pd.read_csv(spells_url)
+df_spells = modern_sheets.get_sheet("625265890")
 df_spells.head()
 
 spells_list = [

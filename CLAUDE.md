@@ -50,7 +50,7 @@ npm run verify
 ```
 Google Sheets (Source of Truth)
     ↓
-src/content/*.py (Converters - 5etools format)
+FiveETools/{fantasy|modern}/*.py (Converters - 5etools format)
     ↓
 *.json exports (Compendium files)
     ↓
@@ -59,19 +59,19 @@ Sync notebooks → External platforms
 
 ### Core Components
 
-#### 1. Google Sheets Client (`src/content/gsheets_client.py`)
+#### 1. Google Sheets Client (`FiveETools/gsheets_client.py`)
 Centralized client for all data access with two modes:
 - **Read-only**: CSV export URLs (fast, cached)
-- **Read-write**: gspread with service account auth (`key.json`)
+- **Read-write**: gspread with service account auth (`FiveETools/key.json`)
 
 ```python
-from src.content.gsheets_client import fantasy_sheets, modern_sheets
+from FiveETools.gsheets_client import fantasy_sheets, modern_sheets
 
 # Read data
 df = fantasy_sheets.get_sheet("625265890")  # By GID
 df = modern_sheets.get_sheet_by_name("spells")  # By name
 
-# Write data (requires credentials.json)
+# Write data (requires FiveETools/key.json)
 fantasy_sheets.ensure_column_exists("625265890", "DDB")
 fantasy_sheets.update_cell_by_row_match(
     gid="625265890",
@@ -88,18 +88,17 @@ fantasy_sheets.update_cell_by_row_match(
 - Monsters: `736393386`
 - Species: `993815941`
 
-See `src/content/README.md` for complete GID mapping.
+See `FiveETools/README.md` for complete GID mapping.
 
-#### 2. Content Converters (`src/content/*.py`)
+#### 2. Content Converters (`FiveETools/{fantasy|modern}/*.py`)
 Each file converts raw Google Sheets data to **5etools JSON format**:
-- `fantasy_spells.py` / `spells.py` - Spell data
-- `fantasy_monster.py` / `monster.py` - Monster statblocks
-- `fantasy_species.py` / `species.py` - Player races
-- `classes.py`, `subclasses.py`, `features.py` - Class mechanics
-- `magic_items.py`, `items.py` - Equipment and magic items
+- **Fantasy** (`FiveETools/fantasy/`): `spells.py`, `monster.py`, `species.py`, `magic_items.py`, `languages.py`, `diseases.py`, `dieties.py`
+- **Modern** (`FiveETools/modern/`): `spells.py`, `monster.py`, `species.py`, `classes.py`, `subclasses.py`, `features.py`, `feats.py`, `backgrounds.py`, `items.py`, `conditions.py`
 
 **Pattern:**
 ```python
+from FiveETools.gsheets_client import fantasy_sheets
+
 # Load sheet
 df = fantasy_sheets.get_sheet("GID")
 
@@ -124,29 +123,33 @@ entities_list = [row_to_entity(row) for _, row in df.iterrows()
 
 #### 3. Compendium Generators (Notebooks)
 Generate final JSON exports:
-- `compendium_fantasy.ipynb` → `Velum_Cineris;guide_to_orimond.json`
-- `compendium_modern.ipynb` → `Velum_Cineris;everyday_guideto_concord_city.json`
+- `FiveETools/fantasy/convert_to_5e_tools.ipynb` → `Velum_Cineris;guide_to_orimond.json`
+- `FiveETools/modern/convert_to_5e_tools.ipynb` → `Velum_Cineris;everyday_guideto_concord_city.json`
 
 These files are committed to git and can be imported into Foundry VTT.
 
 #### 4. Sync Notebooks
 
-**World Anvil Sync** (`world_anvil_sync.ipynb`):
+**World Anvil Sync** (`WorldAnvil/world_anvil_sync.ipynb`):
 - Uses internal web API (cookie-based auth, no API key)
-- Helper class: `world_anvil/helpers/WorldAnvilAPI.py`
+- Helper class: `WorldAnvil/helpers/WorldAnvilAPI.py`
 - Syncs species to World Anvil articles
 - Tracks WA article IDs in spreadsheet "WA" column
 - Features duplicate detection and batch updates
 
-**D&D Beyond Sync** (`dnd_beyond_sync.ipynb`):
+**D&D Beyond Sync** (`DNDBeyond/dnd_beyond_*.ipynb`):
+- Multiple notebooks for different entity types: `dnd_beyond_spells.ipynb`, `dnd_beyond_monsters.ipynb`, `dnd_beyond_species.ipynb`, `dnd_beyond_backgrounds.ipynb`, `dnd_beyond_feats.ipynb`
 - Uses browser form submission (multipart/form-data)
-- Requires security tokens from create form + session cookies
-- Syncs spells to D&D Beyond homebrew
+- Requires security tokens from create form + session cookies (configured via `.env` file)
+- Helper modules in `DNDBeyond/helpers/`:
+  - `client.py` - HTTP client for D&D Beyond API
+  - `converter.py` - Converts 5etools format to D&D Beyond format
+  - `entities/*.py` - Entity-specific handlers (spells, monsters, species, backgrounds, feats)
 - Uses HTML parsing (BeautifulSoup) for duplicate detection
-- Tracks DDB spell IDs in spreadsheet "DDB" column
+- Tracks DDB IDs in spreadsheet "DDB" column
 - Features batch spreadsheet updates via gspread
 
-Both sync notebooks:
+Both sync systems:
 1. Check spreadsheet for existing IDs first (primary)
 2. Check platform for existing content (secondary)
 3. Create new content if needed
@@ -164,21 +167,23 @@ Uses NLTK WordNet for linguistic analysis (requires `poetry run download-wordnet
 
 ### Source Configuration
 
-The `src/sources.py` file defines campaign sources:
-- `source = "VSTGCC"` - Vestigium Guide to Concord City
+Source configuration files define campaign sources:
+- `FiveETools/fantasy/sources.py` - Fantasy (Orimond) source: `source = "ORIO"`
+- `FiveETools/modern/sources.py` - Modern (Concord City) source: `source = "VSTGCC"`
 - Maps to Google Sheets row for full name and JSON identifiers
 - Used to filter content by campaign in converters
 
 ### Image Management
 
-Images stored in `images/` directory:
-- `images/Monsters/{fantasy|modern}/` - Creature art
-- `images/Species/{fantasy|modern}/` - Species portraits
-- `images/Spell/` - Spell icons
+Images stored in `assets/art/` directory:
+- `assets/art/Monsters/{fantasy|modern}/` - Creature art
+- `assets/art/Species/{fantasy|modern}/` - Species portraits
+- `assets/art/Dieties/` - Deity artwork
 - Referenced in JSON via GitHub raw URLs
 
 Scripts in `scripts/`:
-- `Placehold_monsters_images.py` - Generate placeholder images
+- `placeholder_species_images.py` - Generate placeholder species images
+- `species_appearance.py` - Generate species appearance descriptions
 - Image paths use `inflection.underscore()` for filename normalization
 
 ## Working with Jupyter Notebooks
@@ -189,24 +194,24 @@ poetry run jupyter notebook
 ```
 
 **Common patterns:**
-1. Import content modules: `import src.content.fantasy_spells`
-2. Access data: `spells = src.content.fantasy_spells.spells_list`
-3. Load sheets: `from src.content.gsheets_client import fantasy_sheets`
+1. Import content modules: `import FiveETools.fantasy.spells`
+2. Access data: `spells = FiveETools.fantasy.spells.spells_list`
+3. Load sheets: `from FiveETools.gsheets_client import fantasy_sheets`
 
 **Notebook purposes:**
-- `world_anvil_sync.ipynb` - Sync to World Anvil
-- `dnd_beyond_sync.ipynb` - Sync to D&D Beyond
-- `compendium_fantasy.ipynb` - Generate JSON for Foundry VTT
-- `compendium_modern.ipynb` - Generate JSON for Foundry VTT
-- `markdown.ipynb` - Generate markdown documentation
-- `ObsidiantoWorldAnvil.ipynb` - Convert Obsidian notes
-- `Monsters.ipynb` - Monster data exploration
+- `WorldAnvil/world_anvil_sync.ipynb` - Sync to World Anvil
+- `DNDBeyond/dnd_beyond_*.ipynb` - Sync to D&D Beyond (separate notebooks per entity type)
+- `FiveETools/fantasy/convert_to_5e_tools.ipynb` - Generate JSON for Foundry VTT (fantasy)
+- `FiveETools/modern/convert_to_5e_tools.ipynb` - Generate JSON for Foundry VTT (modern)
+- `Homebrewery/markdown.ipynb` - Generate markdown documentation
+- `ObsidianPortal/ObsidiantoWorldAnvil.ipynb` - Convert Obsidian notes
+- `Spreadsheet/Monsters.ipynb` - Monster data exploration
 
 ## Authentication & Credentials
 
 ### Google Sheets (Read-Write)
-- File: `credentials.json` (service account)
-- Used by: `gsheets_client.py` when writing data
+- File: `FiveETools/key.json` (service account)
+- Used by: `FiveETools/gsheets_client.py` when writing data
 - Scopes: `spreadsheets`, `drive`
 
 ### World Anvil
@@ -217,9 +222,21 @@ poetry run jupyter notebook
 
 ### D&D Beyond
 - Browser session cookies + security tokens
-- Tokens from create form hidden fields: `security-token`, `authenticity-token`
-- Configure in notebook: `DDB_COOKIES`, `DDB_SECURITY_TOKEN`, `DDB_AUTHENTICITY_TOKEN`
-- Tokens expire periodically
+- Tokens from create form hidden fields: `security-token`, `authenticity-token`, `request-verification-token`
+- Configure via `DNDBeyond/.env` file with variables:
+  - `DDB_BASE_URL` - Base URL (https://www.dndbeyond.com)
+  - `DDB_COOKIES` - Session cookies from browser
+  - `DDB_SECURITY_TOKEN`, `DDB_AUTHENTICITY_TOKEN`, `REQUEST_VERIFICATION_TOKEN` - Form tokens
+  - `DDB_USER_ID`, `DDB_USERNAME` - User identification
+- **Automated token extraction**: Use `DNDBeyond/scripts/get_ddb_tokens.py` to automatically extract tokens
+  ```bash
+  # One-time setup
+  poetry run playwright install chromium
+
+  # Extract tokens (will prompt for credentials)
+  poetry run python DNDBeyond/scripts/get_ddb_tokens.py
+  ```
+- Tokens expire periodically - re-run the script when sync fails
 
 ## Key Patterns & Conventions
 
@@ -240,12 +257,14 @@ External platform IDs are tracked in spreadsheet columns:
 Two parallel content sets (fantasy vs non-fantasy):
 ```python
 # Fantasy (Orimond)
-from src.content.gsheets_client import fantasy_sheets
-import src.content.fantasy_spells
+from FiveETools.gsheets_client import fantasy_sheets
+import FiveETools.fantasy.spells
+import FiveETools.fantasy.monster
 
 # Non-fantasy (Concord City)
-from src.content.gsheets_client import modern_sheets
-import src.content.spells
+from FiveETools.gsheets_client import modern_sheets
+import FiveETools.modern.spells
+import FiveETools.modern.monster
 ```
 
 ### Error Handling in Sync Notebooks
@@ -264,8 +283,10 @@ Results saved to JSON logs: `sync_log_YYYYMMDD_HHMMSS.json`
 ## Important Notes
 
 - **Poetry environment**: Always use `poetry run` for Python commands
-- **Credentials required**: `key.json` for writing to Google Sheets
-- **Session cookies expire**: Re-extract from browser if sync fails
-- **Rate limiting**: Both WA and DDB may throttle requests (use `DELAY` parameter)
+- **Credentials required**: `FiveETools/key.json` for writing to Google Sheets
+- **D&D Beyond configuration**: Use `DNDBeyond/.env` file for auth tokens (see template in `.env.example`)
+- **Session cookies expire**: Re-extract from browser Developer Tools if sync fails
+- **Rate limiting**: Both WA and DDB may throttle requests (use `DELAY` parameter in notebooks)
 - **5etools format**: Strictly follow nested dict/array structures for compatibility
 - **Source filtering**: Most converters filter by `row.get("Source") == source`
+- **Module structure**: `FiveETools` contains all content converters (fantasy and modern)

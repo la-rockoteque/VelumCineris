@@ -1,0 +1,56 @@
+flowchart LR
+  %% Core nodes
+  orimond((Orimond))
+  veil((The Veil))
+
+  %% Right stack
+  throne([The Throne of Ambitions])
+  dreamscape([The Dreamscape])
+  murmuring([The Murmuring Depths])
+
+  %% Left stack
+  verdant([Verdant Cradle])
+  lithic([Lithic Bastion])
+  withered([Withered Womb])
+
+  %% Back quadrant
+  tesserac([Tesserac Leys])
+  farcosmos([Far Cosmos])
+  torment([Domain of Torment])
+  loom([Infinite Loom])
+
+  %% Invisible spacers to force layout
+  s_left_1:::spacer
+  s_left_2:::spacer
+  s_right_1:::spacer
+  s_right_2:::spacer
+  s_back_1:::spacer
+  s_back_2:::spacer
+  s_back_3:::spacer
+
+  %% Concentric effect (approximate)
+  orimond --- veil
+
+  %% Left stack alignment
+  verdant --> lithic --> withered
+  s_left_1 --- verdant
+  s_left_2 --- withered
+
+  %% Right stack alignment
+  throne --> dreamscape --> murmuring
+  s_right_1 --- throne
+  s_right_2 --- murmuring
+
+  %% Back quadrant alignment (rough block)
+  tesserac --> farcosmos
+  torment --> loom
+  s_back_1 --- tesserac
+  s_back_2 --- farcosmos
+  s_back_3 --- torment
+
+  %% Anchor stacks to Orimond
+  orimond --- verdant
+  orimond --- throne
+  orimond --- tesserac
+
+  classDef spacer fill:transparent,stroke:transparent,color:transparent;

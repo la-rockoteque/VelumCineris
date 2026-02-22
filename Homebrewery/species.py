@@ -1,7 +1,7 @@
 import pandas as pd
+from FiveETools.gsheets_client import modern_sheets
 
-species_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=993815941"
-df_species = pd.read_csv(species_url)
+df_species = modern_sheets.get_sheet("993815941")
 df_species.head()
 
 def row_to_species(row):

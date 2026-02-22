@@ -1,7 +1,8 @@
 import pandas as pd
 from pandas.core.api import value_counts
-from src.content.classes import to_table
-from src.sources import source, json_source
+from FiveETools.modern.classes import to_table
+from FiveETools.modern.sources import source, json_source
+from FiveETools.gsheets_client import modern_sheets
 import math
 def build_class_table(class_name):
   df_class_tables = pd.read_csv(class_tables_url, header=1)
@@ -172,15 +173,14 @@ B:
 {"--- \n".join(subclasses)}
 """
 
-spells_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=625265890"
-df_spells = pd.read_csv(spells_url)
+df_spells = modern_sheets.get_sheet("625265890")
 df_spells.head()
 
-classes_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=1924660120"
-class_tables_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=193036738"
-class_features_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=545140625"
+classes_url = modern_sheets._build_csv_url("1924660120")
+class_tables_url = modern_sheets._build_csv_url("193036738")
+class_features_url = modern_sheets._build_csv_url("545140625")
 
-subclasses_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=338247460"
+subclasses_url = modern_sheets._build_csv_url("338247460")
 
 df_subclasses = pd.read_csv(subclasses_url)
 df_subclasses.head()

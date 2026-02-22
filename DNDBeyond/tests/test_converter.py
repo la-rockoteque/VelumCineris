@@ -1,7 +1,7 @@
 """Unit tests for spell converter"""
 import pytest
 import sys
-sys.path.insert(0, '/Users/rocko/dev/Perso/VestigiumFoundrySpells')
+sys.path.insert(0, '/Users/rocko/dev/Perso/VelumCineris')
 
 from DNDBeyond.helpers.converter import convert_spell_to_ddb
 

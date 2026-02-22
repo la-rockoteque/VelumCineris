@@ -1,0 +1,1246 @@
+/* fix privacy notice in footer */
+.ddb-footer__privacy-policy-notice {
+    display: block !important;
+    max-width: 1200px;
+    margin: 0 auto !important;
+}
+/* end - fix privacy notice in footer */
+
+.covert-list .b-userAction-item.user-action-edit {
+    position: relative;
+    z-index: 2;
+}
+
+.i-aoe-emanation, .i-aoe-cube, .i-aoe-square, .i-aoe-cylinder, .i-aoe-cone, .i-aoe-line {
+    top: -1px;
+}
+
+.ddb-homebrew-create-form-fields-item ddb-homebrew-create-form-fields-item-ac-type {
+	flex-basis: 40%
+}
+
+.ddb-homebrew-create-form-fields-item ddb-homebrew-create-form-fields-item-ac-type + .ddb-homebrew-create-form-fields-item ddb-homebrew-create-form-fields-item-type {
+	flex-basis: 20%
+}
+
+
+.flexible-quad-column {
+    max-width: 850px;
+    margin: 0 auto;
+    columns: 4 200px;
+    gap: 10px;
+}
+.ddb-homebrew-create-form-fields-item-ac-type + .ddb-homebrew-create-form-fields-admin {
+    flex-basis: 20%
+}
+
+:is(.field-lair-challenge-rating, .ddb-homebrew-create-form-fields-item-long-source-description, :is(.ddb-homebrew-create-form-fields-item-legendary-actions-container, .ddb-homebrew-create-form-fields-item-mythic-actions-container, .ddb-homebrew-create-form-fields-item-lair-container) .boolean) {
+	padding-left: 0;
+}
+
+/* START LRKP CSS fixes */
+
+
+/* START - New rules sidebar implementation */
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar {
+    display: block !important;
+    background-color: var(--sb-rules-sidebar, var(--compendium-rules-sidebar-color, #DAE4C1)) !important; /*Fallback: if the variable isn't declared, it'll default to pale-green*/
+    position: relative !important;
+    width: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: visible !important;
+    margin: 30px 5px !important;
+    line-height: 1.6 !important;
+    font-size: 14px !important;
+    padding: 20px 28px 25px 30px !important;
+    border-radius: 0 !important;
+    border-top: 3px solid #231f20 !important;
+    border-bottom: 3px solid #231f20 !important;
+    border-left: 1.5px solid  #b3b3b3 !important;
+    border-right: 1.5px solid  #b3b3b3 !important;
+    color: var(--theme-page-fg-color, #242527) !important;
+    filter: drop-shadow(0px 5px 8px #ccc);
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar p:first-of-type {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar p {
+   line-height: 1.6;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar :is(.action-tooltip, .condition-tooltip, .item-tooltip, .rule-tooltip, .sense-tooltip, .skill-tooltip, .weapon-properties-tooltip) {
+    color: #129b54 !important;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar::before {
+    top: -13px !important;
+    right: 0.1px !important;
+    left: 0.1px !important;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar::before {
+    content: '';
+    background-image: url("https://media.dndbeyond.com/compendium-images/components/--right-rules.svg"),url("https://media.dndbeyond.com/compendium-images/components/--left-rules.svg") !important;
+    background-position: left, right !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    height: 11px !important;
+    position: absolute !important;
+    z-index: -1;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar::after {
+    bottom: -13px !important;
+    right: -0.1px !important;
+    left: 0.1px !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar::after {
+    content: '';
+    background-image: url("https://media.dndbeyond.com/compendium-images/components/--right-rules.svg"),url("https://media.dndbeyond.com/compendium-images/components/--left-rules.svg") !important;
+    background-position: left, right !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    height: 11px !important;
+    position: absolute !important;
+    z-index: -1;
+    transform: scaleY(-1);
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) :is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .text--rules-sidebar a:not(.tooltip-hover) {
+     color: #004e9b !important;
+}
+/* END - New rules sidebar implementation */
+
+/* START - Italicizes potion of healing specifically */
+a.tooltip-hover.item-tooltip[href="/equipment/potion-of-healing"] {
+    font-style: italic;
+}
+/* END - italicizes potion of healing specifically */
+
+.quick-menu-item .quick-menu-item-link:hover {
+  color: #0d0d0d !important;
+  font-weight: 700;
+}
+
+/* START - Fixes padding issues with tier 5 of sidebar  */
+.quick-menu.quick-menu-tier-5 li .quick-menu-item-link {
+    padding: 8px 8px 6px 60px;
+}
+.quick-menu-item-tier-4.quick-menu-item-opened .quick-menu-item-link {
+    padding-bottom: 6px;
+}
+/* END - Fixes padding issues with tier 5 of sidebar */
+
+/* TABLE FEATURES */
+
+/* START - Provides additional dice columns */
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--generic-dice-first :is(th,td):first-child, 
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--generic-dice-col2 :is(th,td):nth-child(2), 
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--generic-dice-col3 :is(th,td):nth-child(3), 
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--generic-dice-col4 :is(th,td):nth-child(4), 
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--generic-dice-col5 :is(th,td):nth-child(5), 
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--generic-dice-last :is(th,td):last-child {
+    width: 12% !important;
+    font-weight: bold;
+}
+/* END - Provides additional dice columns */
+
+/* START - Adds option for 10% & 15% width table columns */
+th.table-column-width--10pct {
+    width: 10%;
+}
+th.table-column-width--15pct {
+    width: 15%;
+}
+/* END - Adds option for 10% & 15% width table columns */
+
+/* COMPENDIUM STAT BLOCKS */
+
+/* START - Makes tooltips within statblocks easier to read */
+:is(.Basic-Text-Frame, .Basic-Text-Frame-2, .Basic-Text-Frame-3) :is(.action-tooltip, .condition-tooltip, .sense-tooltip, .skill-tooltip, .weapon-properties-tooltip) {
+    color: #0E8648 !important;
+}
+/* END -  Makes tooltips within statblocks easier to read */
+
+.tooltip-header-subtitle {
+    font-size: 14px;
+    font-style: italic;
+    color: #dbdbdb;
+}
+
+/* END LRKP CSS fixes */
+
+.claim-secondary__content .book-cta {
+    transition: transform 200ms,background 200ms;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+.claim-secondary__content .book-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
+    transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+a.button.button-claimed {
+    background: #fff !important;
+    border: none;
+    text-shadow: none;
+}
+.claim-main__purchase-collected {
+    text-align: center;
+    margin-top: 12px !important;
+}
+
+
+/* Fix menu  */
+button.toggle-party-time.mm-nav-item__label.mm-nav-item__label--link {
+    height: inherit;
+    width: inherit;
+}
+
+/* Change Dice Rolling toggle from Alpha -> Beta */
+.ddbc-popout-menu__item-dice-setting-info-dice:after {
+    content: 'beta';
+    background: #1B9AF0;
+    color: #fff;
+    padding: 0 5px;
+    margin: 2px 10px;
+    font-size: 11px;
+    height: 15px;
+}
+.ddbc-popout-menu__item-dice-setting-info-alpha {
+  display: none;
+}
+/** Dice temp fix **/
+.ct-character-sheet--dice-enabled .ct-combat-mobile .integrated-dice__container:hover {
+    color: #394b59;
+}
+.ct-character-sheet--dice-enabled .ct-combat-mobile .integrated-dice__container {
+    color: #fff;
+}
+.babylonUnmuteIcon{
+  z-index: 60000;
+}
+#noty_layout__bottomRight {
+    z-index: 60001 !important;
+}
+
+/** gemstone temp icon fix **/
+.list-row-icon .icon.equipment-gemstone {
+    background-image: url('https://i.imgur.com/dwu8uXN.jpg');
+}
+
+/** Userback Feedback Styles  **/
+
+.userback-comment .userback-comment-form button {
+    background: #559aec;
+    color: white;
+}
+
+@media(min-width: 800px) {
+.userback-toolbar .userback-toolbar-tool-done {
+  border-radius: 0px !important;
+  width:100px !important;
+  background: #21b966 !important;
+}
+}
+
+.userback-toolbar {
+  margin-top: 20px !important;
+}
+
+.userback-toolbar .userback-toolbar-tool-done:before {
+    content: "SUBMIT";
+    color: white;
+    line-height: 34px;
+    margin-left: 31px;
+
+}
+
+.userback-toolbar .userback-toolbar-tool-done svg {
+display:none !important;
+}
+
+/** END Userback Feedback Styles  **/
+
+
+
+body.responsive-enabled #site #site-main {
+min-height: 100%;
+}
+
+.summoning-creatures-table td:nth-child(1), .compendium-left-aligned-table td:nth-child(1) {
+    text-align: center !important;
+}
+
+/** TEMP new blockquote type for compendium content - needs to be added to compiled **/
+
+blockquote.compendium-indented-callout-blockquote {
+    background: transparent !important;
+    font-size: 16px !important;
+    border-left: 4px solid #e0dcdc !important;
+    border-right: none !important;
+    padding: 10px 20px !important;
+    margin: 30px 0 !important;
+}
+
+blockquote.compendium-indented-callout-blockquote::before {
+    content: none !important;
+}
+
+blockquote.compendium-indented-callout-blockquote::after {
+    content: none !important;
+}  
+
+/** END TEMP new blockquote type **/
+
+/* START -  table caption support for listings */
+caption {
+    display: table-caption !important;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    font-family: Roboto, Helvetica, sans-serif;
+    line-height: 1.3;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) caption :is(h3, h4, h5) {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) caption h3::after {
+    content: none !important;
+}
+/* END - table caption support for listings */
+
+
+/** TEMP remove "desktop view" button in mobile menu **/
+.rs-link-to-desktop {
+    display: none !important;
+}
+/** TEMP remove "desktop view" button in mobile menu **/
+
+
+/** TEMP removing author bylines **/
+.p-article .p-article-byline {
+  display: none;
+} 
+.post .p-article-byline {
+  display: block;
+} 
+/** end TEMP removing author bylines **/
+
+
+
+/** TEMP fix for plural tooltip spans **/
+
+.plural-monster-tooltip {
+    color: #bc0f0f !important;
+    font-weight: bold !important;
+}
+
+.plural-spell-tooltip {
+    color: #704cd9 !important;
+    font-weight: bold !important;
+    font-style: italic;
+}
+
+/** end TEMP plural tooltip fix **/
+
+
+/** TEMP header size fix for compendium **/
+
+h6 {
+    font-size: 14px !important;
+    font-weight: bold !important;
+}
+
+/** end TEMP header size fix **/
+
+
+/** TEMP header size fix for listings **/
+
+.more-info h4 {
+    font-size: 16px;
+}
+
+/** end TEMP header size fix **/
+
+/** 
+.p-article-header > .user-actions { display: none; }
+
+ **/
+
+
+/** PERMANENT - Homepage Hero Image **/
+.body-home-index #site-main::before {
+    background-image: url(https://www.dndbeyond.com/attachments/11/316/vecna-banner-1b.png);
+    background-size: cover;
+}
+/** END PERMANENT - Homepage Hero Image **/
+
+
+
+/* FIX - for spellcasting class table th's having too much padding based on defaults */
+th.spell-level-column,
+table.compendium-no-left-right-padding-table th {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* FIX - overriding article content table td's for the no left-right-padding tables to not have a minimum width */
+.compendium-no-left-right-padding-table td {
+    min-width: 0 !important;
+}
+
+/* DONE REMOVE - compendium article nav-select spacing on top... this is to do it a similar way as character details, but the correct way would be to increase padding-top on two column templates */
+.p-article-a .nav-select {
+    margin-top: 20px;
+}
+
+/* DONE fix top padding on create pages, remove when they have styles */
+.body-rpgmagicitem-managemagicitemscopy #site #content {
+    padding-top: 125px!important;
+}
+
+/* DONE fix forum buttons on ios, remove when style is moved to stylesheet */
+.body-forum .b-userAction-a:not(.u-dropDownMenu) .b-userAction-item {
+  vertical-align: top !important;
+}
+
+
+/* ==================================== */
+/*  Survey Code, remove when done with survey */
+/* =================================== */
+
+.smcx-iframe-container iframe {
+max-height: 1150px !important;
+}
+
+.p-comment-post[data-id="25962"] {
+display:none;
+}
+
+.body-page .p-article-a .p-article-content table p {
+    font-size: 14px;
+    line-height: 1.2;
+    margin-bottom: 0px;
+}
+
+.body-page .p-article-a .p-article-content table td {
+padding-top: 8px;
+padding-bottom: 8px;
+}
+
+.Core-Styles_Core-Body, .Boxed-Text-Style_Boxed-Text { 
+margin-bottom: 12px !important;
+}
+
+
+.body-user #site input[type="radio"] {
+  appearance: radio !important;
+  -webkit-appearance: radio !important;
+}
+
+.body-home-index .site-interactions {
+border-bottom-color: #bc0f0f;
+}
+
+/* =========================== */
+/*            Vanity Role Styles                     */
+/* =========================== */
+span.user-role-d-d-beyond-staff {
+  color: #E40712 !important;
+  padding-left: 16px;
+  min-height: 16px;
+  background: url(https://www.dndbeyond.com/attachments/0/12/ddbstaff.png) no-repeat left center;
+}
+
+span.user-role-d-d-staff {
+  color: #7789C6 !important;
+  padding-left: 16px;
+  min-height: 16px;
+  background: url(https://www.dndbeyond.com/attachments/0/22/dndstaff.png) no-repeat left center;
+}
+
+span.user-role-insider {
+  color: #07aaff !important;
+  padding-left: 16px;
+  min-height: 16px;
+  background: url(https://www.dndbeyond.com/attachments/0/11/ddbinsider.png) no-repeat left center;
+}
+
+span.user-role-moderator {
+  color: #ff8502 !important;
+  padding-left: 16px;
+  min-height: 16px;
+  background: url(https://www.dndbeyond.com/attachments/0/21/ddbmod.png) no-repeat left center;
+}
+
+
+/* =========================== */
+/*            Vanity User Titles                     */
+/* =========================== */
+
+/* Adam Bradford */
+div.j-comment[data-author-id="23611187"] .p-comment-statitem.forum-title {
+    padding-left: 3.5em;
+    text-decoration: overline;
+    font-size: 14px;
+    text-shadow: 0 0 3px #536A9C;
+}
+
+div.j-comment[data-author-id="23611187"] .p-comment-user-background {
+background-image: url(https://www.dndbeyond.com/attachments/0/79/bebackground.jpg) !important;
+background-repeat: no-repeat !important;
+}
+
+/* Hartless */
+div.j-comment[data-author-id="8500863"] .p-comment-statitem.forum-title {
+text-shadow:1px 1px 3px rgba(0,0,0,1);
+color:#E40812;
+letter-spacing:2pt;
+word-spacing:2pt;
+font-size:14px;
+text-align:center;
+line-height:1;
+}
+
+div.j-comment[data-author-id="8500863"] .p-comment-user-background {
+background-image: url(https://www.dndbeyond.com/attachments/0/59/stevanus4.jpg) !important;
+background-repeat: no-repeat !important;
+}
+
+/* Elliot */
+div.j-comment[data-author-id="100022645"] .p-comment-user-background {
+background-image: url(https://www.dndbeyond.com/attachments/0/52/elliot_bg3.jpg) !important;
+background-repeat: no-repeat !important;
+}
+
+/* Timer / Adam Walton */
+div.j-comment[data-author-id="100046438"] .p-comment-user-background {
+    background-image: url(https://www.dndbeyond.com/attachments/8/497/timer-forum-profile2.png) !important;
+    background-repeat: no-repeat !important;
+    background-position: top left !important;
+    background-size: 100% auto !important;
+    opacity: 0.3;
+}
+div.j-comment[data-author-id="100046438"] .p-comment-statitem.forum-title {
+    text-shadow: 0px 0px 10px #fff;
+    color: #E40812;
+    padding-left: 1em;
+    /*letter-spacing: 2px;*/
+    word-spacing: 2pt;
+    font-size: 12px;
+    line-height: 1;
+    /*margin-bottom: 4px;*/
+}
+
+/* GPyromania/Jay Jani */
+div.j-comment[data-author-id="100005559"] .p-comment-user-background {
+    background-image: url(https://www.dndbeyond.com/attachments/8/996/gp-forum-profile.png) !important;
+    background-repeat: no-repeat !important;
+    background-position: top left !important;
+    background-size: 100% auto !important;
+    opacity: 0.6;
+}
+div.j-comment[data-author-id="100005559"] .p-comment-username {
+  text-shadow: 0px 0px 4px #fff;
+}
+
+/* Thread Prefix */
+.thread-prefix {
+  display: inline-block !important;
+  margin: 0px 0px 1px 0px !important;
+}
+
+.thread-prefix span.thread-prefix {
+  background-color: #C98D0E;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 4px;
+}
+
+/* Generic Colors */
+.thread-prefix span.red { background-color: #e51c23; }
+.thread-prefix span.pink { background-color: #e91e63; }
+.thread-prefix span.purple { background-color: #9c27b0; }
+.thread-prefix span.deep-purple { background-color: #673ab7; }
+.thread-prefix span.indigo { background-color: #3f51b5; }
+.thread-prefix span.blue { background-color: #5677fc; }
+.thread-prefix span.light-blue { background-color: #03a9f4; }
+.thread-prefix span.cyan { background-color: #00bcd4; }
+.thread-prefix span.teal { background-color: #009688; }
+.thread-prefix span.green { background-color: #259b24; }
+.thread-prefix span.light-green { background-color: #8bc34a; }
+.thread-prefix span.lime { background-color: #cddc39; }
+.thread-prefix span.yellow { background-color: #ffeb3b; }
+.thread-prefix span.amber { background-color: #ffc107; }
+.thread-prefix span.orange { background-color: #ff9800; }
+.thread-prefix span.deep-orange { background-color: #ff5722; }
+.thread-prefix span.brown { background-color: #795548; }
+.thread-prefix span.grey { background-color: #9e9e9e; }
+.thread-prefix span.blue-grey { background-color: #607d8b; }
+
+
+.thread-prefix span.bug {
+  background-color: #dd434b;
+}
+
+.thread-prefix span.resolved {
+  background-color: #4f864f;
+}
+
+.thread-prefix span.request {
+  background-color: #dd4398;
+}
+
+
+/* =========================== */
+/*            Mod hide first post                    */
+/* =========================== */
+.p-comment-post[data-id="6541"] {
+display:none;
+}
+
+.next-staff-comment {
+    background-color: #ad0109 !important;
+    margin-right: 10px !important;
+    border: 1px solid #a20108 !important;
+}
+
+.next-dev-comment {
+    background-color: #ad0109 !important;
+    margin-right: 10px !important;
+    border: 1px solid #a20108 !important;
+}
+
+/* =========================== */
+/*            Dice Roller                                */
+/* =========================== */
+.dice-roll-tampered
+{
+background-color:#f29693;
+font-weight:bold;
+padding:5px;
+}
+
+/* Pride Month Logo Change */
+/* .main .logo {
+    background-image: url(https://media.dndbeyond.com/media/logo/dnd-beyond-pride-logo.svg) !important;
+} */
+/* .site-bar .site-bar__container .logo {
+    background-image: url(https://media.dndbeyond.com/media/logo/dnd-beyond-pride-logo.svg) !important;
+} */
+/* END: Pride Month Logo Change */
+
+/* Subscriber Perks */
+.ddb-subscriptions-purchase-flair img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Everlasting Rime dice page */
+.body-newmarketplace-itemdetails-digital-dice .marketplace-item__description p {
+    width: fit-content;
+}
+
+.super-center-container {
+    display: grid;
+    place-items: center;
+}
+
+/* START - for listings that have an image in the description */
+.mon-details__description-block-content p.listing-image {
+    margin-bottom: 0px !important
+}
+/* END - for listings that have an image in the description */
+
+.ddb-strip-container .ddb-strip-aligned-item-games {
+    width: 300px;
+    margin-right: 0;
+}
+
+.ddb-strip-container .ddb-strip-aligned-item-games .ddb-strip-item-label {
+    top: 55px;
+}
+
+.ddb-strip-container .ddb-strip-item-release-type--alpha {
+    margin-top: 4px;
+}
+
+.ddb-strip-container .ddb-strip-aligned-item-build-encounter {
+    width: 300px;
+    margin-right: 0;
+}
+
+.ddb-strip-container .ddb-strip-aligned-item-build-encounter .ddb-strip-item-label {
+    top: 55px;
+}
+
+.ddb-strip-container .ddb-strip-item-release-type--beta {
+    margin-top: 4px;
+}
+
+.body-home-index .post-listing>li:not(:first-child) .post-excerpt__video {
+    display: none;
+}
+
+/* NEW STAT BLOCK START */
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block {
+  border: 1px solid #D4D0CE;
+  background-color: #FEFCEF;
+  padding: 15px;
+  position: relative;
+  background-repeat: no-repeat;
+  box-shadow: 0 5px 8px 0 #AAA;
+  background-position: top;
+  background: var(--stat-block-bg-override, url(https://media.dndbeyond.com/compendium-images/tcoe/0gqawlEa2tjXGxpc/mm_statbg_sm.jpg));
+  font-size: 14px;
+  line-height: 19.6px;
+  margin: 14px 0;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block::before, :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block::after {
+  content: "";
+  background-image: var(--stat-block-scrollbar, url(https://media.dndbeyond.com/compendium-images/cm/c43LH2y2Gcaxb3V2/MMStatBar_lrg.png)) !important;
+  background-size: 100% 100%;
+  background-position: center;
+  height: 4px;
+  display: inline-block;
+  position: absolute;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block::before {
+  left: -3px;
+  top: -3px;
+  right: -3px;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block::after {
+  left: -3px;
+  bottom: -3px;
+  right: -3px;
+}
+@media (max-width: 767px) {
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block br {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block {
+    column-count: 2;
+  }
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block p {
+  break-inside: avoid;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block :is(h2, h3, h4, h5) {
+  font-size: 18px !important;
+  font-family: "Roboto Condensed", Roboto, Helvetica, sans-serif !important;
+  text-transform: uppercase !important;
+  font-weight: bold !important;
+  margin-bottom: 0 !important;
+  display: inline !important;
+  margin-right: 8px !important;
+}
+
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block :is(h2, h3, h4, h5)::after {
+  content: none;
+}
+
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block p:first-of-type:not(.monster--stats p:first-of-type) {
+  font-style: italic;
+  border-bottom: 2px solid var(--stat-block-divider, #BC0F0F);
+  padding-bottom: 5px;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block p:nth-child(odd) {
+  margin-top: 12px !important;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  border-top: 2px solid var(--stat-block-divider, #BC0F0F);
+  border-bottom: 2px solid var(--stat-block-divider, #BC0F0F);
+  margin: 12px 0;
+  padding: 8px 0;
+  text-align: center;
+  align-items: center;
+}
+@media (max-width: 767px) {
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas: "STR-a DEX-a CON-a" "STR-b DEX-b CON-b" "INT-a WIS-a CHA-a" "INT-b WIS-b CHA-b";
+    margin: 12px 6px 12px 0;
+    padding: 0 12px 8px 0;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(1) {
+    grid-area: STR-a;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(3) {
+    grid-area: DEX-a;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(5) {
+    grid-area: CON-a;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(7) {
+    grid-area: INT-a;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(9) {
+    grid-area: WIS-a;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(11) {
+    grid-area: CHA-a;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(2) {
+    grid-area: STR-b;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(4) {
+    grid-area: DEX-b;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(6) {
+    grid-area: CON-b;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(8) {
+    grid-area: INT-b;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(10) {
+    grid-area: WIS-b;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-of-type(12) {
+    grid-area: CHA-b;
+  }
+  :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-child(odd) {
+    margin-top: 12px !important;
+  }
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p {
+  font-size: 16px;
+  margin: 3px 0 5px;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--stats p:nth-child(odd) {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 5px !important;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--data-last::after {
+  content: "";
+  display: block;
+  border-bottom: 2px solid var(--stat-block-divider, #BC0F0F);
+  padding: 0 0 8px;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--action-header {
+  font-size: 16px !important;
+  font-weight: bold;
+  font-family: "Roboto Condensed", Roboto, Helvetica, sans-serif;
+  padding-top: 4px;
+  border-bottom: 1px solid var(--stat-block-divider, #BC0F0F);
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .monster--data-last strong + strong {
+  margin-left: 12px;
+}
+:is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .action-tooltip, :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .condition-tooltip, :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .sense-tooltip, :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .skill-tooltip, :is(.body-rpgmagicitem, .body-rpgclass, .body-rpgspell-details, .body-rpgrace-details) .monster--stat-block .weapon-properties-tooltip {
+  color: var(--stat-block-green-tooltip, #0E8648) !important;
+}
+
+/* NEW STAT BLOCK END */
+
+/* START Table Compendium for listings fix */
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table-compendium td {
+    padding: 8px 20px !important;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium thead tr {
+  background-color: var(--sb-table-header-bg, #FDFDFD) !important;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium tbody tr:nth-child(odd) {
+  background-color: var(--sb-table-row-bg-light, #FDFDFD) !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium tbody tr:hover {
+  background-color: var(--sb-table-row-bg-hover, #e3f4eb) !important;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table-compendium.table--sub-features thead th:first-of-type {
+  width: 15%;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table-compendium.table--sub-features :is(thead, tbody) :is(th, td):nth-child(2) {
+  text-align: left !important;
+}
+
+/* END Table Compendium for listings fix */
+
+/* Marketplace Tags - https://wizardsofthecoast.atlassian.net/l/cp/BHgmyrH7 */
+
+.marketplace-custom-tag--maps .marketplace-custom-tag__icon {
+    filter: invert(56%) sepia(15%) saturate(7271%) hue-rotate(126deg) brightness(103%) contrast(102%) !important;
+}
+
+/* End Marketplace Tags */
+
+.mon-stat-block a:not(.mon-stat-block__name-link, .tooltip-hover) {
+    text-decoration: underline;
+}
+
+.claim .claim-secondary .claim-secondary__intro h2 {
+    text-wrap: balance;
+}
+
+.ddb-homebrew-create-form-fields-admin .ddb-homebrew-create-form-fields-item.boolean {
+    flex-basis: 20% !important;
+}
+
+/* Article table fixes */
+
+.u-typography-format .article-main table {
+	table-layout: auto !important;
+}
+
+.table-overflow-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* End article table fixes */
+
+.module.custom-css .form-field-text-area-field>textarea {
+    padding: 2px !important;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .lunar-transfer-table :is(th, td) {
+  text-align: left;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .lunar-transfer-table :is(td, th):first-of-type {
+  width: 12%;
+  font-weight: 700;
+  text-align: center;
+}
+
+.sub-edit-wrapper .homebrew-creation-actions .homebrew-creation-actions-item-delete {
+	display: none;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) th.table-column-width--10pct {
+  width: 10%;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) th.table-column-width--15pct {
+  width: 15%;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) th.table-column-width--20pct {
+  width: 20%;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table-compendium :is(th, td) {
+  padding: 8px 16px !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium > thead > tr {
+  background-color: var(--sb-table-header-bg-color, #FDFDFD) !important;
+  color: var(--sb-table-header-fg-color, #222) !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium > tbody > tr:nth-child(odd) {
+  background-color: var(--sb-table-row-bg-dark, #faf8f7) !important;
+  color: var(--sb-table-row-fg-dark, #222);
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium > tbody > tr:nth-child(even),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium tbody tr:nth-child(even) {
+  background-color: var(--sb-table-row-bg-light, #FDFDFD);
+  color: var(--sb-table-row-fg-light, #222);
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table thead th {
+  background: inherit;
+  color: inherit;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium tr {
+  transition: 0.3s;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table-compendium > tbody > tr:hover {
+  background-color: var(--sb-table-row-bg-hover, #e3f4eb) !important;
+  color: var(--sb-table-row-fg-hover, #222);
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--weapons :is(th, td):nth-child(odd) {
+  text-align: left !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table.table--equipment :is(th, td):first-child {
+  width: 50%;
+  text-align: left !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice :is(th, td):first-child,
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice-first :is(th, td):first-child,
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice-col2 :is(th, td):nth-child(2),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice-col3 :is(th, td):nth-child(3),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice-col4 :is(th, td):nth-child(4),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice-col5 :is(th, td):nth-child(5),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice-last :is(th, td):last-child {
+  width: 12%;
+  font-weight: bold;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--generic-dice :is(th, td):nth-child(2) {
+  text-align: left !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--left-all :is(th, td),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--left-first :is(th, td):first-child,
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--left-col2 :is(th, td):nth-child(2),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--left-col3 :is(th, td):nth-child(3),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--left-col4 :is(th, td):nth-child(4),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--left-col5 :is(th, td):nth-child(5),
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .table--left-last :is(th, td):last-child {
+  text-align: left !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table caption {
+  text-align: left !important;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  font-family: Roboto, Helvetica, sans-serif;
+  line-height: 1.3;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table caption :is(h2, h3, h4, h5) {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) table caption :is(h2, h3)::after {
+  content: none !important;
+}
+
+/* FIXES SPELL SLOT CONFIG PAGE */
+.ddb-homebrew-create-edit-spell-slot-config {
+  width: 1300px;
+}
+
+.ddb-homebrew-create-edit-spell-slot-config div.ddb-homebrew-create-form-fields:nth-child(5) {
+    margin-left: 32%; 
+}
+
+.ddb-homebrew-create-edit-spell-slot-config div.ddb-homebrew-create-form-fields:nth-child(3) > div:nth-child(1) > div:nth-child(1)::before {
+    right: -8px;
+}
+
+.ddb-homebrew-create-edit-spell-slot-config div.ddb-homebrew-create-form-fields:nth-child(3) > div:nth-child(1) {
+    margin-left: 40%;
+    max-width: 150px;
+}
+
+.ddb-homebrew-create-edit-spell-slot-config .ddb-homebrew-create-form-fields:not(:first-of-type) {
+  display: inline-flex;
+  max-width: 135px;
+}
+.ddb-homebrew-create-edit-spell-slot-config .ddb-homebrew-create-form-fields-item-label.tip {
+  text-align: center;
+}
+.ddb-homebrew-create-edit-spell-slot-config .ddb-homebrew-create-form-fields-item-label.tip::after {
+  display: none;
+}
+.ddb-homebrew-create-edit-spell-slot-config .ddb-homebrew-create-form-fields-item-label.tip::before {
+  right: 0;
+}
+.ddb-homebrew-create-edit-spell-slot-config .ddb-homebrew-create-form-fields-item-input input {
+  text-align: center;
+}
+.ddb-homebrew-create-edit-spell-slot-config .ddb-homebrew-create-form-fields-item {
+  text-align: center;
+}
+
+/* END FIXES FOR SPELL SLOT CONFIG PAGE */
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .stat-block {
+  --monster-header-underline: #7a3c2f;
+  border: 1px solid #a7a3a0;
+  background-color: #FEFCEF;
+  padding: 10px;
+  position: relative;
+  background-repeat: no-repeat;
+  box-shadow: 0 5px 8px 0 var(--stat-block-shadow, #AAA);
+  background-position: top;
+  background: var(--stat-block-bg-override, #f6f3ee);
+  font-size: 16px;
+  line-height: 19.6px;
+  border-radius: 8px;
+  outline: 1px solid #a7a3a0;
+  outline-offset: -4px;
+  font-family: var(--stat-block-font, Roboto, Helvetica, sans-serif);
+  -moz-columns: 2 285px;
+       columns: 2 285px;
+  margin-bottom: 20px;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .stat-block p {
+  line-height: inherit;
+  font-size: 15px;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .stat-block :is(h2, h3, h4, h5) {
+  --header-font-override: 22px;
+  font-size: var(--header-font-override);
+  font-family: "Roboto Condensed";
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-right: 8px;
+  margin-block-end: 0;
+}
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .stat-block :is(h2, h3, h4, h5)::after {
+  content: "";
+  display: block;
+  width: 100%;
+  margin: 2px auto 8px;
+  height: 1px;
+  background: var(--monster-header-underline, #7a3c2f);
+  -moz-column-span: all;
+       column-span: all;
+}
+
+:is(.body-rpgclass, .body-rpgspell, .body-rpgrace, .body-rpgmonster, .body-rpgfeat, .body-rpgbackground, .body-rpgigear, .body-rpgmagicitem) .stat-block .table-overflow-wrapper {
+    flex: 1 1 auto;
+}
+
+.listing-card__source {
+    font-style: italic;
+    text-wrap: balance;
+}
+
+.body-rpgbackground .revised-phb-backgrounds {
+	margin-bottom: 0;
+}
+
+.body-rpgbackground .revised-phb-backgrounds + .line.character {
+	display: none;
+}
+
+.body-rpgbackground .revised-phb-backgrounds + .line.character + dl {
+	margin-top: 0;
+}
+
+.i-aoe-sphere {
+  top: 0;
+}
+
+.mon-stat-block__stat-block .ability-block {
+  font-size:  15px;
+}
+
+.legendary-actions {
+  color: #696665;
+  font-style: italic;
+  line-height: 1.3;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) :is(h1, h2) {
+    font-family: Majesty;
+    text-transform: uppercase;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.1;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .claim-main__hero {
+    column-gap: 6px;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) ul {
+    list-style: revert;
+    font-size: 16px;
+    margin-left: 18px;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) li+li {
+    margin-top: 8px;
+}
+
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .claim-secondary__content .content-cta-container {
+    align-items: center;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .claim-secondary h2 {
+    text-align: center;
+    margin: 24px 0 0;
+}
+
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .claim-secondary p {
+    font-size: 16px;
+    margin: 16px 0;
+    max-width: 720px;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .claim-secondary .content-cta-container .claim-secondary__intro h2 {
+    letter-spacing: revert;
+    margin: 24px 0 0;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .claim-secondary .content-cta-container p {
+    margin-inline: auto;
+}
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .video-container video {
+    height: 100%;
+    width: 100%;
+    max-width: 720px;
+    box-shadow: var(--ttui_box-shadow-3);
+}
+
+.claim:is(.forgotten-realms-the-tenebrous-stone,.winter-art-pack) .video-container iframe {
+    max-width: 100%;
+    box-shadow: var(--ttui_box-shadow-3);
+}
+
+.claim-secondary__content a {
+    color: #1B9AF0 !important;
+    text-decoration: underline !important;
+}
+
+.claim.winter-art-pack .claim-secondary .claim-secondary__content {
+    margin: 0;
+}
+
+@font-face {
+  font-family:Majesty;
+  src:url(https://fonts.dndbeyond.com/majesty-medium-webfont.woff2) format("woff2");
+  font-weight:500
+}
+@font-face {
+  font-family:Majesty;
+  src:url(https://fonts.dndbeyond.com/majesty-bold-webfont.woff2) format("woff2");
+  font-weight:700
+}.post-listing{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;margin:0 -8px 0}.post-listing>li{padding:0 8px 15px;width:100%}.post-listing>li:first-child .post-excerpt__link--content{background-color:rgba(9,8,9,.6);color:#fff;border:2px solid #595758;border-radius:3px;padding:5px 30px;display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;text-transform:uppercase;font-family:"Roboto Condensed";font-weight:bold;font-size:16px}.post-listing>li:first-child .post-excerpt__link--content:hover,.post-listing>li:first-child .post-excerpt__link--content:active,.post-listing>li:first-child .post-excerpt__link--content:visited{color:#fff}.post-listing>li:first-child .post-excerpt__link--content:hover{background-color:#090809}.post-listing>li:nth-child(2) .post-excerpt__link--content,.post-listing>li:nth-child(3) .post-excerpt__link--content{color:#bc0f0f}.post-listing>li:nth-child(2) .post-excerpt__link--content:active,.post-listing>li:nth-child(2) .post-excerpt__link--content:visited,.post-listing>li:nth-child(2) .post-excerpt__link--content:hover,.post-listing>li:nth-child(3) .post-excerpt__link--content:active,.post-listing>li:nth-child(3) .post-excerpt__link--content:visited,.post-listing>li:nth-child(3) .post-excerpt__link--content:hover{color:#bc0f0f}.post-listing>li:nth-child(2) .post-excerpt__link--content:hover,.post-listing>li:nth-child(3) .post-excerpt__link--content:hover{text-decoration:underline}.post-listing article{height:100%}@media(min-width: 768px){.post-listing>li{width:50%}}@media(min-width: 1024px){.post-listing>li{width:33.3333333333%}}.post-excerpt{box-shadow:0 10px 20px 0 rgba(0,0,0,.1);height:100%;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}.post-excerpt__content{background-color:#fff;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;position:relative;padding:20px 25px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}.post-excerpt__preview{height:130px;position:relative;width:100%}.post-excerpt__preview-link{background:top right #222 no-repeat;background-size:cover;position:absolute;top:0;left:0;right:0;bottom:0}.body-category-details .post-excerpt__video,.body-post-tagdetails .post-excerpt__video{display:none}.post-excerpt__video-iframe{display:block}.post-excerpt__title{font-family:"Roboto Condensed";font-size:20px;font-weight:bold;line-height:1.3}.post-excerpt__extras{position:absolute;bottom:100%;right:0}.post-excerpt__meta{display:inline-block;color:#fff;font-size:12px;background-color:rgba(9,8,9,.8);padding:6px 14px;font-family:"Roboto Condensed"}.post-excerpt__author a{margin-left:5px}.post-excerpt__author a .user-role-registered-users{color:#fff}.post-excerpt__author a .user-role-insiders{color:#fff}.post-excerpt__author a .user-role-discord-moderator{color:#fff}.post-excerpt__published abbr{text-decoration:none}.post-excerpt__description{display:none;font-size:16px;line-height:1.6;margin-top:10px;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}.post-excerpt__more{display:none;font-size:16px;line-height:1.6;margin-top:10px}@media(min-width: 768px){.post-excerpt__preview{height:150px}.post-excerpt__title{font-size:28px}}.body-home-index .post-listing>li:first-child .post-excerpt{position:relative}.body-home-index .post-listing>li:first-child .post-excerpt__video-iframe{width:355px;height:198px}.body-home-index .post-listing>li:first-child .post-excerpt .post-excerpt--video .post-excerpt__video{display:block}@media(max-width: 767px){.body-home-index .post-listing>li:first-child .post-excerpt__description{display:block;font-size:14px;line-height:1.4}.body-home-index .post-listing>li:first-child .post-excerpt__content{box-shadow:0 10px 20px 0 rgba(0,0,0,.1)}.body-home-index .post-listing>li:first-child .post-excerpt--video .post-excerpt__video{display:none}}@media(min-width: 768px){.body-home-index .post-listing>li:first-child .post-excerpt{height:310px;box-shadow:none}.body-home-index .post-listing>li:first-child .post-excerpt__preview{display:none}.body-home-index .post-listing>li:first-child .post-excerpt__video{background-color:#222;border:1px solid #333;box-shadow:0 0 5px 2px rgba(0,0,0,.3);position:absolute;right:0;top:50%;-webkit-transform:translate(0, -50%);-ms-transform:translate(0, -50%);transform:translate(0, -50%);margin-top:-15px;left:50%;display:flex;}.body-home-index .post-listing>li:first-child .post-excerpt__content{padding:0 10px 0 0;background:none;color:#fff;position:absolute;bottom:15px;left:0;right:50%}.body-home-index .post-listing>li:first-child .post-excerpt__title{font-size:36px;line-height:1.1}.body-home-index .post-listing>li:first-child .post-excerpt__title a{color:#fff}.body-home-index .post-listing>li:first-child .post-excerpt__title a:active,.body-home-index .post-listing>li:first-child .post-excerpt__title a:visited,.body-home-index .post-listing>li:first-child .post-excerpt__title a:hover{color:#fff}.body-home-index .post-listing>li:first-child .post-excerpt__extras{position:static;right:auto;bottom:auto;margin-top:10px}.body-home-index .post-listing>li:first-child .post-excerpt__meta{border-radius:3px}.body-home-index .post-listing>li:first-child .post-excerpt__more{display:block}}@media(min-width: 1024px){.body-home-index .post-listing>li:first-child .post-excerpt{height:400px}.body-home-index .post-listing>li:first-child .post-excerpt__content{bottom:50px}.body-home-index .post-listing>li:first-child .post-excerpt__video-iframe{width:484px;height:270px}.body-home-index .post-listing>li:first-child .post-excerpt__title{font-size:42px}.body-home-index .post-listing>li:first-child .post-excerpt__description{display:block}}@media(min-width: 1200px){.body-home-index .post-listing>li:first-child .post-excerpt__video-iframe{width:565px;height:316px}}.body-home-index .post-listing>li:not(:first-child) .post-excerpt__video{display:none}@media(min-width: 768px){.body-home-index .post-listing>li:first-child{width:100%}.body-home-index .post-listing>li:nth-child(2),.body-home-index .post-listing>li:nth-child(3){width:50%}.body-home-index .post-listing>li:nth-child(2) .post-excerpt__preview,.body-home-index .post-listing>li:nth-child(3) .post-excerpt__preview{height:200px}.body-home-index .post-listing>li:nth-child(2) .post-excerpt__description,.body-home-index .post-listing>li:nth-child(3) .post-excerpt__description{display:block}.body-home-index .post-listing>li:nth-child(2) .post-excerpt__more,.body-home-index .post-listing>li:nth-child(3) .post-excerpt__more{display:block}}
+
+
+/* =========================== */
+/*           Image page execprt                            */
+/* =========================== */
+.post-excerpt--video .post-excerpt__image {
+display:none;
+}
+.post-excerpt--video .post-excerpt__image img {
+width:100%;
+}
+
+@media (min-width: 768px)  {
+.post-excerpt--video .post-excerpt__image {
+    position: relative;
+    width: 230px;
+    right: -517px;
+    display: block;
+}
+}
+
+@media (min-width: 1024px)  {
+.post-excerpt--video .post-excerpt__image {
+    position: relative;
+    width: 300px;
+    right: -642px;
+display:block;
+}
+}
+
+.body-home-index .post-listing>li:not(:first-child) .post-excerpt__image {
+    display: none;
+}
+
+.body-category-details .post-excerpt__image  {
+    display: none;
+}

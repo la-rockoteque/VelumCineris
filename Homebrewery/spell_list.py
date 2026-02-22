@@ -1,7 +1,7 @@
 import pandas as pd
+from FiveETools.gsheets_client import modern_sheets
 
-spells_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=625265890"
-df_spells = pd.read_csv(spells_url)
+df_spells = modern_sheets.get_sheet("625265890")
 df_spells.head()
 
 df_sorted = df_spells.sort_values(['Level', 'Spell Name'])

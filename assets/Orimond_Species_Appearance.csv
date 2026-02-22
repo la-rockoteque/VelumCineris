@@ -1,0 +1,58 @@
+Name,Ancestor,Demonym,Size Category,Average Height,Average Build,Sexual Dimorphism,Skull Shape,Brow Structure,Facial Hair,Nose,Jaw Structure,Dentition,Defensive Growth,Ear Type,Eye Count,Eye Shape,Eye Color Range,Secondary Vision Traits,Skin Texture,Skin Thickness,Complexion,Markings,Hair Presence,Hair Texture,Hair Color Range,Secondary Covering,Limb Count,Limb Proportions,Hand Structure,Foot Structure,Posture,Tail,Spine,Evolutionary Path,Planar Influence,Environmental Adaptation,Hybridization,Vestigial Traits,Sacred Traits,Lifespan Average,Aging Markers,Youth Markers,Youth Traits,Elder Traits,Decay,Typical Grooming,Ornamentation,Status Indicators,Facial Expression Norms,Common Misidentifications,Visual Keyword,Silhouettes Keywords,Avoird Visual Cliché,References Species,Notes
+Luminari,Lumix,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/luminari_F.png,
+Aestari,Luminari,,Medium,,wiry,,,,,,,,horns,,,,,"Umbravision
+Your eyes, reflecting the dim glow of the city’s skyline, grant you Umbravision up to 60 feet. You perceive the world in shades of gray, but in the right light, your eyes gleam with an unnatural radiance.",matte; smooth; textured,,,speckles; streaks,present,,,,,,,,,,,,,,,,,"Aestari mature slowly, reaching adulthood around a century of age. They can live beyond seven centuries, though few do.
+
+Their longevity is not a blessing. It is exposure.
+
+They remember mistakes long after the world has moved on.
+
+They do not sleep. Instead, they enter a four-hour trance, remaining conscious while their bodies rest. During trance, they often drift along the shallow edges of the Dreamscape but rarely descend.",,,,,,,,,,,,,,assets/art/Species/modern/aestari_F.png; assets/art/Species/modern/aestari_M.png,
+Ithilari,Luminari,,Medium,,,,,,,,,,,,,,,Darkvision 60 ft,,,,,,,,,,,,,,,,,,,,,,Ithilari mature around 50 years and may live several centuries.,,,,,,,,,,,,,,assets/art/Species/modern/Ithilari_M.png,
+Zhimeus,Aestari,,Medium,,slender,,,,,,,,,,,,,,textured,,,mottling,present,,,,,,,,,,,,,,,,,"Zhimeus mature at a similar pace to Aestari, reaching adulthood around 80 years of age. Their lifespan is long but unstable, typically 500–700 years, though many succumb earlier due to alchemical exposure, planar degradation, or internal entropy imbalance.",,,,,,,,,,,,,,,
+Vaelari,Aestari,,Medium,,,,,,,,,,,,,,,Darkvision 60 ft.,smooth,,,,present,,,,,,,,,,,,,,,,,"Vaelari mature at a pace similar to humans but often live up to 120 years, though intense psychic strain can shorten or unpredictably extend their lifespan.",,,,,,,,,,,,,,assets/art/Species/modern/vaelari_F.png; assets/art/Species/modern/vaelari_M.png,
+Eidolons,Ancient Race,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,500+ years,,,,,,,,,,,,,,,
+Vessels,,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/vessels_M.png,
+Delvani,Stonedelvers,,Medium,,,,,,,,,,,,,,,"You do not have Darkvision, as humanity’s origins are tied to the daylight, not the dark.  ",matte,,,freckles,,,,,,,,,,,,,,,,,,Delvani reach adulthood in their late 20s and can live up to 120 years. Elders are revered as structural memory for the community.,,,,,,,,,,,,,,assets/art/Species/modern/Delvani_F.png; assets/art/Species/modern/delvani_M.png,
+Vexholmics,Delvani,, ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Brannholt,Delvani,,Medium,,,,,,,,,,spines,,,,,"You do not have Darkvision, as humanity’s origins are tied to the daylight, not the dark.  ",matte,,,freckles,,,,,,,,,,,,,,,,,,Delvani reach adulthood in their late 20s and can live up to 120 years. Elders are revered as structural memory for the community.,,,,,,,,,,,,,,,
+Cindralis,Delvani,,Medium,"4'8""-5'8""",stout,,,,,,,,,,,,,,coarse; textured,,,,,,,,,,,,hunched,,,,,,,,,"Cindralis reach adulthood **slowly**, typically around **30**, and live up to **150 years**.",,,,,,,,,,,,,,assets/art/Species/modern/cindralis_F.png; assets/art/Species/modern/cindralis_M.png,
+Skelbraith,Delvani,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Varnhallan,Delvani;Moeder,,Medium,,,,,,,,,,,,,,,Darkvision 60 ft.,coarse,,,,present,coarse; thick,,,,,,,,,,,,,,,,Varnhallians reach adulthood by 20 and often live up to 120 years.,,,,,,,,,,,,,,,
+Orphai,,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Kairos,,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Thornkin,, ,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/thornkin_M.png,
+Humans,,,Medium,,,,,,,,,,,,,,,,,,,,present,,,,,,,,,,,,,,,,,"Humans reach adulthood in their late teens and rarely live beyond 90 years. Their short lives drive urgency, ambition, and risk-taking uncommon among longer-lived species.",,,,,,,,,,,,,,,
+Brasselan,Delvani;Moeder,,L,,,,,,,,,,horns,,,,,Darkvision 60 ft,leathery,,,,,,,,,,,,hunched,,,,,,,,,Adult,,,,,,,,,,,,,,,
+Westilestes,Weft;Moeder,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Emrelan,Moeder,,M,,,,,,,,,,,,,,,Normal Vision,matte,,,freckles,present,,,,,,,,,,,,,,,,,Adult,,,,,,,,,,,,,,,
+Veythin,Moeder;Mireborn,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Mireborn,Shadow,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/mireborn_M.png,
+Custodians,Shadow,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Veilborn,Ancient Veil Race;Moeder,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Umbranauts,Ancient Veil Race,,Medium,,,,,,,,,,,,,,,Darkvision 60 ft,smooth,,,,present,,,,,,,,,,,,,,,,,Umbranauts mature at a similar rate to Humans and commonly live between 120 and 160 years.,,,,,,,,,,,,,,assets/art/Species/modern/umbranauts_F.png,
+Mistaryn,Fish Ancestor;Ancient Veil Race,,Medium,,,,,,,,,,,,,,,,smooth,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/mistaryn_M.png,
+Naureli,,,Medium,,,,,,,,,,spines,,,,,,scaled,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/naureli_M.png,
+Myrleth,Lithic Ancestor,,Small,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/myrleth_M.png,
+Korrak,Lithic Ancestor;Zakariss Ancestor,,Medium,,compact,,,,,,,,,,,,,"Your industrial-honed senses grant you **Darkvision** up to **60 feet**. You can see in dim light and darkness **as if it were bright light**, but only in **shades of dull red and gray**.  
+",,,,,,,,,,,,,,,,,,,,,,"Korrak reach adulthood by 15 and rarely live beyond 70 years, their harsh lives claiming many long before age does.",,,,,,,,,,,,,,assets/art/Species/modern/korrak_M.png,
+Zakariss,,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/zakariss_M.png,
+Tyrikai,,,Small,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/tyrikai_M.png,
+Pykari,Tyrikai,,Small,,,,,,,,,,,,,almond,,"Your connection to the **Ashen Spiral** grants you **Darkvision up to 60 feet**. You see the world in **shades of deep red and orange**, as if embers still smolder in the shadows.  
+",matte,,,,present,thick,,,,,,,,,,,,,,,,"Pykari mature quickly, reaching adulthood by **15 years old**, but they live long for their size—**often surpassing 180 years**. Elders say the fire within them burns slow but never fully fades.  
+",,,,,,,,,,,,,,assets/art/Species/modern/pykari_F.png; assets/art/Species/modern/pykari_M.png,
+Arochi,Pykari,,Medium,,,,,,,,,,,elongated,,narrow,,,smooth,,,mottling,present,thick,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/arochi_M.png,
+Oteisha,Pykari,,Small,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Borrin,Tyrikai;Vorraki,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Vorraki,Dunhark,,Medium,,tall,,,,,,,,,,,,,"You can see in dim light within 60 feet
+as if it were bright light, and in
+darkness as if it were dim light.",matte; coarse,,,,present,coarse; thick,,,,,,,,,,,,,,,,"Vorraki reach maturity at 16 and live up
+to 80 years, though many die young in the
+brutal world of Concord City.",,,,,,,,,,,,,,assets/art/Species/modern/vorraki_M.png,
+Teleryn,Dunavald;Maligath Ancestor,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Dren,Maligath Ancestor,,Medium,,,,,,,,,,,,,,,Your embered eyes grant you **Darkvision up to 60 feet**.  ,matte; coarse,,,,present,coarse,,,,,,,,,,,,,,,,"Dren age slowly. Many live beyond 300 years, remaining physically capable long after other species would falter.",,,,,,,,,,,,,,assets/art/Species/modern/Dren_M.png; assets/art/Species/modern/dren_F.png,
+Vok,Dren,,Medium,,,,,,,,,,,,,,,Darkvision 60 ft.,coarse; ridged,,,,present,coarse; thick,,,,,,,,,,,,,,,,"Vok mature around 25 and can live 200–300 years, though many choose to work until their bodies finally fail.",,,,,,,,,,,,,,assets/art/Species/modern/vok_M.png,
+Lysorian,Dren,,Medium,,,,,,,,,,,,,narrow,,Low-light vision,,,,,present,straight,,,,,,,,,,,,,,,,"Lysorians mature at a human rate but often live 140 to 180 years, with elders remaining lucid until late life.",,,,,,,,,,,,,,assets/art/Species/modern/lysorian_M.png,
+Kerevahn,Vorthirith,Kerevahn,Medium,,,,,,,,,,,,,,,Darkvision 60 ft.,,,,,,,,,,,,,,,,,,,,,,"Kerevahn do not age naturally. Some have existed for centuries unchanged, while others wither and fade as if unraveling from reality itself.",,,,,,,,,,,,,,,
+Velthask,Vorthirith,,Medium,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,assets/art/Species/modern/velthask_M.png,
+Zyrrkhai,Vorthirith,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

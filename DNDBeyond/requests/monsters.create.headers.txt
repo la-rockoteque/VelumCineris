@@ -1,0 +1,108 @@
+
+Disable Cache
+107 requests
+6.69 MB / 3.59 MB transferred
+Finish: 10.49 s
+DOMContentLoaded: 9.13 s
+load: 10.25 s
+
+	
+POST
+	https://www.dndbeyond.com/homebrew/creations/create-monster/create
+Status
+303
+VersionHTTP/2
+Transferred66.39 kB (349.18 kB size)
+Referrer Policystrict-origin-when-cross-origin
+Request PriorityHighest
+DNS ResolutionDNS over HTTPS
+
+    	
+    accept-ranges
+    	bytes
+    access-control-allow-credentials
+    	true
+    access-control-allow-origin
+    	https://www.dndbeyond.com
+    cache-control
+    	no-cache, no-store, must-revalidate
+    content-length
+    	0
+    content-security-policy
+    	frame-src 'self' https://www.youtube-nocookie.com https://linkst.dndbeyond.com https://*.cdn.optimizely.com https://accounts.google.com/ https://www.googletagmanager.com/ https://ct.pinterest.com https://family.test.k-id.com https://family.k-id.com
+    date
+    	Thu, 25 Dec 2025 12:35:01 GMT
+    expires
+    	-1
+    location
+    	/homebrew/creations/monsters/6057264-test-monster/edit
+    pragma
+    	no-cache
+    server
+    	Microsoft-IIS/10.0
+    set-cookie
+    	AWSALB=yAceAwP33Y9Xvv32TFq023SptG/dywTXiFl2k9SZNVWwIoMAHqzPMAYfAWL/jVE9tNb0xWlSGNHDRnMRy0QgdlD1tvN9lzHOr0mIz32Aj+zqhmozGosWH4Pog3jp; Expires=Thu, 01 Jan 2026 12:34:54 GMT; Path=/
+    set-cookie
+    	AWSALBCORS=yAceAwP33Y9Xvv32TFq023SptG/dywTXiFl2k9SZNVWwIoMAHqzPMAYfAWL/jVE9tNb0xWlSGNHDRnMRy0QgdlD1tvN9lzHOr0mIz32Aj+zqhmozGosWH4Pog3jp; Expires=Thu, 01 Jan 2026 12:34:54 GMT; Path=/; SameSite=None; Secure
+    strict-transport-security
+    	max-age=300
+    vary
+    	Origin, Origin, Access-Control-Allow-Origin
+    via
+    	1.1 varnish
+    x-cache
+    	MISS
+    x-cache-hits
+    	0
+    X-Firefox-Spdy
+    	h2
+    x-frame-options
+    	SAMEORIGIN
+    x-frame-options
+    	SAMEORIGIN
+    x-served-by
+    	cache-yul1970050-YUL
+    x-timer
+    	S1766666094.100589,VS0,VE7317
+    x-ua-compatible
+    	IE=edge,chrome=1
+    	
+    Accept
+    	text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Encoding
+    	gzip, deflate, br, zstd
+    Accept-Language
+    	en-US,en;q=0.9
+    Connection
+    	keep-alive
+    Content-Length
+    	3445265
+    Content-Type
+    	multipart/form-data; boundary=----geckoformboundary841ea14f00b1c2c94d13c43b82ae1791
+    Cookie
+    	_pxhd=PQ/qoKAoCogxxx1-vsTXz/ULpK5j8JUBz9hRrkWCYiib5KEoXdqrG0TfrC1sW3ZsNyfvempb-QNw9eGp7MMvmA==:3tq0Zk/-MxlMgdCz9QRMUf6uKjwwhlbq0oruLmZuIxJfpVW8FQYPuYGXUWZYvZ6HdwcW5ZTKM2INFRRiyLZg7kPZZKRy7/TUhLPzrXtbLfw=; ResponsiveSwitch.DesktopMode=1; _swb=181c66c9-d81b-499d-bd23-b8630529b73a; _ga=GA1.2.299146768.1739101198; LoginState=7c207547-4516-49e3-b73b-3b6173e7ddbd; ddb_vid=b0c44884-c9f1-45bc-bce2-64a98c848c63; _gcl_au=1.1.235369019.1766500827; AWSALB=THGsM8WLv5MQRT1D0tBoMkzjeNV79N1wGNPquXZ929tKS+hpeaPkqz1N9GHV2Qtb…erSessionId":"667ae0ed-b6fa-4094-b255-ff429bab2bfe"}; Preferences=undefined; sublevel=MASTER; RequestVerificationToken=acfa0630-890d-493a-8572-a12bf2933551; _dd_s=aid=8c9d421b-edd3-43ac-b911-5ac463480ca2&rum=0&expire=1766666575085; ddb_sid=d4b903e4-4b4d-4381-be1b-157139c3d827; ddb.toast.monster.homebrew-create.hide-toast=true; ddb.toast.magic-item.homebrew-create.hide-toast=true; ddb.toast.background.homebrew-create.hide-toast=true; ddb.toast.Feat.homebrew-create.hide-toast=true; WarningNotification.Lock=1
+    Host
+    	www.dndbeyond.com
+    Origin
+    	https://www.dndbeyond.com
+    Priority
+    	u=0, i
+    Referer
+    	https://www.dndbeyond.com/homebrew/creations/create-monster/create
+    Sec-Fetch-Dest
+    	document
+    Sec-Fetch-Mode
+    	navigate
+    Sec-Fetch-Site
+    	same-origin
+    Sec-Fetch-User
+    	?1
+    Sec-GPC
+    	1
+    TE
+    	trailers
+    Upgrade-Insecure-Requests
+    	1
+    User-Agent
+    	Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0
+

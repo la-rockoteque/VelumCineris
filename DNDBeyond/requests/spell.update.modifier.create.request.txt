@@ -1,19 +1,20 @@
 
 Disable Cache
-69 requests
-1.29 MB / 125.52 kB transferred
-Finish: 4.44 s
-DOMContentLoaded: 3.40 s
-load: 3.48 s
+82 requests
+2.02 MB / 126.04 kB transferred
+Finish: 2.68 s
+DOMContentLoaded: 1.68 s
+load: 1.74 s
 
-	
-security-token	"c13d4982021bb3e232860a60d9c79a2d"
-authenticity-token	"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..EKaHPqO7Oxl1VJ3SSgvvuA._thymFveb5e-5dge_gGpm6Km1PpQxYkSU55Pnr8qQHoSktylyIZ2BZwUPScSQbDJ.LHNy9zKEF70lOy1s5pQnPA"
+
+security-token	"c75fdf0ceb6b12f9d98be072022342f5"
+authenticity-token	"eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..aaFzKGUJGTy4T8iVezEbEQ.Qy-Qst1khY1waGkgMp_5H_1n042C9vnNgdigKFkFr_xlhuzgnQFqeUwjY77QX8Ww.J4L66xmXQLDpK0pQvu_mag"
 spell-modifier-type	"3"
 spell-modifier-sub-type	"68"
-dice-count	""
-dice-value	""
-fixed-value	""
-duration	""
-duration-unit	""
-restriction	""
+dice-count	"2"
+dice-value	"8"
+fixed-value	"12"
+primary-stat	"y"
+duration	"12"
+duration-unit	"2"
+restriction	"Some details"

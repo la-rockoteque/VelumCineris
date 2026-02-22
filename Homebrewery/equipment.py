@@ -1,8 +1,8 @@
 import pandas as pd
 from src.sources import source, json_source
+from FiveETools.gsheets_client import modern_sheets
 
-items_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=876046336"
-df_items = pd.read_csv(items_url)
+df_items = modern_sheets.get_sheet("876046336")
 df_items.head()
 
 grp = df_items.groupby(by=["Type"])
@@ -50,8 +50,7 @@ items = "---\n".join(lines)
 
 
 
-magic_items_url = "https://docs.google.com/spreadsheets/d/1I4FHncl40_xx1Udc_Q2rWWWvpL6xaMlpJyY90WBftag/export?format=csv&gid=695912920"
-df_magic_items = pd.read_csv(magic_items_url)
+df_magic_items = modern_sheets.get_sheet("695912920")
 df_magic_items.head()
 
 m_grp = df_magic_items.groupby(by=["Type"])

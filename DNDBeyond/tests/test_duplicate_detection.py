@@ -2,7 +2,7 @@
 import pytest
 import pandas as pd
 import sys
-sys.path.insert(0, '/Users/rocko/dev/Perso/VestigiumFoundrySpells')
+sys.path.insert(0, '/Users/rocko/dev/Perso/VelumCineris/DNDBeyond')
 
 
 class TestSpreadsheetDuplicateDetection:

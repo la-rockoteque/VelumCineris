@@ -2,7 +2,7 @@
 import pytest
 from unittest.mock import Mock, MagicMock, patch
 import sys
-sys.path.insert(0, '/Users/rocko/dev/Perso/VestigiumFoundrySpells')
+sys.path.insert(0, '/Users/rocko/dev/Perso/VelumCineris/DNDBeyond')
 
 from DNDBeyond.helpers.DnDBeyondAPI import DnDBeyondAPI
 

@@ -1,5 +1,5 @@
 """
-Package providing CSS styles as module-level variables for VestigiumFoundrySpells.
+Package providing CSS styles as module-level variables for VelumCineris.
 """
 
 from pathlib import Path
