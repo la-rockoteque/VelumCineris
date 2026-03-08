@@ -82,7 +82,7 @@ class TestSpreadsheetDuplicateDetection:
 
     def test_numeric_ddb_ids_converted_to_string(self):
         """Numeric DDB IDs should be properly converted to strings (pandas float issue)"""
-        from DNDBeyond.helpers import normalize_ddb_id
+        from DNDBeyond.core.Helpers import normalize_ddb_id
 
         df_spells = pd.DataFrame({
             'Spell Name': ['Spell1', 'Spell2', 'Spell3'],
@@ -105,7 +105,7 @@ class TestSpreadsheetDuplicateDetection:
 
     def test_duplicate_detection_workflow(self):
         """Test the complete workflow: spreadsheet lookup prevents double creation"""
-        from DNDBeyond.helpers import normalize_ddb_id
+        from DNDBeyond.core.Helpers import normalize_ddb_id
 
         # Simulate spreadsheet with existing spells (realistic pandas data types)
         df_spells = pd.DataFrame({

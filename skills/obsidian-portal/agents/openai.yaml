@@ -1,0 +1,4 @@
+interface:
+  display_name: "Obsidian Portal"
+  short_description: "Transform Obsidian Portal exports"
+  default_prompt: "Update extraction and transformation logic for ObsidianPortal exports and downstream mapping flows."

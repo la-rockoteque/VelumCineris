@@ -1,3 +1,3 @@
-"""Backward compatibility shim. Prefer importing from `Spreadsheet.converters.monster`."""
+"""Backward compatibility shim. Prefer importing from `Spreadsheet.core.converters.monster`."""
 
-from Spreadsheet.converters.monster import *  # noqa: F401,F403
+from Spreadsheet.core.converters.monster import *  # noqa: F401,F403

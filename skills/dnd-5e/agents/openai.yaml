@@ -1,0 +1,4 @@
+interface:
+  display_name: "DND 5e"
+  short_description: "Review and structure D&D 5e content"
+  default_prompt: "Review, design, or normalize D&D 5e entity content for rules-consistent structure and wording."

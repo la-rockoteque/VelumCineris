@@ -1,14 +1,13 @@
-from FiveETools.fantasy.sources import source, json_source
+from models.datasets.sources import source, json_source, fantasy_sheets
 try:
     from scripts.image_generator import generate_icon
 except ImportError:
     generate_icon = None  # Optional dependency
-from FiveETools.gsheets_client import fantasy_sheets
-from Spreadsheet.converters.spell import SpellConverter
+from Spreadsheet.core.converters.spell import SpellConverter
 from models.entities.spell import Spell
 from typing import List
 
-df_spells = fantasy_sheets.get_sheet("625265890")
+df_spells = fantasy_sheets.get_sheet_by_name("spells")
 df_spells.head()
 
 converter = SpellConverter(fantasy_sheets)

@@ -92,8 +92,8 @@ See `FiveETools/README.md` for complete GID mapping.
 
 #### 2. Content Converters (`FiveETools/{fantasy|modern}/*.py`)
 Each file converts raw Google Sheets data to **5etools JSON format**:
-- **Fantasy** (`FiveETools/fantasy/`): `spells.py`, `monster.py`, `species.py`, `magic_items.py`, `languages.py`, `diseases.py`, `dieties.py`
-- **Modern** (`FiveETools/modern/`): `spells.py`, `monster.py`, `species.py`, `classes.py`, `subclasses.py`, `features.py`, `feats.py`, `backgrounds.py`, `items.py`, `conditions.py`
+- **Fantasy** (`FiveETools/core/fantasy/`): `spells.py`, `monster.py`, `species.py`, `magic_items.py`, `languages.py`, `diseases.py`, `dieties.py`
+- **Modern** (`FiveETools/core/modern/`): `spells.py`, `monster.py`, `species.py`, `classes.py`, `subclasses.py`, `features.py`, `feats.py`, `backgrounds.py`, `items.py`, `conditions.py`
 
 **Pattern:**
 ```python
@@ -123,8 +123,8 @@ entities_list = [row_to_entity(row) for _, row in df.iterrows()
 
 #### 3. Compendium Generators (Notebooks)
 Generate final JSON exports:
-- `FiveETools/fantasy/convert_to_5e_tools.ipynb` → `Velum_Cineris;guide_to_orimond.json`
-- `FiveETools/modern/convert_to_5e_tools.ipynb` → `Velum_Cineris;everyday_guideto_concord_city.json`
+- `FiveETools/core/fantasy/convert_to_5e_tools.ipynb` → `Velum_Cineris;guide_to_orimond.json`
+- `FiveETools/core/modern/convert_to_5e_tools.ipynb` → `Velum_Cineris;everyday_guideto_concord_city.json`
 
 These files are committed to git and can be imported into Foundry VTT.
 
@@ -168,8 +168,8 @@ Uses NLTK WordNet for linguistic analysis (requires `poetry run download-wordnet
 ### Source Configuration
 
 Source configuration files define campaign sources:
-- `FiveETools/fantasy/sources.py` - Fantasy (Orimond) source: `source = "ORIO"`
-- `FiveETools/modern/sources.py` - Modern (Concord City) source: `source = "VSTGCC"`
+- `FiveETools/core/fantasy/sources.py` - Fantasy (Orimond) source: `source = "ORIO"`
+- `FiveETools/core/modern/sources.py` - Modern (Concord City) source: `source = "VSTGCC"`
 - Maps to Google Sheets row for full name and JSON identifiers
 - Used to filter content by campaign in converters
 
@@ -194,16 +194,16 @@ poetry run jupyter notebook
 ```
 
 **Common patterns:**
-1. Import content modules: `import FiveETools.fantasy.spells`
-2. Access data: `spells = FiveETools.fantasy.spells.spells_list`
+1. Import content modules: `import FiveETools.core.fantasy.spells`
+2. Access data: `spells = FiveETools.core.fantasy.spells.spells_list`
 3. Load sheets: `from FiveETools.gsheets_client import fantasy_sheets`
 
 **Notebook purposes:**
 - `WorldAnvil/world_anvil_sync.ipynb` - Sync to World Anvil
 - `DNDBeyond/dnd_beyond_*.ipynb` - Sync to D&D Beyond (separate notebooks per entity type)
-- `FiveETools/fantasy/convert_to_5e_tools.ipynb` - Generate JSON for Foundry VTT (fantasy)
-- `FiveETools/modern/convert_to_5e_tools.ipynb` - Generate JSON for Foundry VTT (modern)
-- `Homebrewery/markdown.ipynb` - Generate markdown documentation
+- `FiveETools/core/fantasy/convert_to_5e_tools.ipynb` - Generate JSON for Foundry VTT (fantasy)
+- `FiveETools/core/modern/convert_to_5e_tools.ipynb` - Generate JSON for Foundry VTT (modern)
+- `Homebrewery/core/markdown.ipynb` - Generate markdown documentation
 - `ObsidianPortal/ObsidiantoWorldAnvil.ipynb` - Convert Obsidian notes
 - `Spreadsheet/Monsters.ipynb` - Monster data exploration
 
@@ -258,13 +258,13 @@ Two parallel content sets (fantasy vs non-fantasy):
 ```python
 # Fantasy (Orimond)
 from FiveETools.gsheets_client import fantasy_sheets
-import FiveETools.fantasy.spells
-import FiveETools.fantasy.monster
+import FiveETools.core.fantasy.spells
+import FiveETools.core.fantasy.monster
 
 # Non-fantasy (Concord City)
 from FiveETools.gsheets_client import modern_sheets
-import FiveETools.modern.spells
-import FiveETools.modern.monster
+import FiveETools.core.modern.spells
+import FiveETools.core.modern.monster
 ```
 
 ### Error Handling in Sync Notebooks

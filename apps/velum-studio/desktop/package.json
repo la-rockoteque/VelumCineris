@@ -1,0 +1,14 @@
+{
+  "name": "velum-studio-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop shell for Velum Studio",
+  "main": "main.js",
+  "scripts": {
+    "dev": "electron .",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^37.5.0"
+  }
+}

@@ -1,9 +1,8 @@
-from FiveETools.fantasy.sources import source, json_source
-from FiveETools.gsheets_client import fantasy_sheets
+from models.datasets.sources import source, json_source, fantasy_sheets
 
 
 # NEW: Pydantic-based conversion for type safety
-from Spreadsheet.converters.disease import DiseaseConverter
+from Spreadsheet.core.converters.disease import DiseaseConverter
 from models.entities.disease import Disease
 from typing import List
 

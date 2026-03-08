@@ -1,3 +1,3 @@
-"""Backward compatibility shim. Prefer importing from `Spreadsheet.converters.magic_item`."""
+"""Backward compatibility shim. Prefer importing from `Spreadsheet.core.converters.magic_item`."""
 
-from Spreadsheet.converters.magic_item import *  # noqa: F401,F403
+from Spreadsheet.core.converters.magic_item import *  # noqa: F401,F403

@@ -268,7 +268,7 @@ def extract_classes_from_csv(
             print("Error: gid is required when use_google_sheets=True")
             return
         print(f"Reading from Google Sheets (GID: {gid})...")
-        from FiveETools.gsheets_client import fantasy_sheets
+        from FiveETools.core.Helpers.gsheets_client import fantasy_sheets
         df = fantasy_sheets.get_sheet(gid)
     else:
         print(f"Reading {input_csv}...")

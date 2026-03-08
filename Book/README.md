@@ -56,7 +56,7 @@ poetry run jupyter notebook Book/book_generation.ipynb
 ```python
 from Book.book_api import BookAPI
 from Book.google_docs_client import GoogleDocsClient
-from Book.writers import OmnibookWriter
+from Book.core.writers import OmnibookWriter
 from FiveETools.gsheets_client import fantasy_sheets
 
 # Initialize
@@ -161,12 +161,12 @@ Formatters convert 5etools format entities into formatted text for Google Docs.
 
 ### Creating a New Formatter
 
-1. Create a new file in `Book/formatters/`:
+1. Create a new file in `Book/core/formatters/`:
 
 ```python
-# Book/formatters/backgrounds.py
+# Book/core/formatters/backgrounds.py
 from typing import Dict, List, Any
-from Book.formatters.base import BaseFormatter
+from Book.core.formatters.base import BaseFormatter
 
 class BackgroundFormatter(BaseFormatter):
     def format_entity(self, background: Dict[str, Any]) -> List[str]:
@@ -197,15 +197,15 @@ class BackgroundFormatter(BaseFormatter):
         return lines
 ```
 
-2. Update `Book/formatters/__init__.py`:
+2. Update `Book/core/formatters/__init__.py`:
 
 ```python
-from Book.formatters.backgrounds import BackgroundFormatter
+from Book.core.formatters.backgrounds import BackgroundFormatter
 
 __all__ = [..., "BackgroundFormatter"]
 ```
 
-3. Update `Book/writers/base.py` formatter map:
+3. Update `Book/core/writers/base.py` formatter map:
 
 ```python
 formatter_map = {
@@ -281,7 +281,7 @@ sys.path.insert(0, '..')
 - Ensure service account has access to the target document
 
 ### Missing Entities
-- Verify entity converters exist in `FiveETools/fantasy/` or `FiveETools/modern/`
+- Verify entity converters exist in `FiveETools/core/fantasy/` or `FiveETools/core/modern/`
 - Check that the entity type is supported (see `book_api.entity_modules`)
 
 ### Formatting Issues
@@ -293,11 +293,11 @@ sys.path.insert(0, '..')
 
 ### Adding a New Book Type
 
-1. Create a new writer in `Book/writers/`:
+1. Create a new writer in `Book/core/writers/`:
 
 ```python
-# Book/writers/my_book.py
-from Book.writers.base import BaseWriter
+# Book/core/writers/my_book.py
+from Book.core.writers.base import BaseWriter
 
 class MyBookWriter(BaseWriter):
     def get_book_title(self) -> str:
@@ -310,7 +310,7 @@ class MyBookWriter(BaseWriter):
         ]
 ```
 
-2. Update `Book/writers/__init__.py`
+2. Update `Book/core/writers/__init__.py`
 3. Use in notebook: `writer = MyBookWriter(book_api, source="fantasy")`
 
 ### Testing

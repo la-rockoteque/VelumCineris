@@ -1,0 +1,4 @@
+interface:
+  display_name: "DND 5e Homebrew Balance"
+  short_description: "Balance and tune D&D 5e homebrew"
+  default_prompt: "Evaluate and tune homebrew 5e content using baseline comparisons, action economy, and playtest risk checks."

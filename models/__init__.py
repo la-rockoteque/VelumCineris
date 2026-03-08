@@ -10,10 +10,10 @@ Type-safe domain models for D&D 5e homebrew content, providing:
 Example:
     >>> from models import BaseEntity, Components
     >>> from models.entities.spell import Spell
-    >>> # Spreadsheet row conversion lives in `Spreadsheet.converters`
+    >>> # Spreadsheet row conversion lives in `Spreadsheet.core.converters`
     >>>
     >>> # Load spells
-    >>> from FiveETools.fantasy.spells import spells_pydantic
+    >>> from FiveETools.core.fantasy.spells import spells_pydantic
     >>> spell = spells_pydantic[0]
     >>>
     >>> # Type-safe attribute access

@@ -6,12 +6,12 @@ Canonical Google Sheets access now lives in `Spreadsheet/sheets.py`.
 
 - `ContentSheetsClient` and `SpreadsheetClient` for Orimond/modern content data.
 - `TranslatorSheetsClient` and `OfflineTranslatorSheetsClient` for translator tabs.
-- Legacy modules `FiveETools/gsheets_client.py` and `Spreadsheet/translator/gsheets_client.py`
+- Legacy modules `FiveETools/gsheets_client.py` and `Spreadsheet/core/translator/gsheets_client.py`
   are compatibility wrappers and should not hold logic.
 
 ## Workbook Models
 
-`Spreadsheet/workbook_models` provides dynamic Pydantic models for every sheet in Orimond.
+`Spreadsheet/core/workbook_models` provides dynamic Pydantic models for every sheet in Orimond.
 
 - Default source is Google Sheets (`source=\"google\"` or `\"auto\"`).
 - Local `Spreadsheet/Orimond.xlsx` is supported as offline fallback/bootstrap.
@@ -21,5 +21,5 @@ Canonical Google Sheets access now lives in `Spreadsheet/sheets.py`.
 Quick check:
 
 ```bash
-./.venv/bin/python -m Spreadsheet.workbook_models --source auto
+./.venv/bin/python -m Spreadsheet.core.workbook_models --source auto
 ```

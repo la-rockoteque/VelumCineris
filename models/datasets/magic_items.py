@@ -1,14 +1,13 @@
-from FiveETools.fantasy.sources import source, json_source
+from models.datasets.sources import source, json_source, fantasy_sheets
 try:
     from scripts.image_generator import generate_icon
 except ImportError:
     generate_icon = None  # Optional dependency
-from FiveETools.gsheets_client import fantasy_sheets
-from Spreadsheet.converters.magic_item import MagicItemConverter
+from Spreadsheet.core.converters.magic_item import MagicItemConverter
 from models.entities.magic_item import MagicItem
 from typing import List
 
-df_magic_items = fantasy_sheets.get_sheet("695912920")
+df_magic_items = fantasy_sheets.get_sheet_by_name("magic_items")
 df_magic_items.head()
 
 

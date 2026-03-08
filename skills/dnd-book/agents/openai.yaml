@@ -1,0 +1,4 @@
+interface:
+  display_name: "DND Book"
+  short_description: "Build and tune D&D book generators"
+  default_prompt: "Update Book formatter, writer, or orchestration logic for consistent generated sourcebook output."

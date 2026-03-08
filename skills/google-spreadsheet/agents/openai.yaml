@@ -1,0 +1,4 @@
+interface:
+  display_name: "Google Spreadsheet"
+  short_description: "Manage shared spreadsheet data layer"
+  default_prompt: "Maintain shared spreadsheet clients, workbook models, converters, and sheet-driven validation logic."

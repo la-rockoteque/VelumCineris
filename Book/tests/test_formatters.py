@@ -3,9 +3,13 @@ Tests for entity formatters.
 """
 
 import sys
-sys.path.insert(0, '..')
+from pathlib import Path
 
-from Book.formatters import (
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from Book.core.formatters import (
     SpellFormatter,
     SpeciesFormatter,
     MonsterFormatter,

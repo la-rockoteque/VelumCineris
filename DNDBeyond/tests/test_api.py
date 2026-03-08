@@ -4,7 +4,7 @@ from unittest.mock import Mock, MagicMock, patch
 import sys
 sys.path.insert(0, '/Users/rocko/dev/Perso/VelumCineris/DNDBeyond')
 
-from DNDBeyond.helpers.DnDBeyondAPI import DnDBeyondAPI
+from DNDBeyond.core.Helpers.DnDBeyondAPI import DnDBeyondAPI
 
 
 class TestAPIFormData:

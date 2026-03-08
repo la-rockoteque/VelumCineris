@@ -9,8 +9,8 @@ project_root = Path(__file__).resolve().parents[2]
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from DNDBeyond.helpers import extract_spell_modifiers
-from FiveETools.fantasy.spells import spells_list
+from DNDBeyond.core.Helpers import extract_spell_modifiers
+from FiveETools.core.fantasy.spells import spells_list
 
 print("=" * 80)
 print("TESTING MODIFIER FIELD NAME FIX")

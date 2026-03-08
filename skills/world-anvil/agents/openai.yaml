@@ -1,0 +1,4 @@
+interface:
+  display_name: "World Anvil"
+  short_description: "Maintain World Anvil sync and mappings"
+  default_prompt: "Implement or review WorldAnvil sync, API payload, and mapping changes in this repository."

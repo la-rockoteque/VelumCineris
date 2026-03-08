@@ -1,10 +1,9 @@
-from FiveETools.fantasy.sources import json_source
-from FiveETools.gsheets_client import fantasy_sheets
-from Spreadsheet.converters.monster import MonsterConverter
+from models.datasets.sources import json_source, fantasy_sheets
+from Spreadsheet.core.converters.monster import MonsterConverter
 from models.entities.monster import Monster
 from typing import List
 
-df_monster = fantasy_sheets.get_sheet("736393386")
+df_monster = fantasy_sheets.get_sheet_by_name("monsters")
 df_monster.head()
 
 converter = MonsterConverter(fantasy_sheets)

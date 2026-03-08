@@ -1,15 +1,4 @@
-from .base import BaseEntity
-from .backgrounds import BackgroundEntity
-from .feats import FeatEntity
-from .monsters import MonsterEntity
-from .species import SpeciesEntity
-from .spells import SpellEntity
+"""Compatibility shim for `DNDBeyond.helpers.entities`."""
 
-__all__ = [
-    "BaseEntity",
-    "SpellEntity",
-    "SpeciesEntity",
-    "MonsterEntity",
-    "BackgroundEntity",
-    "FeatEntity",
-]
+from DNDBeyond.core.Helpers.entities import *  # noqa: F401,F403
+from DNDBeyond.core.Helpers.entities import __all__  # noqa: F401

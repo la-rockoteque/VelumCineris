@@ -1,10 +1,10 @@
 import pandas as pd
 from src.sources import source, json_source
-from FiveETools.gsheets_client import modern_sheets
+from FiveETools.core.Helpers.gsheets_client import modern_sheets
 import inflection
 import shutil
 
-df_monster = modern_sheets.get_sheet("736393386")
+df_monster = modern_sheets.get_sheet_by_name("monsters")
 df_monster.head()
 
 

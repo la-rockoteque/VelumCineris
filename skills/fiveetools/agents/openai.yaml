@@ -1,0 +1,4 @@
+interface:
+  display_name: "5etools"
+  short_description: "Maintain 5etools export pipelines"
+  default_prompt: "Implement or review FiveETools fantasy/modern export pipeline and dataset conversion updates."

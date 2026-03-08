@@ -1,0 +1,48 @@
+import pandas as pd
+from FiveETools.core.modern.sources import source, json_source
+from FiveETools.core.Helpers.gsheets_client import modern_sheets
+import inflection
+
+df_language = modern_sheets.get_sheet_by_name("languages")
+df_language.head()
+
+language_list = [
+    {
+        "name": row.get("Name"),
+        "source": json_source,
+        "type": row.get("Type").lower(),
+        **(
+            {
+                "typicalSpeakers": [
+                    f"{{@filter {inflection.pluralize(speaker)}|bestiary|type=humanoid|tag= any race;{speaker}}}"
+                    for speaker in row.get("Races").split(", ")
+                ]
+            }
+            if pd.notnull(row.get("Races"))
+            else {}
+        ),
+        **(
+            {"script": row.get("Script").lower()}
+            if pd.notnull(row.get("Script"))
+            else {}
+        ),
+        "page": 0,
+        "entries": [
+            row.get("Description"),
+        ],
+    }
+    for index, row in df_language.iterrows()
+    if pd.notnull(row.get("Name"))
+]
+
+# NEW: Pydantic-based conversion for type safety
+from Spreadsheet.core.converters.language import LanguageConverter
+from models.entities.language import Language
+from typing import List
+
+converter = LanguageConverter(modern_sheets)
+language_pydantic: List[Language] = converter.convert_all(
+    source_filter=None,  # Languages don't have Source column
+    source=source,
+    json_source=json_source
+)

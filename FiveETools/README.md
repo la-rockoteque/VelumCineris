@@ -62,7 +62,7 @@ df = non_fantasy_sheets.get_sheet("1076107525")  # Feats
   - items: `876046336`
   - conditions: `1321788284`
   - diseases: `1196270347`
-  - dieties: `1410134136`
+  - deities: `1410134136` (legacy alias: `dieties`)
   - languages: `163123529`
 
 ### Fantasy (Orimond)
@@ -132,5 +132,5 @@ All data access files in `src/content/` have been updated:
 - items.py
 - conditions.py
 - diseases.py
-- dieties.py
+- dieties.py (legacy filename for deities data)
 - features.py

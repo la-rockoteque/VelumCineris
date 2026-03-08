@@ -1,0 +1,4 @@
+interface:
+  display_name: "DND Beyond"
+  short_description: "Maintain D&D Beyond sync workflows"
+  default_prompt: "Implement or debug DNDBeyond payload, helper, and sync workflow changes in this repository."
