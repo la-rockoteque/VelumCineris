@@ -2,6 +2,8 @@ import type { Preview } from "@storybook/react";
 
 import { VelumProvider } from "../src";
 import "../src/reset.css";
+import "./storybookPreview.css";
+import { velumStorybookTheme } from "./velumStorybookTheme";
 
 const preview: Preview = {
   decorators: [
@@ -38,27 +40,35 @@ const preview: Preview = {
             "StudioTheme",
           ],
           "Assets",
-          ["SigilMark", "RuneDivider", "CornerFlourish"],
+          ["BrandAssets", "Icons", "BrickAndMoss", "DiceLottie", "SigilMark", "RuneDivider", "CornerFlourish"],
           "Components",
-          ["Badge", "Button", "InlineButton", "TextInput", "SelectInput", "TextArea"],
-          "Patterns",
           [
-            "Card",
-            "Section",
-            "Subsection",
-            "Stack",
-            "Cluster",
-            "PanelGrid",
-            "ActionRow",
-            "ActionRowEnd",
-            "Toolbar",
-            "WorkspaceCard",
-            "WorkbenchLayout",
-            "InsetCard",
-            "TableWrap",
-            "FeatureOutput",
-            "MetaText",
+            "Badge",
+            "Button",
+            "InlineButton",
+            "Checkbox",
+            "RadioButton",
+            "TextInput",
+            "SelectInput",
+            "TextArea",
+            "SegmentedControl",
+            "TabBar",
+            "Table",
+            "ComponentsField",
+            "DiceField",
+            "DelimitedListField",
+            "MultiSelect",
+            "NamedTableField",
+            "StatWithModifierField",
+            "Layout",
+            ["Card", "Section", "Subsection", "Stack", "Cluster", "PanelGrid", "TableWrap"],
+            "Actions",
+            ["ActionRow", "ActionRowEnd", "Toolbar"],
+            "Workspace",
+            ["WorkspaceCard", "WorkbenchLayout", "InsetCard", "FeatureOutput", "MetaText"],
           ],
+          "Patterns",
+          ["Operational States", "Loading", "Scrolling", "Pagination", "Saving", "Disabled", "Error Management"],
         ],
       },
     },
@@ -67,6 +77,9 @@ const preview: Preview = {
     },
     backgrounds: {
       disable: true,
+    },
+    docs: {
+      theme: velumStorybookTheme,
     },
   },
 };

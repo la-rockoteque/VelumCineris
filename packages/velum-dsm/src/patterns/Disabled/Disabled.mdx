@@ -1,0 +1,36 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+
+import { ActionRowEnd, Button, MetaText, WorkspaceCard, WorkspaceTitle } from "../../index";
+
+<Meta title="Patterns/Disabled" />
+
+# Disabled
+
+Disabled controls need surrounding context so the user understands what prerequisite is missing.
+
+## Contract
+
+- Pair disabled controls with explicit reason text when the requirement is not obvious.
+- Keep the explanation adjacent to the blocked action.
+- Reserve disabled state for unavailable actions, not passive information.
+
+<Canvas>
+  <Story name="Disabled With Reason">
+    <WorkspaceCard>
+      <WorkspaceTitle>Image Generator</WorkspaceTitle>
+      <MetaText>Select a row before generating prompts or artwork.</MetaText>
+      <ActionRowEnd>
+        <Button disabled>Generate Prompt</Button>
+        <Button $variant="primary" disabled>
+          Generate Image
+        </Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+## Recommended Use Cases
+
+- Actions that require row selection
+- Submit buttons gated on validation
+- Integrations blocked by missing credentials or settings

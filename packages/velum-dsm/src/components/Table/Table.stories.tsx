@@ -9,6 +9,7 @@ const meta = {
   args: {
     columns: [],
     rows: [],
+    onRowClick: () => undefined,
   },
 } satisfies Meta<typeof Table<Record<string, unknown>>>;
 
@@ -28,6 +29,7 @@ export const Default: Story = {
       <TableWrap>
         <Table
           rows={rows}
+          onRowClick={() => undefined}
           columns={[
             { key: "name", header: "Name" },
             { key: "level", header: "Level", width: "90px" },

@@ -25,6 +25,21 @@ export const Showcase: Story = {
           <TableWrap>
             <Table
               rows={spellRows}
+              onRowClick={() => undefined}
+              getRowActions={(row) => [
+                {
+                  key: "details",
+                  label: `Open ${row.name}`,
+                  icon: <span>⌕</span>,
+                  onClick: () => undefined,
+                },
+                {
+                  key: "ai",
+                  label: `Run AI for ${row.name}`,
+                  icon: <span>✦</span>,
+                  onClick: () => undefined,
+                },
+              ]}
               columns={[
                 { key: "name", header: "Spell" },
                 { key: "level", header: "Level", align: "center", width: "90px" },
@@ -42,6 +57,7 @@ export const Showcase: Story = {
           <TableWrap>
             <Table
               rows={[]}
+              onRowClick={() => undefined}
               emptyMessage="No matching entries."
               columns={[
                 { key: "name", header: "Name" },

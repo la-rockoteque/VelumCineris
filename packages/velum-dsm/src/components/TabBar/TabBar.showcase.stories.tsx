@@ -23,10 +23,10 @@ function ExampleTabs(props: { activeKey: string; layout?: "grid" | "wrap"; size?
       layout={props.layout}
       size={props.size}
       items={[
-        { key: "overview", label: "Overview" },
-        { key: "spellbook", label: "Spellbook" },
-        { key: "integrations", label: "Integrations" },
-        { key: "history", label: "History", disabled: true },
+        { key: "spells", label: "Spells" },
+        { key: "monsters", label: "Monsters" },
+        { key: "feats", label: "Feats" },
+        { key: "species", label: "Species", disabled: true },
       ]}
     />
   );
@@ -36,11 +36,11 @@ export const Showcase: Story = {
   render: () => (
     <StoryFrame maxWidth="1080px">
       <StateMatrix>
-        <StateCase label="Grid Layout" description="Primary top-level navigation" minHeight="120px">
-          <ExampleTabs activeKey="overview" layout="grid" />
+        <StateCase label="Sheet Selector" description="Default stepped sheet tabs" minHeight="120px">
+          <ExampleTabs activeKey="spells" layout="grid" />
         </StateCase>
-        <StateCase label="Wrapped Layout" description="Compact sheet or subsection tabs" minHeight="120px">
-          <ExampleTabs activeKey="spellbook" layout="wrap" size="sm" />
+        <StateCase label="Compact Tabs" description="Smaller tab treatment for dense spaces" minHeight="120px">
+          <ExampleTabs activeKey="monsters" layout="wrap" size="sm" />
         </StateCase>
       </StateMatrix>
     </StoryFrame>

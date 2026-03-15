@@ -1,0 +1,40 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+
+import { ActionRowEnd, Button, InsetCard, InsetLead, InsetTitle, WorkspaceCard, WorkspaceLead, WorkspaceTitle } from "../../index";
+
+<Meta title="Patterns/Loading" />
+
+# Loading
+
+Use the same shell, preserve the occupied space, and pause conflicting write actions while work is in flight.
+
+## Contract
+
+- Keep the user’s bearings by leaving the surrounding layout in place.
+- Prefer local loading messaging inside the affected card or section.
+- Disable only the actions that would conflict with the fetch or mutation.
+
+<Canvas>
+  <Story name="Loading State">
+    <WorkspaceCard>
+      <WorkspaceTitle>Compendium Sync</WorkspaceTitle>
+      <WorkspaceLead>Keep the current layout visible and communicate status in place.</WorkspaceLead>
+      <InsetCard>
+        <InsetTitle>Loading</InsetTitle>
+        <InsetLead>Fetching rows from the selected sheet. Controls remain visible but write actions are paused.</InsetLead>
+      </InsetCard>
+      <ActionRowEnd>
+        <Button disabled>Refresh</Button>
+        <Button $variant="primary" disabled>
+          Publish
+        </Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+## Recommended Use Cases
+
+- Initial data fetch for a workspace card
+- Reloading validation catalogs or translator context
+- Background refresh after a filter or source switch

@@ -1,0 +1,138 @@
+:root {
+  --velum-storybook-bg: #ede2cd;
+  --velum-storybook-bg-alt: #decfb4;
+  --velum-storybook-surface: rgba(251, 243, 229, 0.88);
+  --velum-storybook-surface-strong: rgba(249, 238, 221, 0.96);
+  --velum-storybook-border: rgba(74, 56, 39, 0.16);
+  --velum-storybook-ink: #231d16;
+  --velum-storybook-ink-soft: #5f5547;
+  --velum-storybook-accent: #8e4f28;
+  --velum-storybook-accent-soft: #c38c5b;
+  --velum-storybook-moss: #647954;
+  --velum-storybook-shadow: 0 18px 44px rgba(49, 34, 18, 0.12);
+  --velum-storybook-shadow-lift: 0 24px 60px rgba(49, 34, 18, 0.18);
+}
+
+body,
+#storybook-root,
+.sb-show-main,
+.sb-main-padded {
+  background:
+    radial-gradient(circle at top right, rgba(195, 140, 91, 0.18), transparent 26%),
+    radial-gradient(circle at bottom left, rgba(100, 121, 84, 0.16), transparent 24%),
+    var(--velum-storybook-bg);
+  color: var(--velum-storybook-ink);
+  font-family: "IBM Plex Sans", "Trebuchet MS", sans-serif;
+}
+
+.sbdocs-wrapper {
+  background: transparent;
+  padding: 32px 24px 56px;
+}
+
+.sbdocs {
+  color: var(--velum-storybook-ink);
+  font-family: "IBM Plex Sans", "Trebuchet MS", sans-serif;
+}
+
+.sbdocs-content {
+  max-width: 1100px;
+}
+
+.sbdocs h1,
+.sbdocs h2,
+.sbdocs h3 {
+  color: var(--velum-storybook-ink);
+  font-family: "Avenir Next Condensed", "Franklin Gothic Medium", sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.sbdocs h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sbdocs h2 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 2rem;
+  margin-bottom: 0.85rem;
+}
+
+.sbdocs h2::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(142, 79, 40, 0.55), rgba(100, 121, 84, 0.24), transparent);
+}
+
+.sbdocs p,
+.sbdocs li,
+.sbdocs td,
+.sbdocs th,
+.sbdocs span {
+  color: var(--velum-storybook-ink-soft);
+}
+
+.sbdocs a {
+  color: var(--velum-storybook-accent);
+}
+
+.sbdocs code,
+.sbdocs pre {
+  font-family: "SFMono-Regular", "SF Mono", Consolas, monospace;
+}
+
+.sbdocs pre,
+.sbdocs .docblock-source,
+.sbdocs .docblock-argstable,
+.sbdocs table {
+  background: var(--velum-storybook-surface);
+  border: 1px solid var(--velum-storybook-border);
+  border-radius: 18px;
+  box-shadow: var(--velum-storybook-shadow);
+}
+
+.sbdocs pre,
+.sbdocs .docblock-source {
+  overflow: hidden;
+}
+
+.sbdocs code:not(pre code) {
+  background: rgba(195, 140, 91, 0.12);
+  border-radius: 8px;
+  color: var(--velum-storybook-accent);
+  padding: 0.18rem 0.38rem;
+}
+
+.sbdocs .docs-story,
+.sbdocs .sb-story,
+.docs-story {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.82), rgba(240, 227, 203, 0.62)),
+    var(--velum-storybook-surface-strong);
+  border: 1px solid var(--velum-storybook-border);
+  border-radius: 24px;
+  box-shadow: var(--velum-storybook-shadow-lift);
+}
+
+.sbdocs .docs-story {
+  padding: 16px;
+}
+
+.sbdocs .docblock-argstable thead th {
+  color: var(--velum-storybook-ink);
+  font-family: "Avenir Next Condensed", "Franklin Gothic Medium", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sbdocs .docblock-argstable tbody tr:nth-of-type(odd) {
+  background: rgba(255, 251, 244, 0.46);
+}
+
+.sbdocs hr {
+  border: 0;
+  border-top: 1px solid rgba(142, 79, 40, 0.24);
+}

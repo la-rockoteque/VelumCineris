@@ -1,0 +1,46 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+
+import { MetaText, Table, TableWrap, WorkspaceCard, WorkspaceTitle } from "../../index";
+
+<Meta title="Patterns/Scrolling" />
+
+# Scrolling
+
+Horizontal scroll belongs to the content region, not the page. Keep tool chrome fixed and push overflow into the local data container.
+
+## Contract
+
+- Use local overflow for wide datasets and previews.
+- Preserve surrounding actions, filters, and headings outside the scroll region.
+- Make the scroll boundary visually clear.
+
+<Canvas>
+  <Story name="Scrollable Data Region">
+    <WorkspaceCard>
+      <WorkspaceTitle>Wide Dataset</WorkspaceTitle>
+      <MetaText>Prefer local overflow instead of forcing page-level horizontal scroll.</MetaText>
+      <TableWrap>
+        <Table
+          minWidth="760px"
+          onRowClick={() => undefined}
+          rows={[
+            { name: "Magic Missile", source: "PHB", school: "Evocation", tag: "Ready" },
+            { name: "Counterspell", source: "PHB", school: "Abjuration", tag: "Review" },
+          ]}
+          columns={[
+            { key: "name", header: "Name" },
+            { key: "source", header: "Source" },
+            { key: "school", header: "School" },
+            { key: "tag", header: "Status" },
+          ]}
+        />
+      </TableWrap>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+## Recommended Use Cases
+
+- Compendium and validation tables
+- Preview panes with many columns
+- Related-record sections in details views

@@ -32,7 +32,7 @@ export const Default: Story = {
 
     return (
       <StoryFrame maxWidth="980px">
-        <TabBar ariaLabel="Workspace tabs" items={items} activeKey={active} onChange={setActive} />
+        <TabBar ariaLabel="Sheet selector" items={items} activeKey={active} onChange={setActive} />
       </StoryFrame>
     );
   },

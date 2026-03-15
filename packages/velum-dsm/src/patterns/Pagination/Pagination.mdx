@@ -1,0 +1,34 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+
+import { ActionRowEnd, Button, MetaText, WorkspaceCard, WorkspaceTitle } from "../../index";
+
+<Meta title="Patterns/Pagination" />
+
+# Pagination
+
+Pagination metadata and controls should live directly with the dataset they govern.
+
+## Contract
+
+- Keep the current range or page count visible at all times.
+- Place navigation immediately below or beside the dataset.
+- Do not separate page controls from the affected content region.
+
+<Canvas>
+  <Story name="Pagination Contract">
+    <WorkspaceCard>
+      <WorkspaceTitle>Paginated Results</WorkspaceTitle>
+      <MetaText>Page 3 of 12 · 241 total rows</MetaText>
+      <ActionRowEnd>
+        <Button>Prev</Button>
+        <Button $variant="primary">Next</Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+## Recommended Use Cases
+
+- Server-backed row browsing
+- Log and history pages
+- Search results with stable result counts

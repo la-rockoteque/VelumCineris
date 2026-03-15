@@ -1,0 +1,64 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+
+import {
+  ActionRowEnd,
+  Button,
+  InsetCard,
+  InsetLead,
+  InsetTitle,
+  SegmentedControl,
+  TextInput,
+  WorkspaceCard,
+  WorkspaceLead,
+  WorkspaceTitle,
+} from "../../index";
+
+<Meta title="Patterns/Saving" />
+
+# Saving
+
+Saving states should preserve edit context. Keep the form readable, show the phase of the save, and disable only conflicting actions.
+
+## Contract
+
+- Leave field values visible while the save runs.
+- Show save status close to the edited surface.
+- Keep non-conflicting context readable so users do not lose orientation.
+
+<Canvas>
+  <Story name="Saving State">
+    <WorkspaceCard>
+      <WorkspaceTitle>Details Editor</WorkspaceTitle>
+      <WorkspaceLead>Users should keep their bearings while a save is underway.</WorkspaceLead>
+      <label>
+        Name
+        <TextInput value="Arcane Beacon" readOnly />
+      </label>
+      <SegmentedControl
+        ariaLabel="Save mode"
+        value="dry_run"
+        onChange={() => undefined}
+        options={[
+          { value: "dry_run", label: "Dry Run" },
+          { value: "live", label: "Live Execute", disabled: true },
+        ]}
+      />
+      <InsetCard>
+        <InsetTitle>Saving</InsetTitle>
+        <InsetLead>Writing changes to the selected row and syncing dependent fields.</InsetLead>
+      </InsetCard>
+      <ActionRowEnd>
+        <Button disabled>Discard</Button>
+        <Button $variant="primary" disabled>
+          Saving...
+        </Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+## Recommended Use Cases
+
+- Record editors with autosave or manual publish
+- Mutation flows with linked-field synchronization
+- Integration actions that have a dry-run and live mode

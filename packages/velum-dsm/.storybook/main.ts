@@ -10,6 +10,7 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     config.resolve ??= {};
     config.resolve.dedupe = ["react", "react-dom", "styletron-engine-atomic", "styletron-react"];
+    config.assetsInclude = ["**/*.lottie"];
     return config;
   },
 };

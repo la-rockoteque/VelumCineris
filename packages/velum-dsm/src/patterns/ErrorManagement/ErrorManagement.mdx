@@ -1,0 +1,44 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+
+import { ActionRowEnd, Button, InsetCard, InsetLead, InsetTitle, SelectInput, WorkspaceCard, WorkspaceTitle } from "../../index";
+
+<Meta title="Patterns/Error Management" />
+
+# Error Management
+
+Errors should be specific, local to the failing surface, and recoverable.
+
+## Contract
+
+- Place the error message inside the affected workspace or section.
+- Explain the failure in concrete terms and suggest the next action.
+- Keep retry and recovery actions adjacent to the error.
+
+<Canvas>
+  <Story name="Recoverable Error">
+    <WorkspaceCard>
+      <WorkspaceTitle>Translator</WorkspaceTitle>
+      <InsetCard>
+        <InsetTitle>Error</InsetTitle>
+        <InsetLead>The language context could not be loaded. Check the selected source sheet and retry.</InsetLead>
+      </InsetCard>
+      <label>
+        Fallback Source
+        <SelectInput value="dictionary" onChange={() => undefined}>
+          <option value="dictionary">Dictionary</option>
+          <option value="phonetics">Phonetics</option>
+        </SelectInput>
+      </label>
+      <ActionRowEnd>
+        <Button>Retry</Button>
+        <Button $variant="ghost">Open Logs</Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+## Recommended Use Cases
+
+- Failed API reads or writes
+- Missing validation sheets
+- Integration failures with partial success or retry semantics
