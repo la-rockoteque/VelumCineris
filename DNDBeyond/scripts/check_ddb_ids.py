@@ -9,7 +9,7 @@ project_root = Path(__file__).resolve().parents[2]
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from FiveETools.core.Helpers.gsheets_client import fantasy_sheets
+from Spreadsheet.sheets import fantasy_sheets
 from DNDBeyond.core.Helpers import normalize_ddb_id
 
 SPELLS_GID = "625265890"

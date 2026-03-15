@@ -1,5 +1,6 @@
 import { ManualDetailsForm } from "./ManualDetailsForm";
 import type { ItemDetailsFormProps } from "./types";
+import { styled } from "app/styletron";
 
 export function BackgroundDetailsForm(props: ItemDetailsFormProps) {
   return (

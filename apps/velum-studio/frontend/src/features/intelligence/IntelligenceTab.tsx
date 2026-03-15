@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { styled } from "app/styletron";
 
+import { ActionRowEnd, Button, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
 import type { SelectedRow } from "shared/types/api";
 
 interface IntelligenceTabProps {
@@ -8,6 +10,10 @@ interface IntelligenceTabProps {
   output: string;
   onRun: (payload: Record<string, unknown>) => Promise<Record<string, unknown> | null>;
 }
+
+const InstructionLabel = styled("label", {
+  marginTop: "10px",
+});
 
 export function IntelligenceTab(props: IntelligenceTabProps) {
   const [mode, setMode] = useState("custom");
@@ -39,11 +45,11 @@ export function IntelligenceTab(props: IntelligenceTabProps) {
   };
 
   return (
-    <section className="workspace-card">
-      <h2>Intelligence</h2>
-      <p>Run local or remote suggestion workflows on the currently selected item.</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Intelligence</WorkspaceTitle>
+      <WorkspaceLead>Run local or remote suggestion workflows on the currently selected item.</WorkspaceLead>
 
-      <div className="toolbar">
+      <Toolbar>
         <label>
           Mode
           <select value={mode} onChange={(event) => setMode(event.target.value)} disabled={props.loading || !props.selected}>
@@ -70,9 +76,9 @@ export function IntelligenceTab(props: IntelligenceTabProps) {
             <option value="false">Remote</option>
           </select>
         </label>
-      </div>
+      </Toolbar>
 
-      <label style={{ marginTop: 10 }}>
+      <InstructionLabel>
         Instruction
         <textarea
           rows={6}
@@ -80,15 +86,15 @@ export function IntelligenceTab(props: IntelligenceTabProps) {
           onChange={(event) => setInstruction(event.target.value)}
           disabled={props.loading || !props.selected}
         />
-      </label>
+      </InstructionLabel>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
-        <button className="btn" disabled={props.loading || !props.selected} onClick={() => void run()}>
+      <ActionRowEnd>
+        <Button disabled={props.loading || !props.selected} onClick={() => void run()}>
           Run Intelligence
-        </button>
-      </div>
+        </Button>
+      </ActionRowEnd>
 
-      <pre className="feature-output workspace-output">{props.output}</pre>
-    </section>
+      <WorkspaceOutput>{props.output}</WorkspaceOutput>
+    </WorkspaceCard>
   );
 }

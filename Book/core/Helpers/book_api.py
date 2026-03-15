@@ -2,15 +2,17 @@
 Main BookAPI orchestrator that coordinates formatters and writers.
 """
 
-from typing import List, Dict, Any, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 import importlib
-from Book.core.Helpers.google_docs_client import GoogleDocsClient
+
+if TYPE_CHECKING:
+    from Book.core.Helpers.google_docs_client import GoogleDocsClient
 
 
 class BookAPI:
     """Main orchestrator for book generation."""
 
-    def __init__(self, google_docs_client: GoogleDocsClient, gsheets_client):
+    def __init__(self, google_docs_client: "GoogleDocsClient", gsheets_client):
         """
         Initialize BookAPI.
 

@@ -1,38 +1,50 @@
-import pandas as pd
-from FiveETools.core.Helpers.gsheets_client import fantasy_sheets
+from __future__ import annotations
 
-df_dieties = fantasy_sheets.get_sheet_by_name("deities")
-df_dieties.head()
+from FiveETools.core.fantasy import sources as source_catalog
+from FiveETools.datasets.json_loader import build_mapped_rows
+from FiveETools.mappers.deity_mapper import map_fantasy_deity_row
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 
-
-def _split_list(value):
-    if pd.isnull(value):
-        return []
-    return [item.strip() for item in str(value).split(",") if item.strip()]
+_cache: dict[str, object] = {}
 
 
-def row_to_diety(row):
-    return {
-        "name": row.get("Name"),
-        "epithet": row.get("Epithet"),
-        "pantheon": row.get("Pantheon"),
-        "image": row.get("Image"),
-        "domains": _split_list(row.get("Domains")),
-        "plane": row.get("Plane"),
-        "vstg": row.get("VSTG"),
-        "alignment": row.get("Alignment"),
-        "followers": row.get("Followers"),
-        "symbol": row.get("Symbol"),
-        "slogan": row.get("Slogan"),
-        "link": row.get("Link"),
-        "description": row.get("Description"),
-        "lore": row.get("Lore"),
-        "quote": row.get("Quote"),
-    }
+def row_to_diety(row, *, json_source: str):
+    return map_fantasy_deity_row(row, json_source=json_source)
 
 
-diety_list = [
-    row_to_diety(row)
-    for _, row in df_dieties.iterrows()
-    if pd.notnull(row.get("Name"))
-]
+def build_diety_list(source_code: str | None = None) -> list[dict]:
+    return build_mapped_rows(
+        sheets_client=source_catalog.fantasy_sheets,
+        sheet_name="deities",
+        source_code=source_code,
+        default_source=source_catalog.DEFAULT_SOURCE,
+        resolve_source_context=source_catalog.resolve_source_context,
+        row_mapper=row_to_diety,
+        name_column="Name",
+        filter_by_source=False,
+    )
+
+
+_RESOLVERS = {
+    "source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[0],
+    "json_source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[1],
+    "diety_list": build_diety_list,
+}
+_CACHED_ATTRS = {"diety_list"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = ["row_to_diety", "build_diety_list", "source", "json_source", "diety_list"]

@@ -173,6 +173,17 @@ export interface HealthResponse {
   status: string;
 }
 
+export interface LoadingTriviaItem {
+  tidbit: string;
+  entity_type?: string | null;
+  entity_name?: string | null;
+  source?: string | null;
+}
+
+export interface LoadingTriviaResponse {
+  items: LoadingTriviaItem[];
+}
+
 export type TabKey =
   | "compendium"
   | "validations"

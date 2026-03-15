@@ -12,13 +12,21 @@ export interface ItemDetailsFormProps {
 }
 
 export interface ManualFieldConfig {
-  field: string;
+  field: string | string[];
+  aliases?: string[];
+  label?: string;
   span?: number | "full";
+}
+
+export interface ManualSubsectionConfig {
+  title: string;
+  fields: ManualFieldConfig[];
 }
 
 export interface ManualSectionConfig {
   title: string;
   className?: string;
-  fields: ManualFieldConfig[];
+  fields?: ManualFieldConfig[];
+  subsections?: ManualSubsectionConfig[];
   includeRemaining?: boolean;
 }

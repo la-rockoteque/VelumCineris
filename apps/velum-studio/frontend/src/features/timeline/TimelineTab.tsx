@@ -1,5 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
+import { styled } from "app/styletron";
 
+import {
+  Button,
+  InlineButton,
+  SelectInput,
+  TextArea,
+  TextInput,
+  Toolbar,
+  WorkbenchLayout,
+  WorkbenchMain,
+  WorkbenchSidebar,
+  WorkspaceCard,
+  WorkspaceLead,
+  WorkspaceOutput,
+  WorkspaceTitle,
+} from "shared/library";
 import type {
   TimelineCalendarMonth,
   TimelineCatalogResponse,
@@ -26,6 +42,203 @@ interface TimelineDraft {
   present_months: TimelinePresentMonth[];
   naming_template: string;
 }
+
+const TimelineGroup = styled("div", {
+  display: "grid",
+  gap: "8px",
+});
+
+const CardBlock = styled("article", {
+  border: "1px solid rgba(66, 48, 30, 0.14)",
+  borderRadius: "9px",
+  background: "#fff8eb",
+  padding: "8px",
+  overflow: "hidden",
+});
+
+const CardTitle = styled("h4", {
+  margin: "0 0 6px",
+  fontSize: "0.8rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.03em",
+  color: "#655947",
+});
+
+const InlineInputRow = styled("div", {
+  display: "grid",
+  gridTemplateColumns: "72px minmax(0, 1fr)",
+  alignItems: "center",
+  gap: "8px",
+});
+
+const InlineInputLabel = styled("label", {
+  display: "grid",
+  gridTemplateColumns: "72px minmax(0, 1fr)",
+  alignItems: "center",
+  gap: "8px",
+});
+
+const InlineHint = styled("span", {
+  fontSize: "0.76rem",
+  color: "#6a5f4d",
+});
+
+const HolidayRow = styled("div", {
+  display: "grid",
+  gridTemplateColumns: "minmax(180px, 2fr) minmax(120px, 1fr) 84px 120px auto",
+  gap: "8px",
+  alignItems: "center",
+  "@media (max-width: 860px)": {
+    gridTemplateColumns: "1fr 1fr",
+  },
+  "@media (max-width: 560px)": {
+    gridTemplateColumns: "1fr",
+  },
+});
+
+const PresentWrapper = styled("div", {
+  display: "grid",
+  gap: "8px",
+});
+
+const PresentHeader = styled("div", {
+  display: "grid",
+  gap: "2px",
+  marginBottom: "6px",
+});
+
+const PresentTitle = styled("h4", {
+  margin: 0,
+  fontSize: "0.82rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.03em",
+  color: "#5f523f",
+});
+
+const PresentYear = styled("div", {
+  fontSize: "0.74rem",
+  color: "#7a6b57",
+});
+
+const PresentTable = styled("table", {
+  width: "100%",
+  borderCollapse: "collapse",
+  fontSize: "0.72rem",
+  tableLayout: "fixed",
+});
+
+const PresentHeadCell = styled("th", {
+  border: "1px solid rgba(66, 48, 30, 0.14)",
+  padding: "4px",
+  verticalAlign: "top",
+  width: "20%",
+  maxWidth: "none",
+  background: "rgba(244, 230, 207, 0.55)",
+  color: "#625543",
+  fontWeight: 700,
+  position: "static",
+});
+
+const PresentCell = styled("td", {
+  border: "1px solid rgba(66, 48, 30, 0.14)",
+  padding: "4px",
+  verticalAlign: "top",
+  width: "20%",
+  maxWidth: "none",
+  height: "var(--timeline-day-height, 96px)",
+});
+
+const PresentDay = styled("div", {
+  fontWeight: 700,
+  color: "#5a4d3b",
+});
+
+const PresentEventList = styled("div", {
+  display: "grid",
+  gap: "4px",
+  marginTop: "4px",
+});
+
+const PresentEvent = styled("div", {
+  marginTop: 0,
+  color: "#6d5d48",
+  whiteSpace: "pre-wrap",
+  border: "1px solid rgba(66, 48, 30, 0.14)",
+  borderRadius: "7px",
+  background: "rgba(244, 230, 207, 0.55)",
+  padding: "2px 5px",
+});
+
+const EraList = styled("div", {
+  display: "grid",
+  gap: "8px",
+  marginTop: "8px",
+});
+
+const EraRow = styled("article", ({ $marginTop, $background, $borderLeftColor }: { $marginTop: number; $background: string; $borderLeftColor: string }) => ({
+  border: "1px solid rgba(66, 48, 30, 0.14)",
+  borderRadius: "9px",
+  padding: "8px",
+  overflow: "hidden",
+  display: "grid",
+  gridTemplateColumns: "88px minmax(0, 1fr) auto",
+  gap: "8px",
+  alignItems: "start",
+  borderLeft: `4px solid ${$borderLeftColor}`,
+  background: $background,
+  marginTop: `${$marginTop}px`,
+  "@media (max-width: 860px)": {
+    gridTemplateColumns: "1fr",
+  },
+}));
+
+const EraLabel = styled("div", {
+  fontSize: "0.76rem",
+  color: "#786b58",
+  textTransform: "uppercase",
+  letterSpacing: "0.03em",
+});
+
+const EraMeta = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "6px",
+});
+
+const EraChip = styled("span", {
+  fontSize: "0.68rem",
+  border: "1px solid rgba(66, 48, 30, 0.22)",
+  borderRadius: "999px",
+  padding: "1px 7px",
+  color: "#5f543f",
+  background: "rgba(255, 248, 236, 0.72)",
+});
+
+const EraText = styled("textarea", {
+  minHeight: "56px",
+  width: "100%",
+});
+
+const EraYearInput = styled("input", {
+  width: "100%",
+});
+
+const EraControls = styled("div", {
+  display: "grid",
+  gap: "6px",
+  justifyItems: "end",
+  "@media (max-width: 860px)": {
+    justifyItems: "start",
+  },
+});
+
+const TemplateRow = styled("div", {
+  marginBottom: "8px",
+});
+
+const NoDataRow = styled("div", {
+  marginTop: "8px",
+});
 
 function cloneCatalog(catalog: TimelineCatalogResponse): TimelineDraft {
   return {
@@ -111,10 +324,10 @@ export function TimelineTab(props: TimelineTabProps) {
 
   if (!draft) {
     return (
-      <section className="workspace-card">
-        <h2>Timeline</h2>
-        <p>Timeline data unavailable for current source.</p>
-      </section>
+      <WorkspaceCard>
+        <WorkspaceTitle>Timeline</WorkspaceTitle>
+        <WorkspaceLead>Timeline data unavailable for current source.</WorkspaceLead>
+      </WorkspaceCard>
     );
   }
 
@@ -146,35 +359,35 @@ export function TimelineTab(props: TimelineTabProps) {
   };
 
   return (
-    <section className="workspace-card">
-      <h2>Timeline</h2>
-      <p>Explore Era events, Present calendar blocks, and naming/holiday structures.</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Timeline</WorkspaceTitle>
+      <WorkspaceLead>Explore Era events, Present calendar blocks, and naming/holiday structures.</WorkspaceLead>
 
-      <div className="toolbar">
-        <button className="btn" disabled={props.loading} onClick={() => void props.onReload()}>
+      <Toolbar>
+        <Button disabled={props.loading} onClick={() => void props.onReload()}>
           Reload Timeline
-        </button>
-        <button className="btn" disabled={props.loading} onClick={() => void saveNaming()}>
+        </Button>
+        <Button disabled={props.loading} onClick={() => void saveNaming()}>
           Save Naming
-        </button>
-        <button className="btn" disabled={props.loading} onClick={() => void saveHolidays()}>
+        </Button>
+        <Button disabled={props.loading} onClick={() => void saveHolidays()}>
           Save Holidays
-        </button>
-        <button className="btn" disabled={props.loading} onClick={() => void saveEra()}>
+        </Button>
+        <Button disabled={props.loading} onClick={() => void saveEra()}>
           Save Era Events
-        </button>
-      </div>
+        </Button>
+      </Toolbar>
 
-      <div className="workspace-grid" style={{ marginTop: 10 }}>
-        <div className="workspace-controls">
-          <div className="timeline-months">
-            <article className="timeline-month-card">
-              <h4>Month Naming</h4>
+      <WorkbenchLayout>
+        <WorkbenchSidebar>
+          <TimelineGroup>
+            <CardBlock>
+              <CardTitle>Month Naming</CardTitle>
               {!draft.calendar_months.length && <div>No calendar months found.</div>}
               {draft.calendar_months.map((month, index) => (
-                <div key={`${month.row_number}-${index}`} className="timeline-inline-input" style={{ marginTop: 6 }}>
-                  <span>{month.month_order || `#${month.row_number}`}</span>
-                  <input
+                <InlineInputRow key={`${month.row_number}-${index}`} style={{ marginTop: "6px" }}>
+                  <InlineHint>{month.month_order || `#${month.row_number}`}</InlineHint>
+                  <TextInput
                     value={String(month.month_name || "")}
                     onChange={(event) => {
                       const next = [...draft.calendar_months];
@@ -183,19 +396,19 @@ export function TimelineTab(props: TimelineTabProps) {
                       updateDraft({ calendar_months: next });
                     }}
                   />
-                </div>
+                </InlineInputRow>
               ))}
-            </article>
-          </div>
+            </CardBlock>
+          </TimelineGroup>
 
-          <div className="timeline-weekdays">
-            <article className="timeline-month-card">
-              <h4>Weekday Naming</h4>
+          <TimelineGroup>
+            <CardBlock>
+              <CardTitle>Weekday Naming</CardTitle>
               {!draft.weekdays.length && <div>No weekday naming found.</div>}
               {draft.weekdays.map((weekday, index) => (
-                <label key={`${weekday}-${index}`} className="timeline-inline-input">
-                  <span>Day {index + 1}</span>
-                  <input
+                <InlineInputLabel key={`${weekday}-${index}`}>
+                  <InlineHint>Day {index + 1}</InlineHint>
+                  <TextInput
                     value={weekday}
                     onChange={(event) => {
                       const next = [...draft.weekdays];
@@ -203,20 +416,20 @@ export function TimelineTab(props: TimelineTabProps) {
                       updateDraft({ weekdays: next });
                     }}
                   />
-                </label>
+                </InlineInputLabel>
               ))}
-            </article>
-          </div>
+            </CardBlock>
+          </TimelineGroup>
 
-          <div className="timeline-naming">
-            <article className="timeline-naming-group">
-              <h4>Naming Sets</h4>
-              <div style={{ marginBottom: 8 }}>Template: {draft.naming_template || "-"}</div>
+          <TimelineGroup>
+            <CardBlock>
+              <CardTitle>Naming Sets</CardTitle>
+              <TemplateRow>Template: {draft.naming_template || "-"}</TemplateRow>
               {!draft.naming_groups.length && <div>No naming groups found.</div>}
               {draft.naming_groups.map((group, index) => (
-                <label key={`${group.key}-${index}`} style={{ marginTop: 8 }}>
+                <label key={`${group.key}-${index}`} style={{ marginTop: "8px" }}>
                   {group.label || group.key}
-                  <textarea
+                  <TextArea
                     rows={3}
                     value={(group.values || []).join("\n")}
                     onChange={(event) => {
@@ -234,16 +447,16 @@ export function TimelineTab(props: TimelineTabProps) {
                   />
                 </label>
               ))}
-            </article>
-          </div>
+            </CardBlock>
+          </TimelineGroup>
 
-          <div className="timeline-holidays">
-            <article className="timeline-month-card">
-              <h4>Holidays</h4>
+          <TimelineGroup>
+            <CardBlock>
+              <CardTitle>Holidays</CardTitle>
               {!draft.holidays.length && <div>No holidays yet.</div>}
               {draft.holidays.map((holiday, index) => (
-                <div key={`${holiday.name}-${index}`} className="timeline-holiday-row">
-                  <input
+                <HolidayRow key={`${holiday.name}-${index}`}>
+                  <TextInput
                     value={String(holiday.name || "")}
                     placeholder="Holiday name"
                     onChange={(event) => {
@@ -254,7 +467,7 @@ export function TimelineTab(props: TimelineTabProps) {
                     }}
                   />
 
-                  <select
+                  <SelectInput
                     value={String(holiday.month_name || "")}
                     onChange={(event) => {
                       const next = [...draft.holidays];
@@ -269,9 +482,9 @@ export function TimelineTab(props: TimelineTabProps) {
                         {monthName}
                       </option>
                     ))}
-                  </select>
+                  </SelectInput>
 
-                  <input
+                  <TextInput
                     type="number"
                     min={1}
                     max={30}
@@ -290,7 +503,7 @@ export function TimelineTab(props: TimelineTabProps) {
                     }}
                   />
 
-                  <select
+                  <SelectInput
                     value={String(holiday.recurrence || "yearly")}
                     onChange={(event) => {
                       const next = [...draft.holidays];
@@ -309,24 +522,22 @@ export function TimelineTab(props: TimelineTabProps) {
                         {label}
                       </option>
                     ))}
-                  </select>
+                  </SelectInput>
 
-                  <button
+                  <InlineButton
                     type="button"
-                    className="btn btn-inline"
                     onClick={() => {
                       const next = draft.holidays.filter((_, rowIndex) => rowIndex !== index);
                       updateDraft({ holidays: next });
                     }}
                   >
                     {holiday.source === "present" ? "Hide" : "Remove"}
-                  </button>
-                </div>
+                  </InlineButton>
+                </HolidayRow>
               ))}
 
-              <button
+              <InlineButton
                 type="button"
-                className="btn btn-inline"
                 onClick={() => {
                   updateDraft({
                     holidays: [
@@ -343,34 +554,34 @@ export function TimelineTab(props: TimelineTabProps) {
                 }}
               >
                 Add Holiday
-              </button>
-            </article>
-          </div>
-        </div>
+              </InlineButton>
+            </CardBlock>
+          </TimelineGroup>
+        </WorkbenchSidebar>
 
-        <div className="workspace-results">
-          <article className="timeline-present-month">
-            <h4 style={{ margin: 0 }}>Present Calendar</h4>
-            {!draft.present_months.length && <div style={{ marginTop: 8 }}>No Present calendar blocks found.</div>}
+        <WorkbenchMain>
+          <CardBlock>
+            <CardTitle style={{ margin: 0 }}>Present Calendar</CardTitle>
+            {!draft.present_months.length && <NoDataRow>No Present calendar blocks found.</NoDataRow>}
             {!!draft.present_months.length && (
-              <div className="timeline-present" style={{ marginTop: 10 }}>
+              <PresentWrapper style={{ marginTop: "10px" }}>
                 {draft.present_months.map((month, monthIndex) => {
                   const dayHeight = computeTimelineDayHeight(month, draft.holidays);
                   return (
-                    <article key={`${month.month_name}-${monthIndex}`} className="timeline-present-month">
-                      <div className="timeline-present-header">
-                        <h4>{month.month_name || "Month"}</h4>
-                        <div className="timeline-present-year">
+                    <CardBlock key={`${month.month_name}-${monthIndex}`}>
+                      <PresentHeader>
+                        <PresentTitle>{month.month_name || "Month"}</PresentTitle>
+                        <PresentYear>
                           {month.year_name || "Year"}
                           {month.day_count ? ` · ${month.day_count} days` : ""}
-                        </div>
-                      </div>
+                        </PresentYear>
+                      </PresentHeader>
 
-                      <table className="timeline-present-table" style={{ ["--timeline-day-height" as string]: `${dayHeight}px` }}>
+                      <PresentTable style={{ ["--timeline-day-height" as string]: `${dayHeight}px` }}>
                         <thead>
                           <tr>
                             {(month.weekdays || []).slice(0, 5).map((weekday, index) => (
-                              <th key={`${weekday}-${index}`}>{weekday || `Day ${index + 1}`}</th>
+                              <PresentHeadCell key={`${weekday}-${index}`}>{weekday || `Day ${index + 1}`}</PresentHeadCell>
                             ))}
                           </tr>
                         </thead>
@@ -386,35 +597,33 @@ export function TimelineTab(props: TimelineTabProps) {
                                   String(month.year_name || ""),
                                 );
                                 return (
-                                  <td key={`${weekIndex}-${dayIndex}`} className="timeline-present-cell">
-                                    <div className="timeline-present-day">{day.day ?? ""}</div>
+                                  <PresentCell key={`${weekIndex}-${dayIndex}`}>
+                                    <PresentDay>{day.day ?? ""}</PresentDay>
                                     {!!holidayNames.length && (
-                                      <div className="timeline-present-event-list">
+                                      <PresentEventList>
                                         {holidayNames.map((name) => (
-                                          <div key={`${name}-${dayIndex}`} className="timeline-present-event">
-                                            {name}
-                                          </div>
+                                          <PresentEvent key={`${name}-${dayIndex}`}>{name}</PresentEvent>
                                         ))}
-                                      </div>
+                                      </PresentEventList>
                                     )}
-                                  </td>
+                                  </PresentCell>
                                 );
                               })}
                             </tr>
                           ))}
                         </tbody>
-                      </table>
-                    </article>
+                      </PresentTable>
+                    </CardBlock>
                   );
                 })}
-              </div>
+              </PresentWrapper>
             )}
-          </article>
+          </CardBlock>
 
-          <article className="timeline-month-card" style={{ marginTop: 10 }}>
-            <h4>Era Events</h4>
+          <CardBlock style={{ marginTop: "10px" }}>
+            <CardTitle>Era Events</CardTitle>
             {!orderedEvents.length && <div>No Era events found.</div>}
-            <div className="timeline-era" style={{ marginTop: 8 }}>
+            <EraList>
               {orderedEvents.map((event, index) => {
                 const yearNumber = Number.isFinite(Number(event.year)) ? Number(event.year) : null;
                 const previousYearNumber = index > 0 && Number.isFinite(Number(orderedEvents[index - 1]?.year)) ? Number(orderedEvents[index - 1]?.year) : null;
@@ -424,19 +633,15 @@ export function TimelineTab(props: TimelineTabProps) {
                 const gap = yearNumber != null && previousYearNumber != null ? Math.abs(yearNumber - previousYearNumber) : 0;
 
                 return (
-                  <article
+                  <EraRow
                     key={`${event.row_number}-${event.column}-${index}`}
-                    className="timeline-era-row"
-                    style={{
-                      marginTop: `${visual.marginTop}px`,
-                      background: visual.bg,
-                      borderLeftColor: visual.borderLeftColor,
-                    }}
+                    $marginTop={visual.marginTop}
+                    $background={visual.bg}
+                    $borderLeftColor={visual.borderLeftColor}
                   >
                     <div>
-                      <input
+                      <EraYearInput
                         type="number"
-                        className="timeline-era-year-input"
                         value={event.year ?? ""}
                         placeholder="Year"
                         onChange={(itemEvent) => {
@@ -451,15 +656,14 @@ export function TimelineTab(props: TimelineTabProps) {
                         }}
                       />
                     </div>
-                    <div className="timeline-era-content">
-                      <div className="timeline-era-era">{event.era || "Era"}</div>
-                      <div className="timeline-era-meta">
-                        <span className="timeline-era-chip">{century != null ? `Century ${century}` : "Unknown century"}</span>
-                        <span className="timeline-era-chip">{decade != null ? `Decade ${decade}` : "Unknown decade"}</span>
-                        {gap > 1 && <span className="timeline-era-chip">Gap +{gap}</span>}
-                      </div>
-                      <textarea
-                        className="timeline-era-text"
+                    <div>
+                      <EraLabel>{event.era || "Era"}</EraLabel>
+                      <EraMeta>
+                        <EraChip>{century != null ? `Century ${century}` : "Unknown century"}</EraChip>
+                        <EraChip>{decade != null ? `Decade ${decade}` : "Unknown decade"}</EraChip>
+                        {gap > 1 && <EraChip>Gap +{gap}</EraChip>}
+                      </EraMeta>
+                      <EraText
                         rows={2}
                         value={String(event.event || "")}
                         onChange={(itemEvent) => {
@@ -473,27 +677,25 @@ export function TimelineTab(props: TimelineTabProps) {
                         }}
                       />
                     </div>
-                    <div className="timeline-era-controls">
-                      <button
+                    <EraControls>
+                      <InlineButton
                         type="button"
-                        className="btn btn-inline"
                         onClick={() => {
                           const next = draft.era_events.filter((_, rowIndex) => rowIndex !== index);
                           updateDraft({ era_events: next });
                         }}
                       >
                         Remove
-                      </button>
-                    </div>
-                  </article>
+                      </InlineButton>
+                    </EraControls>
+                  </EraRow>
                 );
               })}
-            </div>
+            </EraList>
 
-            <button
+            <InlineButton
               type="button"
-              className="btn btn-inline"
-              style={{ marginTop: 8 }}
+              style={{ marginTop: "8px" }}
               onClick={() => {
                 updateDraft({
                   era_events: [
@@ -508,12 +710,12 @@ export function TimelineTab(props: TimelineTabProps) {
               }}
             >
               Add Era Event
-            </button>
-          </article>
+            </InlineButton>
+          </CardBlock>
 
-          <pre className="feature-output workspace-output">{status}</pre>
-        </div>
-      </div>
-    </section>
+          <WorkspaceOutput>{status}</WorkspaceOutput>
+        </WorkbenchMain>
+      </WorkbenchLayout>
+    </WorkspaceCard>
   );
 }

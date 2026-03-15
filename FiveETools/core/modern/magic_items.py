@@ -1,118 +1,81 @@
-import pandas as pd
-from FiveETools.core.modern.sources import source, json_source
-try:
-    from scripts.image_generator import generate_icon
-except ImportError:
-    generate_icon = None  # Optional dependency
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
-import inflection
+from __future__ import annotations
 
-df_magic_items = modern_sheets.get_sheet_by_name("magic_items")
-df_magic_items.head()
+from typing import cast
 
-
-def row_to_magic_item(row):
-    properties = row.get("Property") if not pd.isnull(row.get("Property")) else []
-    attached_spells = (
-        row.get("Attached Spells") if not pd.isnull(row.get("Attached Spells")) else []
-    )
-    item = {
-        "name": row.get("Name", "Magic Item"),
-        "source": json_source,
-        "type": row.get("Type ABRV", "") or "OTH",
-        "rarity": row.get("Rarity", "").lower(),
-        "value": row.get("Value", ""),
-        "weight": row.get("Weight", ""),
-        "page": 0,
-        # "currencyConversion": "credit",
-        "wondrous": True,
-        **(
-            {"recharge": row.get("Recharge", "")}
-            if not pd.isnull(row.get("Recharge"))
-            else {}
-        ),
-        **(
-            {"reqAttunement": row.get("Require Attunement", "")}
-            if not pd.isnull(row.get("Require Attunement"))
-            else {}
-        ),
-        **(
-            {"attachedSpells": [spell for spell in attached_spells.split(", ")]}
-            if not pd.isnull(row.get("Attached Spells"))
-            else {}
-        ),
-        **(
-            {"baseItem": row.get("Base Item", "")}
-            if not pd.isnull(row.get("Base Item"))
-            else {}
-        ),
-        **({"tier": row.get("Tier", "")} if not pd.isnull(row.get("Tier")) else {}),
-        **(
-            {"weaponCategory": row.get("Category", "")}
-            if not pd.isnull(row.get("Category"))
-            else {}
-        ),
-        **(
-            {"properties": [f"VS{property[2:]}" for property in properties]}
-            if not pd.isnull(row.get("Property"))
-            else {}
-        ),
-        **(
-            {"dmg1": row.get("Damage 1", "")}
-            if not pd.isnull(row.get("Damage 1"))
-            else {}
-        ),
-        **(
-            {"dmg2": row.get("Damage 2", "")}
-            if not pd.isnull(row.get("Damage 2"))
-            else {}
-        ),
-        **(
-            {"dmgType": row.get("Damage Type", "")}
-            if not pd.isnull(row.get("Damage Type"))
-            else {}
-        ),
-        **(
-            {"range": row.get("Extracted Range", "")}
-            if not pd.isnull(row.get("Extracted Range"))
-            else {}
-        ),
-        **(
-            {
-                "entries": [row.get("Description", "")],
-            }
-            if not pd.isnull(row.get("Description"))
-            else {}
-        ),
-        # "images": [
-        #   {
-        #     "type": "image",
-        #     "href": {
-        #       "type": "external",
-        #       "url": generate_icon("Magic Item", row.get("Name", "Magic Item"))
-        #     }
-        #   }
-        # ]
-    }
-    return item
-
-
-magic_items_list = [
-    row_to_magic_item(row)
-    for index, row in df_magic_items.iterrows()
-    if pd.notnull(row.get("Name"))
-    and str(row.get("Name")).strip() != ""
-    and row.get("Source") == source
-]
-
-# NEW: Pydantic-based conversion for type safety
+from FiveETools.core.modern import sources as source_catalog
+from FiveETools.datasets.json_loader import build_mapped_rows
+from FiveETools.mappers.magic_item_mapper import map_magic_item_row
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 from Spreadsheet.core.converters.magic_item import MagicItemConverter
+from models.datasets import get_converter as get_dataset_converter
+from models.datasets import load_dataset
 from models.entities.magic_item import MagicItem
-from typing import List
 
-converter = MagicItemConverter(modern_sheets)
-magic_items_pydantic: List[MagicItem] = converter.convert_all(
-    source_filter=source,
-    source=source,
-    json_source=json_source
-)
+_cache: dict[str, object] = {}
+
+
+def row_to_magic_item(row, *, json_source: str):
+    return map_magic_item_row(row, json_source=json_source)
+
+
+def get_converter() -> MagicItemConverter:
+    return cast(
+        MagicItemConverter, get_dataset_converter("magic_items", setting="modern")
+    )
+
+
+def build_magic_items_list(source_code: str | None = None) -> list[dict]:
+    return build_mapped_rows(
+        sheets_client=source_catalog.modern_sheets,
+        sheet_name="magic_items",
+        source_code=source_code,
+        default_source=source_catalog.DEFAULT_SOURCE,
+        resolve_source_context=source_catalog.resolve_source_context,
+        row_mapper=row_to_magic_item,
+        name_column="Name",
+        filter_by_source=True,
+    )
+
+
+def build_magic_items_pydantic(source_code: str | None = None) -> list[MagicItem]:
+    return cast(
+        list[MagicItem],
+        load_dataset("magic_items", source_code=source_code, setting="modern"),
+    )
+
+
+_RESOLVERS = {
+    "source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[0],
+    "json_source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[1],
+    "magic_items_list": build_magic_items_list,
+    "converter": get_converter,
+    "magic_items_pydantic": build_magic_items_pydantic,
+}
+_CACHED_ATTRS = {"magic_items_list", "magic_items_pydantic"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = [
+    "row_to_magic_item",
+    "get_converter",
+    "build_magic_items_list",
+    "build_magic_items_pydantic",
+    "source",
+    "json_source",
+    "magic_items_list",
+    "converter",
+    "magic_items_pydantic",
+]

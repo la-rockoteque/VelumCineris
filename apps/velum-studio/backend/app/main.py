@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
@@ -25,6 +26,8 @@ from .schemas import (
     IntegrationSyncResponse,
     IntelligenceRequest,
     IntelligenceResponse,
+    LoadingTriviaItem,
+    LoadingTriviaResponse,
     ItemActionRequest,
     ItemActionResponse,
     MoneyCatalogResponse,
@@ -86,6 +89,37 @@ app.add_middleware(
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/api/loading-trivia", response_model=LoadingTriviaResponse)
+def loading_trivia() -> LoadingTriviaResponse:
+    trivia_path = settings.assets_path / "loading_trivia.csv"
+    if not trivia_path.exists():
+        return LoadingTriviaResponse(items=[])
+
+    items: list[LoadingTriviaItem] = []
+    try:
+        with trivia_path.open("r", newline="", encoding="utf-8") as handle:
+            reader = csv.DictReader(handle)
+            for row in reader:
+                tidbit = str(row.get("tidbit", "")).strip()
+                if not tidbit:
+                    continue
+                items.append(
+                    LoadingTriviaItem(
+                        tidbit=tidbit,
+                        entity_type=(str(row.get("entity_type", "")).strip() or None),
+                        entity_name=(str(row.get("entity_name", "")).strip() or None),
+                        source=(str(row.get("source", "")).strip() or None),
+                    )
+                )
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to read loading trivia CSV: {exc}",
+        ) from exc
+
+    return LoadingTriviaResponse(items=items)
 
 
 @app.get("/api/settings", response_model=AppSettingsResponse)

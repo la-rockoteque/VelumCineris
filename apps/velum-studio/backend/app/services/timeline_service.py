@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 from openpyxl.cell.cell import MergedCell
 from openpyxl.utils.cell import column_index_from_string
 
-from Spreadsheet.core.Helpers.sheets import SpreadsheetClient
+from Spreadsheet.sheets import SpreadsheetClient
 
 
 VALID_SOURCES = {"auto", "google", "xlsx"}

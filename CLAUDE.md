@@ -40,7 +40,7 @@ poetry run pyright
 ### JSON Validation
 ```bash
 # Verify 5etools JSON format
-npm run verify
+bun run verify
 ```
 
 ## Architecture
@@ -59,13 +59,13 @@ Sync notebooks → External platforms
 
 ### Core Components
 
-#### 1. Google Sheets Client (`FiveETools/gsheets_client.py`)
+#### 1. Google Sheets Client (`Spreadsheet/sheets.py`)
 Centralized client for all data access with two modes:
 - **Read-only**: CSV export URLs (fast, cached)
 - **Read-write**: gspread with service account auth (`FiveETools/key.json`)
 
 ```python
-from FiveETools.gsheets_client import fantasy_sheets, modern_sheets
+from Spreadsheet.sheets import fantasy_sheets, modern_sheets
 
 # Read data
 df = fantasy_sheets.get_sheet("625265890")  # By GID
@@ -97,7 +97,7 @@ Each file converts raw Google Sheets data to **5etools JSON format**:
 
 **Pattern:**
 ```python
-from FiveETools.gsheets_client import fantasy_sheets
+from Spreadsheet.sheets import fantasy_sheets
 
 # Load sheet
 df = fantasy_sheets.get_sheet("GID")
@@ -161,7 +161,7 @@ Generates fictional language content using LLMs:
 - `batch_generate_phonetics.py` - Pronunciation generation
 - `batch_generate_scripts.py` - Writing system generation
 - `generator.py` - Core LLM interface (uses Ollama)
-- `gsheets_client.py` - Separate client for translator sheets
+- `Spreadsheet/sheets.py` - Shared content/translator sheet clients
 
 Uses NLTK WordNet for linguistic analysis (requires `poetry run download-wordnet`).
 
@@ -196,7 +196,7 @@ poetry run jupyter notebook
 **Common patterns:**
 1. Import content modules: `import FiveETools.core.fantasy.spells`
 2. Access data: `spells = FiveETools.core.fantasy.spells.spells_list`
-3. Load sheets: `from FiveETools.gsheets_client import fantasy_sheets`
+3. Load sheets: `from Spreadsheet.sheets import fantasy_sheets`
 
 **Notebook purposes:**
 - `WorldAnvil/world_anvil_sync.ipynb` - Sync to World Anvil
@@ -211,7 +211,7 @@ poetry run jupyter notebook
 
 ### Google Sheets (Read-Write)
 - File: `FiveETools/key.json` (service account)
-- Used by: `FiveETools/gsheets_client.py` when writing data
+- Used by: `Spreadsheet/sheets.py` when writing data
 - Scopes: `spreadsheets`, `drive`
 
 ### World Anvil
@@ -257,12 +257,12 @@ External platform IDs are tracked in spreadsheet columns:
 Two parallel content sets (fantasy vs non-fantasy):
 ```python
 # Fantasy (Orimond)
-from FiveETools.gsheets_client import fantasy_sheets
+from Spreadsheet.sheets import fantasy_sheets
 import FiveETools.core.fantasy.spells
 import FiveETools.core.fantasy.monster
 
 # Non-fantasy (Concord City)
-from FiveETools.gsheets_client import modern_sheets
+from Spreadsheet.sheets import modern_sheets
 import FiveETools.core.modern.spells
 import FiveETools.core.modern.monster
 ```

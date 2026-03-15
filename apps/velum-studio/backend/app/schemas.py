@@ -40,6 +40,17 @@ class SpreadsheetRowsResponse(BaseModel):
     rows: list[dict[str, Any]]
 
 
+class LoadingTriviaItem(BaseModel):
+    tidbit: str
+    entity_type: str | None = None
+    entity_name: str | None = None
+    source: str | None = None
+
+
+class LoadingTriviaResponse(BaseModel):
+    items: list[LoadingTriviaItem] = Field(default_factory=list)
+
+
 class SpreadsheetRowResponse(BaseModel):
     source: str
     sheet: str

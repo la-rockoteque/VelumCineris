@@ -1,48 +1,79 @@
-import pandas as pd
-from FiveETools.core.modern.sources import source, json_source
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
-import inflection
+from __future__ import annotations
 
-df_language = modern_sheets.get_sheet_by_name("languages")
-df_language.head()
+from typing import cast
 
-language_list = [
-    {
-        "name": row.get("Name"),
-        "source": json_source,
-        "type": row.get("Type").lower(),
-        **(
-            {
-                "typicalSpeakers": [
-                    f"{{@filter {inflection.pluralize(speaker)}|bestiary|type=humanoid|tag= any race;{speaker}}}"
-                    for speaker in row.get("Races").split(", ")
-                ]
-            }
-            if pd.notnull(row.get("Races"))
-            else {}
-        ),
-        **(
-            {"script": row.get("Script").lower()}
-            if pd.notnull(row.get("Script"))
-            else {}
-        ),
-        "page": 0,
-        "entries": [
-            row.get("Description"),
-        ],
-    }
-    for index, row in df_language.iterrows()
-    if pd.notnull(row.get("Name"))
-]
-
-# NEW: Pydantic-based conversion for type safety
+from FiveETools.core.modern import sources as source_catalog
+from FiveETools.datasets.json_loader import build_mapped_rows
+from FiveETools.mappers.language_mapper import map_language_row
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 from Spreadsheet.core.converters.language import LanguageConverter
+from models.datasets import get_converter as get_dataset_converter
+from models.datasets import load_dataset
 from models.entities.language import Language
-from typing import List
 
-converter = LanguageConverter(modern_sheets)
-language_pydantic: List[Language] = converter.convert_all(
-    source_filter=None,  # Languages don't have Source column
-    source=source,
-    json_source=json_source
-)
+_cache: dict[str, object] = {}
+
+
+def row_to_language(row, *, json_source: str):
+    return map_language_row(row, json_source=json_source)
+
+
+def get_converter() -> LanguageConverter:
+    return cast(LanguageConverter, get_dataset_converter("languages", setting="modern"))
+
+
+def build_language_list(source_code: str | None = None) -> list[dict]:
+    return build_mapped_rows(
+        sheets_client=source_catalog.modern_sheets,
+        sheet_name="languages",
+        source_code=source_code,
+        default_source=source_catalog.DEFAULT_SOURCE,
+        resolve_source_context=source_catalog.resolve_source_context,
+        row_mapper=row_to_language,
+        name_column="Name",
+        filter_by_source=False,
+    )
+
+
+def build_language_pydantic(source_code: str | None = None) -> list[Language]:
+    return cast(
+        list[Language],
+        load_dataset("languages", source_code=source_code, setting="modern"),
+    )
+
+
+_RESOLVERS = {
+    "source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[0],
+    "json_source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[1],
+    "language_list": build_language_list,
+    "converter": get_converter,
+    "language_pydantic": build_language_pydantic,
+}
+_CACHED_ATTRS = {"language_list", "language_pydantic"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = [
+    "row_to_language",
+    "get_converter",
+    "build_language_list",
+    "build_language_pydantic",
+    "source",
+    "json_source",
+    "language_list",
+    "converter",
+    "language_pydantic",
+]

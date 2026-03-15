@@ -198,7 +198,7 @@ Total: 27 files, ~1,680 lines of code
 from Book.book_api import BookAPI
 from Book.google_docs_client import GoogleDocsClient
 from Book.core.writers import OmnibookWriter
-from FiveETools.gsheets_client import fantasy_sheets
+from Spreadsheet.sheets import fantasy_sheets
 
 # Initialize
 DOC_ID = "1_a0yx9UnrsE4oPdkDS1WSkF1nvf-L4PV4bSDKluSI-w"
@@ -368,7 +368,7 @@ Final Google Docs with PHB-style layout
 ```
 
 ### Reuses Existing Infrastructure
-- ✅ `FiveETools/gsheets_client.py` - For loading entities
+- ✅ `Spreadsheet/sheets.py` - For loading entities
 - ✅ `FiveETools/core/fantasy/*.py` - Entity converters
 - ✅ `FiveETools/core/modern/*.py` - Modern setting entities
 - ✅ `FiveETools/key.json` - Service account credentials

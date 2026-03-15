@@ -32,8 +32,16 @@ Usage:
 import sys
 import math
 import random
+from pathlib import Path
 
-from gsheets_client import gsheets, OfflineSheetsClient
+try:
+  from Spreadsheet.sheets import gsheets, OfflineTranslatorSheetsClient as OfflineSheetsClient
+except ModuleNotFoundError:
+  for parent in Path(__file__).resolve().parents:
+    if (parent / "Spreadsheet").is_dir():
+      sys.path.append(str(parent))
+      break
+  from Spreadsheet.sheets import gsheets, OfflineTranslatorSheetsClient as OfflineSheetsClient
 from generator import llm_lexeme
 import pandas as pd
 

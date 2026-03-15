@@ -1,6 +1,9 @@
 import pandas as pd
-from src.sources import source, json_source
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
+from FiveETools.datasets.sources import get_default_source_context
+from Spreadsheet.sheets import modern_sheets
+
+source, json_source = get_default_source_context("modern")
+
 
 def row_to_markdown(row):
     spell_name = row["Spell Name"].strip()
@@ -8,7 +11,9 @@ def row_to_markdown(row):
     school = row["School"].strip()
     casting_time = row["Casting Time"].strip()
     spell_range = row["Range"].strip()
-    components = row["Components ABVR"] if pd.notna(row["Components ABVR"]) else "V, S, M"
+    components = (
+        row["Components ABVR"] if pd.notna(row["Components ABVR"]) else "V, S, M"
+    )
     duration = row["Duration"].strip()
     description = row["Description"].strip()
     # image = row["Image Url"].strip()
@@ -26,13 +31,16 @@ def row_to_markdown(row):
 ---
 """
 
+
 df_spells = modern_sheets.get_sheet_by_name("spells")
 df_spells.head()
 
 spells_list = [
     row_to_markdown(row)
     for index, row in df_spells.iterrows()
-    if pd.notnull(row.get("Spell Name")) and str(row.get("Spell Name")).strip() != "" and row.get("Source") == source
+    if pd.notnull(row.get("Spell Name"))
+    and str(row.get("Spell Name")).strip() != ""
+    and row.get("Source") == source
 ]
 
 spells = "\n\n".join(spells_list)

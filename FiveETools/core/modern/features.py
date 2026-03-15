@@ -1,130 +1,68 @@
-import pandas as pd
-import inflection
-from FiveETools.core.modern.sources import source, json_source
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
+from __future__ import annotations
+
+from FiveETools.datasets import modern_assembly
+from FiveETools.core.modern import sources as source_catalog
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
+
+_cache: dict[str, object] = {}
 
 
-def row_to_feature_entries(row):
-    name = row.get("Name")
-    classes = inflection.humanize(row.get("Class"))
-    parent = row.get("Parent")
-    type = row.get("Type", "entries")
-    entry = row.get("Entry")
-    attribute = row.get("Attributes")
-
-    sub_entries = [
-        row_to_feature_entries(entry_row)
-        for index, entry_row in df_class_features.iterrows()
-        if pd.notnull(entry_row.get("Class"))
-        and pd.notnull(entry_row.get("Parent"))
-        and str(entry_row.get("Parent")) == name
-        and str(entry_row.get("Class")) == classes
-        and str(entry_row.get("Parent")) != str(entry_row.get("Name"))
-    ]
-
-    entries = [
-        *(
-            [entry]
-            if not pd.isnull(row.get("Entry"))
-            and not any(x["type"] == "abilityDc" for x in sub_entries)
-            else []
-        ),
-        *(
-            (
-                [
-                    {
-                        "type": "entries",
-                        "name": "Spellcasting Ability",
-                        "entries": [entry] + sub_entries,
-                    }
-                ]
-                if any(x["type"] == "abilityDc" for x in sub_entries)
-                else [sub_entries]
-            )
-            if len(sub_entries) > 0
-            else []
-        ),
-    ]
-
-    return {
-        **({"type": type} if not pd.isnull(row.get("Type")) else {"type": "entries"}),
-        **({"name": name} if not pd.isnull(row.get("Parent")) else {}),
-        **({"entries": entries} if len(entries) > 0 else {}),
-        **(
-            {"attributes": attribute.split(", ")}
-            if not pd.isnull(row.get("Attributes"))
-            else {}
-        ),
-    }
+def get_class_features_sheet():
+    return modern_assembly.get_class_features_sheet()
 
 
-def row_to_subclass_features(row):
-    feature = row_to_features(row)
-    feature["classSource"] = json_source
-    feature["subclassSource"] = json_source
-    feature["subclassShortName"] = row.get("Subclass")
-    return feature
+def row_to_feature_entries(row, **kwargs):
+    return modern_assembly.row_to_feature_entries(row, **kwargs)
 
 
-def row_to_features(row):
-    name = row.get("Name")
-    classes = inflection.humanize(row.get("Class"))
-    level = int(row.get("Level"))
-    type = row.get("Type")
-    entry = row.get("Entry")
-    sub_entries = [
-        row_to_feature_entries(entry_row)
-        for index, entry_row in df_class_features.iterrows()
-        if pd.notnull(entry_row.get("Class"))
-        and pd.notnull(entry_row.get("Parent"))
-        and str(entry_row.get("Parent")).strip() == name
-        and str(entry_row.get("Class")).strip() == classes
-    ]
-    entries = [
-        *([entry] if not pd.isnull(row.get("Entry")) else ["Apparition unearthly spectral creepy uncanny wraith preternatural with"]),
-        *(
-            (
-                [
-                    {
-                        "type": "entries",
-                        "name": "Spellcasting Ability",
-                        "entries": [entry] + sub_entries,
-                    }
-                ]
-                if len(sub_entries) > 0
-                else [sub_entries]
-            )
-            if len(sub_entries) > 0
-            else []
-        ),
-    ]
-    return {
-        **({"className": classes} if not pd.isnull(row.get("Class")) else {}),
-        **({"name": name} if not pd.isnull(row.get("Name")) else {}),
-        **({"level": level} if not pd.isnull(row.get("Level")) else {}),
-        "source": json_source,
-        "classSource": json_source,
-        **({"entries": entries} if len(entries) > 0 else {}),
-    }
+def row_to_features(row, **kwargs):
+    return modern_assembly.row_to_features(row, **kwargs)
 
 
-df_class_features = pd.read_csv(class_features_url, header=1)
-df_class_features.head()
+def row_to_subclass_features(row, **kwargs):
+    return modern_assembly.row_to_subclass_features(row, **kwargs)
 
-features_list = list({f"{item.get("className")}\0{item.get("name")}\1{item.get("level")}": item for item in [
-    row_to_features(row)
-    for index, row in df_class_features.iterrows()
-    if pd.notnull(row.get("Name"))
-       and pd.isnull(row.get("Parent"))
-       and row.get("Source") == source
-       and pd.isnull(row.get("Subclass"))
-]}.values())
 
-sub_class_features_list = [
-    row_to_subclass_features(row)
-    for index, row in df_class_features.iterrows()
-    if pd.notnull(row.get("Name"))
-    and pd.isnull(row.get("Parent"))
-    and row.get("Source") == source
-    and pd.notnull(row.get("Subclass"))
+def build_features_list(source_code: str | None = None) -> list[dict]:
+    return modern_assembly.build_features_list(source_code=source_code)
+
+
+def build_sub_class_features_list(source_code: str | None = None) -> list[dict]:
+    return modern_assembly.build_sub_class_features_list(source_code=source_code)
+
+
+_RESOLVERS = {
+    "source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[0],
+    "json_source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[1],
+    "features_list": build_features_list,
+    "sub_class_features_list": build_sub_class_features_list,
+}
+_CACHED_ATTRS = {"features_list", "sub_class_features_list"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = [
+    "get_class_features_sheet",
+    "row_to_feature_entries",
+    "row_to_features",
+    "row_to_subclass_features",
+    "build_features_list",
+    "build_sub_class_features_list",
+    "source",
+    "json_source",
+    "features_list",
+    "sub_class_features_list",
 ]

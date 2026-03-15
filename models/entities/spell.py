@@ -10,27 +10,18 @@ import urllib.parse
 from typing import Any, Dict, List, Literal, Optional
 
 import inflection
-import pandas as pd
 from pydantic import Field
 
 from ..base import BaseEntity
 from ..fields.components import Components, TimeAction, Range, Duration, Distance
+from ..row_access import is_missing as row_is_missing, optional_int, optional_text, row_value
 
 # Valid spell schools (5etools format)
 SchoolType = Literal["A", "C", "D", "E", "V", "I", "N", "T"]
 
 
 def _is_missing(value: Any) -> bool:
-    if value is None:
-        return True
-    try:
-        if pd.isnull(value):
-            return True
-    except Exception:
-        pass
-    if isinstance(value, str) and not value.strip():
-        return True
-    return False
+    return row_is_missing(value)
 
 
 def _optional_text(value: Any) -> Optional[str]:
@@ -56,7 +47,7 @@ def _split_csv(value: Any, *, lower: bool = False) -> Optional[List[str]]:
 def _first_child_value(rows: list[dict[str, Any]], *keys: str) -> Optional[str]:
     for row in rows:
         for key in keys:
-            value = _optional_text(row.get(key))
+            value = _optional_text(row_value(row, key))
             if value:
                 return value
     return None
@@ -71,7 +62,7 @@ def _collect_child_values(
     values: list[str] = []
     for row in rows:
         for key in keys:
-            text = _optional_text(row.get(key))
+            text = _optional_text(row_value(row, key))
             if not text:
                 continue
             parts = [text]
@@ -119,8 +110,8 @@ def _parse_level(value: Any) -> int:
     return max(0, min(9, _parse_int(value, 0)))
 
 
-def _parse_school(row: pd.Series) -> SchoolType:
-    school = _optional_text(row.get("School ABRV")) or _optional_text(row.get("School")) or "E"
+def _parse_school(row) -> SchoolType:
+    school = _optional_text(row_value(row, "School ABRV")) or _optional_text(row_value(row, "School")) or "E"
     school_map = {
         "abjuration": "A",
         "conjuration": "C",
@@ -144,7 +135,7 @@ class Spell(BaseEntity):
     """
     D&D 5e Spell model.
 
-    Represents a spell in 5etools JSON format with additional DDB fields.
+    Represents a spell in 5etools JSON format.
     """
 
     # Core spell fields
@@ -172,27 +163,10 @@ class Spell(BaseEntity):
     savingThrow: Optional[List[str]] = Field(None, description="Required saving throws")
     areaTags: Optional[List[str]] = Field(None, description="Area of effect tags")
 
-    # D&D Beyond-specific fields (for sync)
-    ddb_save_success: Optional[str] = Field(None, description="DDB: Save success effect")
-    ddb_save_fail: Optional[str] = Field(None, description="DDB: Save failure effect")
-    ddb_area_type: Optional[str] = Field(None, description="DDB: Area type")
-    ddb_area_distance: Optional[str] = Field(None, description="DDB: Area distance")
-    ddb_damage: Optional[str] = Field(None, description="DDB: Damage description")
-    ddb_condition: Optional[str] = Field(None, description="DDB: Condition applied")
-    ddb_scaling: Optional[str] = Field(None, description="DDB: Scaling description")
-    ddb_modifiers_json: Optional[str] = Field(None, description="DDB: Modifiers JSON")
-    ddb_modifier_type: Optional[str] = Field(None, description="DDB: Primary modifier type")
-    ddb_modifier_subtype: Optional[str] = Field(None, description="DDB: Primary modifier subtype")
-    ddb_modifier_dice_count: Optional[str] = Field(None, description="DDB: Modifier dice count")
-    ddb_modifier_dice_type: Optional[str] = Field(None, description="DDB: Modifier dice type")
-    ddb_modifier_fixed_value: Optional[str] = Field(None, description="DDB: Modifier fixed value")
-    ddb_modifier_duration: Optional[str] = Field(None, description="DDB: Modifier duration")
-    ddb_modifier_duration_unit: Optional[str] = Field(None, description="DDB: Modifier duration unit")
-
     @classmethod
     def from_row(
         cls,
-        row: pd.Series,
+        row,
         source: str,
         json_source: str,
         *,
@@ -204,7 +178,7 @@ class Spell(BaseEntity):
         Create Spell from DataFrame row.
 
         Args:
-            row: DataFrame row from Google Sheets
+            row: Row-like mapping from the sheet layer
             source: Source filter (e.g., "ORIO")
             json_source: JSON source identifier (e.g., "ORIO")
             modifiers_rows: Optional rows from Spells:Modifiers child sheet
@@ -218,24 +192,24 @@ class Spell(BaseEntity):
         scaling_rows = scaling_rows or []
         condition_rows = condition_rows or []
 
-        spell_name = _optional_text(row.get("Spell Name")) or _optional_text(row.get("Name")) or "Unnamed Spell"
+        spell_name = _optional_text(row_value(row, "Spell Name")) or _optional_text(row_value(row, "Name")) or "Unnamed Spell"
 
         # Parse components
-        components_str = _optional_text(row.get("Components ABVR")) or _optional_text(row.get("Components")) or ""
+        components_str = _optional_text(row_value(row, "Components ABVR")) or _optional_text(row_value(row, "Components")) or ""
         components = Components.from_string(components_str)
 
         # Parse spell classes
         spell_classes = [
-            item.strip() for item in str(row.get("Class", "")).split(",") if item.strip()
+            item.strip() for item in str(row_value(row, "Class", "")).split(",") if item.strip()
         ]
 
         # Parse optional list fields
-        ability_checks = _split_csv(row.get("Ability Check"), lower=True)
-        misc_tags = _split_csv(row.get("Tag ABRV"))
-        damages = _split_csv(row.get("Old Damage Type"), lower=True)
-        areas = _split_csv(row.get("Area ABRV"))
+        ability_checks = _split_csv(row_value(row, "Ability Check"), lower=True)
+        misc_tags = _split_csv(row_value(row, "Tag ABRV"))
+        damages = _split_csv(row_value(row, "Old Damage Type"), lower=True)
+        areas = _split_csv(row_value(row, "Area ABRV"))
 
-        saving_throws = _split_csv(row.get("Saving Throw"), lower=True)
+        saving_throws = _split_csv(row_value(row, "Saving Throw"), lower=True)
         if not saving_throws:
             saving_throws = _collect_child_values(
                 condition_rows,
@@ -245,24 +219,24 @@ class Spell(BaseEntity):
             ) or None
 
         # Parse time
-        casting_unit = _parse_int(row.get("Casting Unit"), 1)
-        casting_type = (_optional_text(row.get("Casting Type")) or "action").lower()
+        casting_unit = _parse_int(row_value(row, "Casting Unit"), 1)
+        casting_type = (_optional_text(row_value(row, "Casting Type")) or "action").lower()
         time = [TimeAction(number=casting_unit, unit=casting_type)]
 
         # Parse range
-        range_distance = (_optional_text(row.get("Range Distance")) or "self").lower()
+        range_distance = (_optional_text(row_value(row, "Range Distance")) or "self").lower()
         range_obj = Range(
-            type=(_optional_text(row.get("Range Type")) or "point").lower(),
+            type=(_optional_text(row_value(row, "Range Type")) or "point").lower(),
             distance=Distance(
                 type=range_distance,
-                amount=_parse_int(row.get("Range Unit"), 0) if _optional_text(row.get("Range Unit")) else None,
+                amount=_parse_int(row_value(row, "Range Unit"), 0) if _optional_text(row_value(row, "Range Unit")) else None,
             ),
         )
 
         # Parse duration
-        duration_type = (_optional_text(row.get("Duration Type")) or "timed").lower()
-        duration_unit = (_optional_text(row.get("Duration Unit")) or "minutes").lower()
-        duration_amount = _parse_int(row.get("Duration Amount"), 1)
+        duration_type = (_optional_text(row_value(row, "Duration Type")) or "timed").lower()
+        duration_unit = (_optional_text(row_value(row, "Duration Unit")) or "minutes").lower()
+        duration_amount = _parse_int(row_value(row, "Duration Amount"), 1)
 
         duration_dict = {
             "type": duration_type,
@@ -271,16 +245,16 @@ class Spell(BaseEntity):
             duration_dict["duration"] = {
                 "type": duration_unit,
                 "amount": duration_amount,
-                "upTo": _parse_bool(row.get("Up To")),
+                "upTo": _parse_bool(row_value(row, "Up To")),
             }
-            duration_dict["concentration"] = _parse_bool(row.get("Concentration"))
+            duration_dict["concentration"] = _parse_bool(row_value(row, "Concentration"))
 
         duration = [Duration(**duration_dict)]
 
         # Parse entries
         entries: list[str] = []
         for field in ("Description", "Clarification", "Table"):
-            value = _optional_text(row.get(field))
+            value = _optional_text(row_value(row, field))
             if value:
                 entries.append(value)
         if not entries:
@@ -297,7 +271,7 @@ class Spell(BaseEntity):
 
         # Parse entriesHigherLevel
         entriesHigherLevel = None
-        higher_levels = _optional_text(row.get("Higher Levels"))
+        higher_levels = _optional_text(row_value(row, "Higher Levels"))
         if higher_levels:
             entriesHigherLevel = [
                 {
@@ -319,7 +293,7 @@ class Spell(BaseEntity):
         base_url = "https://raw.githubusercontent.com/la-rockoteque/Vestigium/refs/heads/main/images/Spell"
         fluff_entries: list[str] = []
         for field in ("Flavor", "Alternative Flavor", "Quotes"):
-            value = _optional_text(row.get(field))
+            value = _optional_text(row_value(row, field))
             if value:
                 fluff_entries.append(value)
 
@@ -345,7 +319,7 @@ class Spell(BaseEntity):
 
         # Helper function for optional string fields
         def optional_str(field_name: str) -> Optional[str]:
-            return _optional_text(row.get(field_name))
+            return _optional_text(row_value(row, field_name))
 
         condition_names = _collect_child_values(condition_rows, "Condition", split_commas=True)
         ddb_condition = optional_str("Condition") or (", ".join(condition_names) if condition_names else None)
@@ -357,16 +331,16 @@ class Spell(BaseEntity):
         modifier_payloads: list[dict[str, str]] = []
         for item in modifiers_rows:
             payload = {
-                "type": _optional_text(item.get("Modifier Type")) or "",
-                "subtype": _optional_text(item.get("Modifier Subtype")) or "",
-                "dice_count": _optional_text(item.get("Modifier Dice Count")) or "",
-                "dice_type": _optional_text(item.get("Modifier Dice Type")) or "",
-                "fixed_value": _optional_text(item.get("Modifier Fixed Value")) or "",
-                "duration": _optional_text(item.get("Modifier Duration")) or "",
-                "duration_unit": _optional_text(item.get("Modifier Duration Unit")) or "",
+                "type": _optional_text(row_value(item, "Modifier Type")) or "",
+                "subtype": _optional_text(row_value(item, "Modifier Subtype")) or "",
+                "dice_count": _optional_text(row_value(item, "Modifier Dice Count")) or "",
+                "dice_type": _optional_text(row_value(item, "Modifier Dice Type")) or "",
+                "fixed_value": _optional_text(row_value(item, "Modifier Fixed Value")) or "",
+                "duration": _optional_text(row_value(item, "Modifier Duration")) or "",
+                "duration_unit": _optional_text(row_value(item, "Modifier Duration Unit")) or "",
             }
-            details = _optional_text(item.get("Modifier Details"))
-            use_primary_stat = _optional_text(item.get("Modifier Use Primary Stat"))
+            details = _optional_text(row_value(item, "Modifier Details"))
+            use_primary_stat = _optional_text(row_value(item, "Modifier Use Primary Stat"))
             if details:
                 payload["details"] = details
             if use_primary_stat:
@@ -389,7 +363,7 @@ class Spell(BaseEntity):
         return cls(
             source=json_source,
             name=spell_name,
-            level=_parse_level(row.get("Level")),
+            level=_parse_level(row_value(row, "Level")),
             school=_parse_school(row),
             components=components,
             time=time,
@@ -404,7 +378,7 @@ class Spell(BaseEntity):
             damageInflict=damages,
             savingThrow=saving_throws,
             areaTags=areas,
-            # DDB fields
+            # Compatibility metadata remains supported as model extras for sync flows.
             ddb_save_success=ddb_save_success,
             ddb_save_fail=ddb_save_fail,
             ddb_area_type=optional_str("Area Type"),

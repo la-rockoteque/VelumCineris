@@ -6,7 +6,17 @@ to the Google Sheets Scripts tab.
 
 import pandas as pd
 import random
-from gsheets_client import gsheets
+import sys
+from pathlib import Path
+
+try:
+  from Spreadsheet.sheets import gsheets
+except ModuleNotFoundError:
+  for parent in Path(__file__).resolve().parents:
+    if (parent / "Spreadsheet").is_dir():
+      sys.path.append(str(parent))
+      break
+  from Spreadsheet.sheets import gsheets
 
 
 def random_char_from_range(unicode_range):

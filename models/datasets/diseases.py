@@ -1,14 +1,41 @@
-from models.datasets.sources import source, json_source, fantasy_sheets
+from __future__ import annotations
 
+from typing import cast
 
-# NEW: Pydantic-based conversion for type safety
-from Spreadsheet.core.converters.disease import DiseaseConverter
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 from models.entities.disease import Disease
-from typing import List
+from Spreadsheet.core.converters.disease import DiseaseConverter
 
-converter = DiseaseConverter(fantasy_sheets)
-disease_pydantic: List[Disease] = converter.convert_all(
-    source_filter=None,  # Diseases don't use source filter
-    source=source,
-    json_source=json_source
-)
+from models.datasets.registry import get_converter as get_registered_converter
+from models.datasets.registry import load_dataset
+from models.datasets.sources import DEFAULT_SOURCE
+
+_attr_cache: dict[str, object] = {}
+
+
+def get_converter() -> DiseaseConverter:
+    return cast(DiseaseConverter, get_registered_converter("diseases"))
+
+
+def load_disease_pydantic(source_code: str = DEFAULT_SOURCE) -> list[Disease]:
+    return cast(list[Disease], load_dataset("diseases", source_code))
+
+
+_RESOLVERS = {
+    "converter": get_converter,
+    "disease_pydantic": load_disease_pydantic,
+}
+_CACHED_ATTRS: set[str] = set()
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_attr_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = ["get_converter", "load_disease_pydantic", "converter", "disease_pydantic"]

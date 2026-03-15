@@ -56,3 +56,4 @@ pytest = "^9.0.2"
 
 [tool.poetry.scripts]
 download-wordnet = "scripts.download_wordnet:main"
+dndb-cli = "DNDBeyond.cli:main"

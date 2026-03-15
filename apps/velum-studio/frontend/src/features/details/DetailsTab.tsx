@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { styled } from "app/styletron";
 
 import { syncLinkedSpellFields, syncSpellComponentAbbreviation, useEditableTitle } from "features/details/FieldEditors";
 import {
@@ -10,7 +11,7 @@ import {
   SpellDetailsForm,
 } from "features/details/forms";
 import type { ItemDetailsFormProps } from "features/details/forms/types";
-import { Card, EditableTitle, Section, Subsection } from "shared/library";
+import { Button, Card, EditableTitle, MetaText } from "shared/library";
 import type { SelectedRow, ValidationCatalogResponse } from "shared/types/api";
 import {
   findRowKeyByNormalized,
@@ -36,6 +37,211 @@ interface DetailsTabProps {
   onItemAction: (integrationKey: string, operation: string, dryRun: boolean) => Promise<void>;
   lookupFieldOptions: (fieldName: string) => string[];
 }
+
+const DetailsWorkspace = styled("div", {
+  gap: "12px",
+});
+
+const DetailsShell = styled("div", {
+  marginTop: "6px",
+  display: "grid",
+  gap: "14px",
+  gridTemplateColumns: "minmax(280px, 360px) minmax(0, 1fr)",
+  alignItems: "start",
+  "@media (max-width: 1100px)": {
+    gridTemplateColumns: "1fr",
+  },
+});
+
+const DetailsSidebar = styled("aside", {
+  display: "grid",
+  gap: "10px",
+  alignContent: "start",
+  position: "sticky",
+  top: "12px",
+  "@media (max-width: 1100px)": {
+    position: "static",
+  },
+});
+
+const SidebarPanel = styled("section", {
+  border: "1px solid var(--border)",
+  borderRadius: "12px",
+  padding: "12px",
+  background: "var(--surface-strong)",
+});
+
+const SidebarPanelTitle = styled("h4", {
+  margin: "0 0 8px",
+  fontSize: "0.85rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.04em",
+  color: "var(--ink-soft)",
+});
+
+const IntegrationActions = styled("div", {
+  display: "grid",
+  gap: "8px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+  marginTop: "10px",
+});
+
+const FullWidthButton = styled("button", {
+  border: "1px solid var(--border)",
+  borderRadius: "9px",
+  padding: "8px 10px",
+  font: "inherit",
+  color: "var(--ink)",
+  background: "var(--surface-strong)",
+  cursor: "pointer",
+  fontWeight: 600,
+  width: "100%",
+  ":disabled": {
+    opacity: 0.6,
+    cursor: "not-allowed",
+  },
+  ":hover:not(:disabled)": {
+    borderColor: "rgba(155, 77, 31, 0.5)",
+  },
+});
+
+const Main = styled("main", {
+  display: "grid",
+  gap: "12px",
+  alignContent: "start",
+  width: "100%",
+  maxInlineSize: "min(1320px, calc(100vw - 440px))",
+  "@media (max-width: 1100px)": {
+    maxInlineSize: "100%",
+  },
+});
+
+const Hero = styled("section", {
+  border: "1px solid var(--border)",
+  borderRadius: "12px",
+  padding: "12px",
+  background: "#f8efdf",
+  display: "grid",
+  gap: "12px",
+  gridTemplateColumns: "minmax(0, 1fr) 260px",
+  alignItems: "start",
+  "@media (max-width: 1100px)": {
+    gridTemplateColumns: "1fr",
+  },
+});
+
+const HeroInfo = styled("div", {
+  display: "grid",
+  gap: "8px",
+});
+
+const HeroSubtitle = styled("p", {
+  margin: 0,
+  color: "var(--ink-soft)",
+  fontSize: "0.86rem",
+});
+
+const HeroStatus = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "6px",
+});
+
+const StatusChip = styled("span", {
+  border: "1px solid rgba(66, 48, 30, 0.16)",
+  borderRadius: "999px",
+  padding: "3px 8px",
+  fontSize: "0.68rem",
+  color: "#6d624f",
+  background: "rgba(255, 249, 238, 0.78)",
+});
+
+const HeroChips = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "8px",
+});
+
+const Chip = styled("span", {
+  border: "1px solid var(--border)",
+  borderRadius: "999px",
+  padding: "4px 10px",
+  fontSize: "0.74rem",
+  color: "#5d513f",
+  background: "rgba(255, 250, 240, 0.9)",
+});
+
+const Media = styled("div", {
+  border: "1px solid rgba(66, 48, 30, 0.24)",
+  borderRadius: "10px",
+  overflow: "hidden",
+  background: "#efe2cf",
+  minHeight: "220px",
+  display: "grid",
+  gridTemplateRows: "minmax(0, 1fr) auto",
+});
+
+const MediaImage = styled("img", {
+  width: "100%",
+  height: "100%",
+  minHeight: "180px",
+  objectFit: "cover",
+  display: "block",
+});
+
+const MediaMeta = styled("div", {
+  display: "flex",
+  justifyContent: "space-between",
+  gap: "8px",
+  alignItems: "center",
+  padding: "8px 10px",
+  background: "rgba(255, 249, 238, 0.95)",
+  fontSize: "0.72rem",
+  color: "#635744",
+});
+
+const MediaMetaLink = styled("a", {
+  color: "var(--accent)",
+  textDecoration: "none",
+  fontWeight: 700,
+  ":hover": {
+    textDecoration: "underline",
+  },
+});
+
+const MediaFallback = styled("div", {
+  minHeight: "220px",
+  display: "grid",
+  placeItems: "center",
+  textAlign: "center",
+  fontSize: "0.85rem",
+  letterSpacing: "0.02em",
+  color: "#6b604f",
+  padding: "12px",
+});
+
+const RelationSection = styled("section", {
+  border: "1px solid var(--border)",
+  borderRadius: "12px",
+  padding: "12px",
+  background: "#f7f0e5",
+});
+
+const RelationTitle = styled("h3", {
+  margin: 0,
+  fontSize: "0.9rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.04em",
+});
+
+const RelationTableWrap = styled("div", {
+  marginTop: "10px",
+  border: "1px solid var(--border)",
+  borderRadius: "14px",
+  overflow: "auto",
+  maxHeight: "60vh",
+  background: "var(--surface-strong)",
+});
 
 function isHeaderStatusField(normalized: string): boolean {
   return (
@@ -149,11 +355,12 @@ export function DetailsTab(props: DetailsTabProps) {
   };
 
   return (
-    <Card title="Details Editor" subtitle={`${selected.sheet} | row ${selected.rowNumber}`} className="details-workspace">
-      <>
-        <div className="details-shell">
-          <aside className="details-sidebar">
-            <Subsection title="Actions" className="workspace-card">
+    <Card title="Details Editor" subtitle={`${selected.sheet} | row ${selected.rowNumber}`}>
+      <DetailsWorkspace>
+        <DetailsShell>
+          <DetailsSidebar>
+            <SidebarPanel>
+              <SidebarPanelTitle>Actions</SidebarPanelTitle>
               <label>
                 Mode
                 <select
@@ -165,77 +372,80 @@ export function DetailsTab(props: DetailsTabProps) {
                   <option value="live">Live Execute</option>
                 </select>
               </label>
-              <div className="integration-actions" style={{ marginTop: 10 }}>
-                <button className="btn" disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "publish", props.actionMode !== "live")}>WA Publish</button>
-                <button className="btn" disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "delete", props.actionMode !== "live")}>WA Delete</button>
-                <button className="btn" disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "publish", props.actionMode !== "live")}>DDB Publish</button>
-                <button className="btn" disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "delete", props.actionMode !== "live")}>DDB Delete</button>
-                <button className="btn" disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "publish", props.actionMode !== "live")}>OP Publish</button>
-                <button className="btn" disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "delete", props.actionMode !== "live")}>OP Delete</button>
-              </div>
-            </Subsection>
+              <IntegrationActions>
+                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "publish", props.actionMode !== "live")}>
+                  WA Publish
+                </FullWidthButton>
+                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "delete", props.actionMode !== "live")}>
+                  WA Delete
+                </FullWidthButton>
+                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "publish", props.actionMode !== "live")}>
+                  DDB Publish
+                </FullWidthButton>
+                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "delete", props.actionMode !== "live")}>
+                  DDB Delete
+                </FullWidthButton>
+                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "publish", props.actionMode !== "live")}>
+                  OP Publish
+                </FullWidthButton>
+                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "delete", props.actionMode !== "live")}>
+                  OP Delete
+                </FullWidthButton>
+              </IntegrationActions>
+            </SidebarPanel>
 
             {!!selected.sections.length && (
-              <Subsection title="Related" className="workspace-card">
-                <div className="meta">{selected.sections.reduce((acc, section) => acc + Number(section.count || 0), 0)} linked rows</div>
-              </Subsection>
+              <SidebarPanel>
+                <SidebarPanelTitle>Related</SidebarPanelTitle>
+                <MetaText>{selected.sections.reduce((acc, section) => acc + Number(section.count || 0), 0)} linked rows</MetaText>
+              </SidebarPanel>
             )}
-          </aside>
+          </DetailsSidebar>
 
-          <main className="details-main">
-            <section className="details-hero">
-              <div className="details-hero-info">
-                <EditableTitle
-                  className={titleBinding.titleKey ? "details-title-editable" : ""}
-                  value={titleBinding.title}
-                  placeholder="Selected Item"
-                  editable={Boolean(titleBinding.titleKey)}
-                  onCommit={setTitle}
-                />
+          <Main>
+            <Hero>
+              <HeroInfo>
+                <EditableTitle value={titleBinding.title} placeholder="Selected Item" editable={Boolean(titleBinding.titleKey)} onCommit={setTitle} />
 
-                <p className="details-hero-subtitle">
+                <HeroSubtitle>
                   {selected.sheet} row {selected.rowNumber}
-                </p>
+                </HeroSubtitle>
 
                 {!!statusChips.length && (
-                  <div className="details-hero-status">
+                  <HeroStatus>
                     {statusChips.map((chip) => (
-                      <span key={chip} className="details-status-chip">
-                        {chip}
-                      </span>
+                      <StatusChip key={chip}>{chip}</StatusChip>
                     ))}
-                  </div>
+                  </HeroStatus>
                 )}
 
                 {!!metaChips.length && (
-                  <div className="details-hero-chips">
+                  <HeroChips>
                     {metaChips.map((chip) => (
-                      <span key={chip} className="details-chip">
-                        {chip}
-                      </span>
+                      <Chip key={chip}>{chip}</Chip>
                     ))}
-                  </div>
+                  </HeroChips>
                 )}
-              </div>
+              </HeroInfo>
 
-              <div className="details-media">
+              <Media>
                 {image ? (
                   <>
-                    <img src={image.url} alt={`${titleBinding.title || "item"} illustration`} loading="lazy" />
-                    <div className="details-media-meta">
+                    <MediaImage src={image.url} alt={`${titleBinding.title || "item"} illustration`} loading="lazy" />
+                    <MediaMeta>
                       <span>Source field: {image.field}</span>
                       {isRemoteImage(image.url) && (
-                        <a href={image.url} target="_blank" rel="noopener noreferrer">
+                        <MediaMetaLink href={image.url} target="_blank" rel="noopener noreferrer">
                           Open image
-                        </a>
+                        </MediaMetaLink>
                       )}
-                    </div>
+                    </MediaMeta>
                   </>
                 ) : (
-                  <div className="details-media-fallback">No image mapped</div>
+                  <MediaFallback>No image mapped</MediaFallback>
                 )}
-              </div>
-            </section>
+              </Media>
+            </Hero>
 
             {chooseDetailsForm(formProps)}
 
@@ -245,8 +455,9 @@ export function DetailsTab(props: DetailsTabProps) {
                 .map((section) => {
                   const columns = Object.keys(section.rows[0] || {});
                   return (
-                    <Section key={`${section.section}-${section.sheet}`} className="relation-section" title={`${section.section} (${section.count})`}>
-                      <div className="table-wrap">
+                    <RelationSection key={`${section.section}-${section.sheet}`}>
+                      <RelationTitle>{`${section.section} (${section.count})`}</RelationTitle>
+                      <RelationTableWrap>
                         <table>
                           <thead>
                             <tr>
@@ -271,13 +482,13 @@ export function DetailsTab(props: DetailsTabProps) {
                             ))}
                           </tbody>
                         </table>
-                      </div>
-                    </Section>
+                      </RelationTableWrap>
+                    </RelationSection>
                   );
                 })}
-          </main>
-        </div>
-      </>
+          </Main>
+        </DetailsShell>
+      </DetailsWorkspace>
     </Card>
   );
 }

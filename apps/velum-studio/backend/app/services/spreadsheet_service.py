@@ -66,17 +66,17 @@ RELATION_RULES = (
         "section": "Compatibility",
     },
     {
-        "parent_sheet": "Dieties",
+        "parent_sheet": "Deities",
         "child_sheet": "Cults",
         "parent_key": "Name",
-        "child_key": "Dieties",
+        "child_key": "Deities",
         "section": "Cults",
     },
     {
-        "parent_sheet": "Dieties",
-        "child_sheet": "Sciptures",
+        "parent_sheet": "Deities",
+        "child_sheet": "Scriptures",
         "parent_key": "Name",
-        "child_key": "Diety",
+        "child_key": "Deity",
         "section": "Scriptures",
     },
     {

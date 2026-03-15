@@ -6,10 +6,10 @@ Provides type-safe validation for language data from Google Sheets.
 
 from pydantic import Field
 from typing import Optional, List
-import pandas as pd
 import inflection
 
 from ..base import BaseEntity
+from ..row_access import optional_text, row_value, split_csv
 
 
 class Language(BaseEntity):
@@ -29,7 +29,7 @@ class Language(BaseEntity):
     script: Optional[str] = Field(None, description="Writing script used")
 
     @classmethod
-    def from_row(cls, row: pd.Series, source: str, json_source: str) -> 'Language':
+    def from_row(cls, row, source: str, json_source: str) -> 'Language':
         """
         Create Language from DataFrame row.
 
@@ -43,8 +43,8 @@ class Language(BaseEntity):
         """
         # Parse typical speakers
         typical_speakers = None
-        if pd.notnull(row.get("Races")):
-            speakers = [speaker.strip() for speaker in row.get("Races").split(",")]
+        speakers = split_csv(row_value(row, "Races"))
+        if speakers:
             typical_speakers = [
                 f"{{@filter {inflection.pluralize(speaker)}|bestiary|type=humanoid|tag= any race;{speaker}}}"
                 for speaker in speakers
@@ -52,18 +52,20 @@ class Language(BaseEntity):
 
         # Parse script
         script = None
-        if pd.notnull(row.get("Script")):
-            script = row.get("Script").lower()
+        script_value = optional_text(row_value(row, "Script"))
+        if script_value:
+            script = script_value.lower()
 
         # Parse description
         entries = []
-        if pd.notnull(row.get("Description")):
-            entries.append(row.get("Description"))
+        description = optional_text(row_value(row, "Description"))
+        if description:
+            entries.append(description)
 
         return cls(
             source=json_source,
-            name=row.get("Name", "Unnamed Language"),
-            type=row.get("Type", "standard").lower(),
+            name=optional_text(row_value(row, "Name")) or "Unnamed Language",
+            type=(optional_text(row_value(row, "Type")) or "standard").lower(),
             typicalSpeakers=typical_speakers,
             script=script,
             page=0,

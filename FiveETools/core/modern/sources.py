@@ -1,26 +1,63 @@
-import pandas as pd
-import inflection
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
+from __future__ import annotations
 
-pd.options.display.float_format = "{:,.0f}".format
-df_source = modern_sheets.get_sheet_by_name("sources")
-df_source.head()
+from FiveETools.datasets import sources as dataset_sources
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 
-source = "VSTGCC"
-source_row = df_source[df_source["Source"] == source].iloc[0]
+DEFAULT_SOURCE = dataset_sources.DEFAULT_SOURCES["modern"]
+DEFAULT_JSON_SOURCE = dataset_sources.DEFAULT_JSON_SOURCES["modern"]
+SOURCES_SHEET_NAME = dataset_sources.SOURCES_SHEET_NAME
+modern_sheets = dataset_sources.modern_sheets
+_attr_cache: dict[str, object] = {}
 
-full_source = source_row["Full"]
-json_source = source_row["json"]
 
-sources = [
-    {
-        "json": row["json"],
-        "abbreviation": row["Source"],
-        "full": row["Full"],
-        "url": f"https://raw.githubusercontent.com/la-rockoteque/Vestigium/refs/heads/main/Velum_Cineris;{inflection.underscore(json_source)}.json",
-        "authors": ["Velum Cineris"],
-        "version": "1.0",
-    }
-    for index, row in df_source.iterrows()
-    if pd.notnull(row.get("Full"))
+def get_sources_sheet():
+    return dataset_sources.get_sources_sheet("modern")
+
+
+def resolve_source_context(source_code: str = DEFAULT_SOURCE) -> tuple[str, str]:
+    return dataset_sources.resolve_source_context(
+        setting="modern", source_code=source_code
+    )
+
+
+def get_full_source(source_code: str = DEFAULT_SOURCE) -> str:
+    return dataset_sources.get_full_source(setting="modern", source_code=source_code)
+
+
+def list_sources():
+    return dataset_sources.list_sources(setting="modern")
+
+
+_RESOLVERS = {
+    "source": lambda: resolve_source_context(DEFAULT_SOURCE)[0],
+    "json_source": lambda: resolve_source_context(DEFAULT_SOURCE)[1],
+    "full_source": lambda: get_full_source(DEFAULT_SOURCE),
+    "sources": list_sources,
+}
+_CACHED_ATTRS = {"source", "json_source", "full_source", "sources"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_attr_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = [
+    "DEFAULT_SOURCE",
+    "DEFAULT_JSON_SOURCE",
+    "SOURCES_SHEET_NAME",
+    "modern_sheets",
+    "get_sources_sheet",
+    "resolve_source_context",
+    "get_full_source",
+    "list_sources",
+    "source",
+    "json_source",
+    "full_source",
+    "sources",
 ]

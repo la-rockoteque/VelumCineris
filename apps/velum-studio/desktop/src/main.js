@@ -7,6 +7,7 @@ const {
   FRONTEND_PORT,
   FRONTEND_URL,
   ROOT_DIR,
+  BACKEND_DIR,
   FRONTEND_DIR,
   START_FRONTEND,
 } = require("./config");
@@ -31,7 +32,7 @@ function startBackend() {
       "--port",
       String(BACKEND_PORT),
       "--app-dir",
-      "apps/velum-studio/backend",
+      BACKEND_DIR,
     ],
     cwd: ROOT_DIR,
     label: "backend",
@@ -44,7 +45,7 @@ function startFrontend() {
   }
 
   frontendProcess = startManagedProcess({
-    command: "npm",
+    command: "bun",
     args: ["run", "dev", "--", "--host", FRONTEND_HOST, "--port", String(FRONTEND_PORT)],
     cwd: FRONTEND_DIR,
     label: "frontend",

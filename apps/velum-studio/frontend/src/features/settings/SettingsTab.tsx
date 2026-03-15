@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { ActionRow, Button, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
+
 interface SettingsTabProps {
   loading: boolean;
   source: string;
@@ -53,11 +55,11 @@ export function SettingsTab(props: SettingsTabProps) {
   };
 
   return (
-    <section className="workspace-card">
-      <h2>Settings</h2>
-      <p>Preferences are persisted in your home profile (`~/.velum`).</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Settings</WorkspaceTitle>
+      <WorkspaceLead>Preferences are persisted in your home profile (`~/.velum`).</WorkspaceLead>
 
-      <div className="toolbar">
+      <Toolbar>
         <label>
           Default Source
           <select value={defaultSource} onChange={(event) => setDefaultSource(event.target.value)} disabled={props.loading}>
@@ -88,18 +90,18 @@ export function SettingsTab(props: SettingsTabProps) {
           Cell Char Limit
           <input type="number" min={40} max={1000} value={cellLimit} onChange={(event) => setCellLimit(event.target.value)} disabled={props.loading} />
         </label>
-      </div>
+      </Toolbar>
 
-      <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-        <button className="btn" disabled={props.loading} onClick={() => void save()}>
+      <ActionRow>
+        <Button disabled={props.loading} onClick={() => void save()}>
           Save Settings
-        </button>
-        <button className="btn" disabled={props.loading} onClick={() => void resetColumns()}>
+        </Button>
+        <Button disabled={props.loading} onClick={() => void resetColumns()}>
           Reset Sheet Columns
-        </button>
-      </div>
+        </Button>
+      </ActionRow>
 
-      <pre className="feature-output workspace-output">{status}</pre>
-    </section>
+      <WorkspaceOutput>{status}</WorkspaceOutput>
+    </WorkspaceCard>
   );
 }

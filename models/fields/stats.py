@@ -6,8 +6,9 @@ These correspond to 5etools JSON format for D&D 5e monsters and species.
 
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, List, Any
-import pandas as pd
 import re
+
+from ..row_access import is_missing, optional_int, row_value
 
 
 class Speed(BaseModel):
@@ -20,7 +21,7 @@ class Speed(BaseModel):
     climb: Optional[int] = Field(None, description="Climbing speed in feet")
 
     @classmethod
-    def from_row(cls, row: pd.Series) -> 'Speed':
+    def from_row(cls, row) -> 'Speed':
         """
         Parse speeds from DataFrame row.
 
@@ -34,7 +35,7 @@ class Speed(BaseModel):
         """
         def parse_speed(value):
             """Extract numeric speed from various formats."""
-            if pd.isna(value):
+            if is_missing(value):
                 return None
             if isinstance(value, (int, float)):
                 return int(value)
@@ -44,11 +45,11 @@ class Speed(BaseModel):
             return None
 
         return cls(
-            walk=parse_speed(row.get("Speed (Walking)")),
-            fly=parse_speed(row.get("Speed (Flying)")),
-            swim=parse_speed(row.get("Speed (Swimming)")),
-            burrow=parse_speed(row.get("Speed (Burrowing)")),
-            climb=parse_speed(row.get("Speed (Climbing)"))
+            walk=parse_speed(row_value(row, "Speed (Walking)")),
+            fly=parse_speed(row_value(row, "Speed (Flying)")),
+            swim=parse_speed(row_value(row, "Speed (Swimming)")),
+            burrow=parse_speed(row_value(row, "Speed (Burrowing)")),
+            climb=parse_speed(row_value(row, "Speed (Climbing)"))
         )
 
     def to_5etools(self) -> Dict[str, int]:
@@ -67,7 +68,7 @@ class AbilityScores(BaseModel):
     cha: Optional[int] = Field(None, description="Charisma")
 
     @classmethod
-    def from_row(cls, row: pd.Series) -> 'AbilityScores':
+    def from_row(cls, row) -> 'AbilityScores':
         """
         Parse ability scores from DataFrame row.
 
@@ -79,19 +80,13 @@ class AbilityScores(BaseModel):
         Returns:
             AbilityScores instance
         """
-        def parse_score(value):
-            """Extract numeric score, handling NaN."""
-            if pd.isna(value):
-                return None
-            return int(value)
-
         return cls(
-            str_=parse_score(row.get("STR")),
-            dex=parse_score(row.get("DEX")),
-            con=parse_score(row.get("CON")),
-            int_=parse_score(row.get("INT")),
-            wis=parse_score(row.get("WIS")),
-            cha=parse_score(row.get("CHA"))
+            str_=None if is_missing(row_value(row, "STR")) else optional_int(row_value(row, "STR")),
+            dex=None if is_missing(row_value(row, "DEX")) else optional_int(row_value(row, "DEX")),
+            con=None if is_missing(row_value(row, "CON")) else optional_int(row_value(row, "CON")),
+            int_=None if is_missing(row_value(row, "INT")) else optional_int(row_value(row, "INT")),
+            wis=None if is_missing(row_value(row, "WIS")) else optional_int(row_value(row, "WIS")),
+            cha=None if is_missing(row_value(row, "CHA")) else optional_int(row_value(row, "CHA")),
         )
 
 

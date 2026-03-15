@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { styled } from "app/styletron";
 
+import { ActionRowEnd, Button, SelectInput, TextArea, TextInput, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
 import type { SelectedRow } from "shared/types/api";
 import { pickItemName } from "shared/utils/fields";
 
@@ -9,6 +11,10 @@ interface ImageTabProps {
   output: string;
   onRun: (payload: Record<string, unknown>) => Promise<Record<string, unknown> | null>;
 }
+
+const NotesLabel = styled("label", {
+  marginTop: "10px",
+});
 
 export function ImageTab(props: ImageTabProps) {
   const [entityName, setEntityName] = useState("");
@@ -43,51 +49,51 @@ export function ImageTab(props: ImageTabProps) {
   };
 
   return (
-    <section className="workspace-card">
-      <h2>Image Generator</h2>
-      <p>Generate provider-ready image prompt plans based on selected content.</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Image Generator</WorkspaceTitle>
+      <WorkspaceLead>Generate provider-ready image prompt plans based on selected content.</WorkspaceLead>
 
-      <div className="toolbar">
+      <Toolbar>
         <label>
           Entity
-          <input value={entityName} onChange={(event) => setEntityName(event.target.value)} disabled={props.loading || !props.selected} />
+          <TextInput value={entityName} onChange={(event) => setEntityName(event.target.value)} disabled={props.loading || !props.selected} />
         </label>
 
         <label>
           Type
-          <select value={entityType} onChange={(event) => setEntityType(event.target.value)} disabled={props.loading || !props.selected}>
+          <SelectInput value={entityType} onChange={(event) => setEntityType(event.target.value)} disabled={props.loading || !props.selected}>
             <option value="spell">Spell</option>
             <option value="species">Species</option>
             <option value="monster">Monster</option>
             <option value="item">Item</option>
             <option value="location">Location</option>
-          </select>
+          </SelectInput>
         </label>
 
         <label>
           Style
-          <input value={style} onChange={(event) => setStyle(event.target.value)} disabled={props.loading || !props.selected} />
+          <TextInput value={style} onChange={(event) => setStyle(event.target.value)} disabled={props.loading || !props.selected} />
         </label>
-      </div>
+      </Toolbar>
 
-      <label style={{ marginTop: 10 }}>
+      <NotesLabel>
         Prompt Notes
-        <textarea
+        <TextArea
           rows={8}
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           disabled={props.loading || !props.selected}
           placeholder="Extra visual details"
         />
-      </label>
+      </NotesLabel>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
-        <button className="btn" disabled={props.loading || !props.selected} onClick={() => void run()}>
+      <ActionRowEnd>
+        <Button disabled={props.loading || !props.selected} onClick={() => void run()}>
           Generate Plan
-        </button>
-      </div>
+        </Button>
+      </ActionRowEnd>
 
-      <pre className="feature-output workspace-output">{props.output}</pre>
-    </section>
+      <WorkspaceOutput>{props.output}</WorkspaceOutput>
+    </WorkspaceCard>
   );
 }

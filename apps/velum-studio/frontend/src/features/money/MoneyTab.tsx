@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { Button, FeatureOutput, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
 import type { MoneyCatalogResponse } from "shared/types/api";
 
 interface MoneyTabProps {
@@ -58,11 +59,11 @@ export function MoneyTab(props: MoneyTabProps) {
   }, [amount, fromCurrency, matrix, toCurrency]);
 
   return (
-    <section className="workspace-card">
-      <h2>Money</h2>
-      <p>Convert values across currencies using the money matrix from spreadsheet data.</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Money</WorkspaceTitle>
+      <WorkspaceLead>Convert values across currencies using the money matrix from spreadsheet data.</WorkspaceLead>
 
-      <div className="toolbar">
+      <Toolbar>
         <label>
           Amount
           <input type="number" step="any" value={amount} onChange={(event) => setAmount(event.target.value)} disabled={props.loading} />
@@ -92,14 +93,14 @@ export function MoneyTab(props: MoneyTabProps) {
 
         <label>
           Refresh
-          <button className="btn" disabled={props.loading} onClick={() => void props.onRefresh()}>
+          <Button disabled={props.loading} onClick={() => void props.onRefresh()}>
             Reload Matrix
-          </button>
+          </Button>
         </label>
-      </div>
+      </Toolbar>
 
-      <div className="feature-output" style={{ marginTop: 10 }}>{conversion}</div>
-      <pre className="feature-output workspace-output">{JSON.stringify(matrix, null, 2)}</pre>
-    </section>
+      <FeatureOutput>{conversion}</FeatureOutput>
+      <WorkspaceOutput>{JSON.stringify(matrix, null, 2)}</WorkspaceOutput>
+    </WorkspaceCard>
   );
 }

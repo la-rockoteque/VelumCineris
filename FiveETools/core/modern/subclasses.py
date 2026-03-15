@@ -1,56 +1,63 @@
-import pandas as pd
-from FiveETools.core.modern.sources import source, json_source
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
-import inflection
-from collections import defaultdict
-from itertools import count
-import string
+from __future__ import annotations
 
-df_subclasses = modern_sheets.get_sheet_by_name("subclasses")
-df_subclasses.head()
+from FiveETools.datasets import modern_assembly
+from FiveETools.core.modern import sources as source_catalog
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 
-# Load class features with header row offset
-df_class_features = modern_sheets.get_sheet("545140625", header=1)
-df_class_features.head()
+_cache: dict[str, object] = {}
 
 
-def get_features_for_subclass(class_name, subclass_name):
-    def get_feature_label(row):
-        name = row.get("Name")
-        level = int(row.get("Level"))
-
-        return f"{name}|{class_name}|{json_source}|{subclass_name}|{json_source}|{level}|{json_source}"
-
-    return [
-        *[
-            get_feature_label(entry_row)
-            for index, entry_row in df_class_features.iterrows()
-            if pd.notnull(entry_row.get("Class"))
-            and pd.notnull(entry_row.get("Name"))
-            and str(entry_row.get("Subclass")) == subclass_name
-        ]
-    ]
+def get_subclasses_sheet():
+    return modern_assembly.get_subclasses_sheet()
 
 
-def row_to_subclass(row):
-    subclass_name = row.get("Name")
-    class_name = row.get("Class")
-    features = get_features_for_subclass(class_name, subclass_name)
-    subclass = {
-        "name": subclass_name,
-        "source": json_source,
-        "className": class_name,
-        "classSource": json_source,
-        "shortName": subclass_name,
-        "subclassFeatures": features,
-    }
-    return subclass
+def get_class_features_sheet():
+    return modern_assembly.get_class_features_sheet()
 
 
-subclasses_list = [
-    row_to_subclass(row)
-    for index, row in df_subclasses.iterrows()
-    if pd.notnull(row.get("Name"))
-    and str(row.get("Name")).strip() != ""
-    and row.get("Source") == source
+def get_features_for_subclass(class_name, subclass_name, **kwargs):
+    return modern_assembly.get_features_for_subclass(
+        class_name, subclass_name, **kwargs
+    )
+
+
+def row_to_subclass(row, **kwargs):
+    return modern_assembly.row_to_subclass(row, **kwargs)
+
+
+def build_subclasses_list(source_code: str | None = None) -> list[dict]:
+    return modern_assembly.build_subclasses_list(source_code=source_code)
+
+
+_RESOLVERS = {
+    "source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[0],
+    "json_source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[1],
+    "subclasses_list": build_subclasses_list,
+}
+_CACHED_ATTRS = {"subclasses_list"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = [
+    "get_subclasses_sheet",
+    "get_class_features_sheet",
+    "get_features_for_subclass",
+    "row_to_subclass",
+    "build_subclasses_list",
+    "source",
+    "json_source",
+    "subclasses_list",
 ]

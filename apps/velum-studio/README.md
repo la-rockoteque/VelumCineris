@@ -45,14 +45,14 @@ Open:
 From `apps/velum-studio/frontend`:
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 Build static frontend bundle (served by backend at `/app/` when `dist/` exists):
 
 ```bash
-npm run build
+bun run build
 ```
 
 ## Run Electron desktop
@@ -60,8 +60,8 @@ npm run build
 From `apps/velum-studio/desktop`:
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 Electron starts FastAPI and Vite automatically, then opens the React app.

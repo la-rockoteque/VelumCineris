@@ -1,0 +1,200 @@
+import { Canvas, Meta, Story } from "@storybook/blocks";
+
+import {
+  ActionRowEnd,
+  Button,
+  InsetCard,
+  InsetLead,
+  InsetTitle,
+  MetaText,
+  Table,
+  TableWrap,
+  TextInput,
+  WorkspaceCard,
+  WorkspaceLead,
+  WorkspaceTitle,
+} from "../../index";
+
+<Meta title="Patterns/Operational States" />
+
+# Operational States
+
+These are the default interaction patterns for async and high-friction flows in Velum DSM. The goal is consistency across tools and apps, especially where users need to understand whether the interface is loading, scrollable, paginated, saving, disabled, or in error.
+
+## Standard Contract
+
+- Keep layout stable while state changes. Replace content, not the surrounding structure.
+- Show status near the affected region. Do not force users to scan the whole page for feedback.
+- Pair disabled controls with reason text when the reason is not obvious from context.
+- Keep recovery actions adjacent to the state they resolve: retry near errors, save near edited content, pagination near the dataset.
+- Use `MetaText` for secondary status copy and `InsetCard` for contained state messaging.
+
+## Loading
+
+Use the same card shell, preserve form/table height where possible, and disable write actions while work is in flight.
+
+<Canvas>
+  <Story name="Loading State">
+    <WorkspaceCard>
+      <WorkspaceTitle>Compendium Sync</WorkspaceTitle>
+      <WorkspaceLead>Keep the current layout visible and communicate status in place.</WorkspaceLead>
+      <InsetCard>
+        <InsetTitle>Loading</InsetTitle>
+        <InsetLead>Fetching rows from the selected sheet. Controls remain visible but write actions are paused.</InsetLead>
+      </InsetCard>
+      <ActionRowEnd>
+        <Button disabled>Refresh</Button>
+        <Button $variant="primary" disabled>
+          Publish
+        </Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+Recommended use cases:
+
+- Initial data fetch for a workspace card
+- Reloading validation catalogs or translator context
+- Background refresh after a filter or source switch
+
+## Scrolling
+
+Horizontal scroll belongs to the content region, not the page. Wrap wide datasets in `TableWrap` so the shell and surrounding controls stay fixed.
+
+<Canvas>
+  <Story name="Scrollable Data Region">
+    <WorkspaceCard>
+      <WorkspaceTitle>Wide Dataset</WorkspaceTitle>
+      <MetaText>Prefer local overflow instead of forcing page-level horizontal scroll.</MetaText>
+      <TableWrap>
+        <Table
+          minWidth="760px"
+          rows={[
+            { name: "Magic Missile", source: "PHB", school: "Evocation", tag: "Ready" },
+            { name: "Counterspell", source: "PHB", school: "Abjuration", tag: "Review" },
+          ]}
+          columns={[
+            { key: "name", header: "Name" },
+            { key: "source", header: "Source" },
+            { key: "school", header: "School" },
+            { key: "tag", header: "Status" },
+          ]}
+        />
+      </TableWrap>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+Recommended use cases:
+
+- Compendium and validation tables
+- Preview panes with many columns
+- Related-record sections in details views
+
+## Pagination
+
+Pagination metadata and controls should sit directly below the dataset, with the current range or page count visible at all times.
+
+<Canvas>
+  <Story name="Pagination Contract">
+    <WorkspaceCard>
+      <WorkspaceTitle>Paginated Results</WorkspaceTitle>
+      <MetaText>Page 3 of 12 · 241 total rows</MetaText>
+      <ActionRowEnd>
+        <Button>Prev</Button>
+        <Button $variant="primary">Next</Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+Recommended use cases:
+
+- Server-backed row browsing
+- Log/history pages
+- Search results with stable result counts
+
+## Saving
+
+Saving states should preserve edit context. Keep the form active when safe, show the save phase in text, and disable only actions that would conflict with the current write.
+
+<Canvas>
+  <Story name="Saving State">
+    <WorkspaceCard>
+      <WorkspaceTitle>Details Editor</WorkspaceTitle>
+      <WorkspaceLead>Users should keep their bearings while a save is underway.</WorkspaceLead>
+      <label>
+        Name
+        <TextInput value="Arcane Beacon" readOnly />
+      </label>
+      <InsetCard>
+        <InsetTitle>Saving</InsetTitle>
+        <InsetLead>Writing changes to the selected row and syncing dependent fields.</InsetLead>
+      </InsetCard>
+      <ActionRowEnd>
+        <Button disabled>Discard</Button>
+        <Button $variant="primary" disabled>
+          Saving...
+        </Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+Recommended use cases:
+
+- Record editors with autosave or manual publish
+- Mutation flows with linked-field synchronization
+- Integration actions that have a dry-run and live mode
+
+## Disabled
+
+Disabled controls need surrounding context so the user understands what prerequisite is missing.
+
+<Canvas>
+  <Story name="Disabled With Reason">
+    <WorkspaceCard>
+      <WorkspaceTitle>Image Generator</WorkspaceTitle>
+      <MetaText>Select a row before generating prompts or artwork.</MetaText>
+      <ActionRowEnd>
+        <Button disabled>Generate Prompt</Button>
+        <Button $variant="primary" disabled>
+          Generate Image
+        </Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+Recommended use cases:
+
+- Actions that require row selection
+- Submit buttons gated on validation
+- Integrations blocked by missing credentials or settings
+
+## Error Management
+
+Errors should be specific, local to the failing surface, and recoverable. Use a contained state card plus a direct retry path.
+
+<Canvas>
+  <Story name="Recoverable Error">
+    <WorkspaceCard>
+      <WorkspaceTitle>Translator</WorkspaceTitle>
+      <InsetCard>
+        <InsetTitle>Error</InsetTitle>
+        <InsetLead>The language context could not be loaded. Check the selected source sheet and retry.</InsetLead>
+      </InsetCard>
+      <ActionRowEnd>
+        <Button>Retry</Button>
+        <Button $variant="ghost">Open Logs</Button>
+      </ActionRowEnd>
+    </WorkspaceCard>
+  </Story>
+</Canvas>
+
+Recommended use cases:
+
+- Failed API reads or writes
+- Missing validation sheets
+- Integration failures with partial success or retry semantics

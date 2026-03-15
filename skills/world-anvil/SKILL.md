@@ -13,11 +13,13 @@ Operate World Anvil integrations for this workspace.
 2. Inspect mapping files in `WorldAnvil/core/mapping/` and update field mappings first.
 3. Update API interaction logic in `WorldAnvil/core/Helpers/WorldAnvilAPI.py` only when payload shape or endpoint behavior changes.
 4. Use captured examples in `WorldAnvil/core/requests/` to verify request and response expectations.
-5. Adjust notebook/script usage in `WorldAnvil/world_anvil_sync.ipynb` after mapping/API changes.
-6. Compile changed modules and report migration notes.
+5. Keep the compatibility shim at `WorldAnvil/WorldAnvilAPI.py` aligned if the canonical API surface changes.
+6. Adjust notebook/script usage in `WorldAnvil/world_anvil_sync.ipynb` after mapping/API changes.
+7. Compile changed modules and report migration notes.
 
 ## Project Anchors
 
+- `WorldAnvil/WorldAnvilAPI.py`
 - `WorldAnvil/core/Helpers/WorldAnvilAPI.py`
 - `WorldAnvil/core/mapping/`
 - `WorldAnvil/core/requests/`

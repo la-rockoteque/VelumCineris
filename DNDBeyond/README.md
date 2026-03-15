@@ -46,16 +46,28 @@ poetry run jupyter notebook DNDBeyond/dnd_beyond_backgrounds.ipynb
 poetry run jupyter notebook DNDBeyond/dnd_beyond_feats.ipynb
 ```
 
+### 4. Export Offline Payloads (Normalized CLI)
+
+```bash
+# Build converted D&D Beyond payloads from FiveETools source data
+poetry run python -m DNDBeyond.cli export-payloads --entity spell --setting modern --limit 10
+```
+
 ## Architecture
 
 ### Components
 
 ```
 DNDBeyond/
+├── cli.py                      # Normalized CLI entrypoint
+├── datasets/                   # Entity loading adapters
+├── mappers/                    # Payload conversion adapters
+├── services/                   # Payload build orchestration
+├── exports/                    # JSON payload export helpers
 ├── scripts/
 │   ├── get_ddb_tokens.py    # Automated token extraction
 │   └── README.md             # Script documentation
-├── helpers/
+├── helpers/                    # Compatibility layer to core/Helpers
 │   ├── client.py             # HTTP client for D&D Beyond API
 │   ├── converter.py          # 5etools → D&D Beyond format conversion
 │   ├── utils.py              # Utility functions
@@ -66,6 +78,7 @@ DNDBeyond/
 │       ├── species.py        # Species sync logic
 │       ├── backgrounds.py    # Background sync logic
 │       └── feats.py          # Feat sync logic
+├── core/Helpers/              # Canonical sync and API internals
 ├── pages/                    # Saved HTML pages for reference
 ├── requests/                 # Sample request/response data
 ├── dnd_beyond_*.ipynb        # Sync notebooks (one per entity type)
@@ -226,6 +239,6 @@ When adding support for new entity types:
 
 ## Related Files
 
-- `FiveETools/gsheets_client.py` - Google Sheets data access
-- `FiveETools/{fantasy|modern}/*.py` - Source data converters
+- `Spreadsheet/sheets.py` - Google Sheets data access
+- `FiveETools/core/{fantasy|modern}/*.py` - Source data converters
 - `CLAUDE.md` - Project-wide documentation

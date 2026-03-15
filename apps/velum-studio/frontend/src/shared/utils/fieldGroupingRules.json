@@ -1,0 +1,274 @@
+{
+  "groupingRules": {
+    "generic": {
+      "buckets": [
+        {
+          "bucket": "identity",
+          "type": "anyTerm",
+          "terms": ["name", "title", "source", "type", "subtype", "level", "school", "cr"]
+        },
+        {
+          "bucket": "description",
+          "type": "anyTermOrRawLengthAtLeast",
+          "terms": ["description", "details", "summary", "lore", "note", "text"],
+          "rawLengthAtLeast": 260
+        },
+        {
+          "bucket": "classification",
+          "type": "anyTerm",
+          "terms": ["class", "subclass", "species", "language", "tag", "alignment", "size"]
+        },
+        {
+          "bucket": "mechanics",
+          "type": "anyTerm",
+          "terms": ["distance", "duration", "range", "amount", "time", "component", "damage", "save", "dc"]
+        },
+        {
+          "bucket": "publishing",
+          "type": "anyTerm",
+          "terms": ["worldanvil", "dndbeyond", "homebrewery", "obsidian", "fivetools", "ddb", "url", "link"]
+        }
+      ]
+    },
+    "spell": {
+      "skip": {
+        "exact": ["alternativeflavor", "anomalyeffect"],
+        "containsAny": [
+          {
+            "containsAny": ["ddb", "worldanvil"],
+            "unlessContainsAny": ["error"]
+          }
+        ],
+        "conditional": [
+          {
+            "whenExact": "bloodpacteffect",
+            "requiresField": "bloodpact",
+            "requiredValue": "true"
+          }
+        ]
+      },
+      "buckets": [
+        {
+          "bucket": "identity",
+          "type": "anyTerm",
+          "terms": ["spellname", "source", "page", "foundrytag", "tag", "theme", "class", "newclass", "level", "school", "bloodpact", "arcanestrain", "reference"]
+        },
+        {
+          "bucket": "description",
+          "type": "anyTerm",
+          "terms": ["description", "notes", "clarification", "table", "flavor", "quotes", "quote"]
+        },
+        {
+          "bucket": "mechanics",
+          "type": "anyTerm",
+          "terms": ["range", "duration", "casting", "ritual", "savingthrow", "success", "fail", "skillcheck", "abilitycheck", "trigger", "upto", "concentration", "dc", "damage", "condition", "area", "component", "scaling", "modifier", "technomagic"]
+        }
+      ]
+    },
+    "monster": {
+      "skip": {
+        "exact": ["barename", "newtype", "basedescription"],
+        "startsWith": ["temp"]
+      },
+      "buckets": [
+        {
+          "bucket": "identity",
+          "type": "anyTerm",
+          "terms": ["name", "variant", "source", "size", "type", "subtype", "alignment", "cr", "xp"]
+        },
+        {
+          "bucket": "abilities",
+          "type": "exact",
+          "terms": ["str", "dex", "con", "int", "wis", "cha"]
+        },
+        {
+          "bucket": "traits",
+          "type": "exact",
+          "terms": ["traits"]
+        },
+        {
+          "bucket": "actions",
+          "type": "anyTerm",
+          "terms": ["actions", "reactions", "bonusactions", "legendaryactions", "legendaryaction", "mythicaction", "mythicactions", "lairaction", "regionaleffect", "regionalfade"]
+        },
+        {
+          "bucket": "speeds",
+          "type": "anyTerm",
+          "terms": ["speedwalking", "speedswimming", "speedflying", "speedburrowing", "speedclimbing", "teleport", "jump", "hover", "glide"]
+        },
+        {
+          "bucket": "defenses",
+          "type": "anyTerm",
+          "terms": ["damagevulnerabilities", "damageresistances", "damageimmunities", "conditionimmunities", "weakness", "weaknesses"]
+        },
+        {
+          "bucket": "stats",
+          "type": "anyTerm",
+          "terms": ["senses", "visionrange", "passiveperception", "languages", "proficiencybonus", "savingthrows", "armorclass", "armortype", "hitdice", "hitpoints", "initiative", "skills"]
+        },
+        {
+          "bucket": "description",
+          "type": "anyTerm",
+          "terms": ["description", "sidebar", "chargenprompt", "preview"]
+        }
+      ],
+      "postFilters": [
+        {
+          "bucket": "stats",
+          "excludeEndsWith": ["mod"]
+        },
+        {
+          "bucket": "abilities",
+          "excludeEndsWith": ["mod"]
+        }
+      ]
+    },
+    "species": {
+      "skip": {
+        "exact": ["score1", "score2"]
+      },
+      "buckets": [
+        {
+          "bucket": "identity",
+          "type": "anyTerm",
+          "terms": ["name", "source", "demonym", "tag", "alias", "slogan", "quote", "size"]
+        },
+        {
+          "bucket": "stats",
+          "type": "anyTerm",
+          "terms": ["ability", "score", "walkspeed", "flyspeed", "speed", "vision", "age"]
+        },
+        {
+          "bucket": "languages",
+          "type": "anyTerm",
+          "terms": ["language"]
+        },
+        {
+          "bucket": "traits",
+          "type": "startsWith",
+          "terms": ["trait"]
+        },
+        {
+          "bucket": "lore",
+          "type": "anyTerm",
+          "terms": ["intro", "origin", "appearance", "cultureidentity", "societalroles", "namingconventions", "lifeinorimond", "playstyleroleplaying"]
+        },
+        {
+          "bucket": "media",
+          "type": "anyTerm",
+          "terms": ["preview", "image", "chargen", "ddb", "wa"]
+        }
+      ]
+    },
+    "feat": {
+      "buckets": [
+        {
+          "bucket": "identity",
+          "type": "anyTerm",
+          "terms": ["name", "source", "page", "category", "tag", "feattype"]
+        },
+        {
+          "bucket": "prerequisites",
+          "type": "startsWith",
+          "terms": ["prerequisite"]
+        },
+        {
+          "bucket": "benefits",
+          "type": "anyTerm",
+          "terms": ["asi", "grantschoice", "choicecount", "actiontype", "reactiontrigger", "bonusactioncondition", "usagetype", "usageamount", "usagereset", "scalingtype", "scalingvalue"]
+        },
+        {
+          "bucket": "effects",
+          "type": "anyTerm",
+          "terms": ["grantedspells", "spellcastingability", "savedcformula", "attackbonusformula", "conditionsapplied", "modifiersgranted", "proficienciesgranted", "sensesgranted", "movementgranted"]
+        },
+        {
+          "bucket": "rules",
+          "type": "anyTerm",
+          "terms": ["rulestext", "rulesbullets", "passiveeffects", "activeeffects", "resourceinteraction", "limitations", "designernotes"]
+        }
+      ]
+    },
+    "background": {
+      "buckets": [
+        {
+          "bucket": "identity",
+          "type": "anyTerm",
+          "terms": ["name", "source", "page", "category", "tag"]
+        },
+        {
+          "bucket": "feature",
+          "type": "startsWith",
+          "terms": ["feature"]
+        },
+        {
+          "bucket": "languages",
+          "type": "anyTerm",
+          "terms": ["languagechoice", "languagecount"]
+        },
+        {
+          "bucket": "proficiencies",
+          "type": "anyTerm",
+          "terms": ["skillproficiency", "toolproficiency"]
+        },
+        {
+          "bucket": "roleplay",
+          "type": "anyTerm",
+          "terms": ["personalitytraits", "ideals", "bonds", "flaws"]
+        },
+        {
+          "bucket": "description",
+          "type": "anyTerm",
+          "terms": ["equipmenttext", "limitations", "designernotes", "goldalternative", "starting"]
+        }
+      ]
+    }
+  },
+  "sectionOrder": {
+    "default": [
+      { "bucket": "identity", "label": "Identity" },
+      { "bucket": "description", "label": "Description" },
+      { "bucket": "classification", "label": "Classification" },
+      { "bucket": "mechanics", "label": "Mechanics" },
+      { "bucket": "publishing", "label": "Publishing" },
+      { "bucket": "additional", "label": "Additional" }
+    ],
+    "species": [
+      { "bucket": "identity", "label": "Identifier" },
+      { "bucket": "stats", "label": "Stats" },
+      { "bucket": "languages", "label": "Languages" },
+      { "bucket": "traits", "label": "Traits" },
+      { "bucket": "lore", "label": "Lore" },
+      { "bucket": "media", "label": "Media" },
+      { "bucket": "additional", "label": "Additional" }
+    ],
+    "feat": [
+      { "bucket": "identity", "label": "Identifier" },
+      { "bucket": "prerequisites", "label": "Prerequisites" },
+      { "bucket": "benefits", "label": "Benefits" },
+      { "bucket": "effects", "label": "Effects" },
+      { "bucket": "rules", "label": "Rules" },
+      { "bucket": "additional", "label": "Additional" }
+    ],
+    "monster": [
+      { "bucket": "identity", "label": "Identifier" },
+      { "bucket": "stats", "label": "Core Stats" },
+      { "bucket": "abilities", "label": "Abilities" },
+      { "bucket": "defenses", "label": "Defenses" },
+      { "bucket": "speeds", "label": "Speeds" },
+      { "bucket": "traits", "label": "Traits" },
+      { "bucket": "actions", "label": "Actions" },
+      { "bucket": "description", "label": "Description" },
+      { "bucket": "additional", "label": "Additional" }
+    ],
+    "background": [
+      { "bucket": "identity", "label": "Identifier" },
+      { "bucket": "feature", "label": "Feature" },
+      { "bucket": "languages", "label": "Languages" },
+      { "bucket": "proficiencies", "label": "Proficiencies" },
+      { "bucket": "roleplay", "label": "Roleplay Tables" },
+      { "bucket": "description", "label": "Description" },
+      { "bucket": "additional", "label": "Additional" }
+    ]
+  }
+}

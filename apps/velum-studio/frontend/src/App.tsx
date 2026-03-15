@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { styled } from "app/styletron";
+import brickAndMossUrl from "../assets/brick_and_moss.png?url";
 
 import { CurrentItemProvider, CurrentSheetProvider, useCurrentItem, useCurrentSheet } from "app/currentSelectionContext";
 import { useAppData } from "app/useAppData";
@@ -31,6 +33,183 @@ const tabs: Array<{ key: TabKey; label: string }> = [
   { key: "settings", label: "Settings" },
 ];
 
+const riseInAnimation = {
+  from: {
+    opacity: 0,
+    transform: "translateY(14px)",
+  },
+  to: {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+};
+
+const fadeInAnimation = {
+  from: {
+    opacity: 0,
+    transform: "translateY(8px)",
+  },
+  to: {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+};
+
+const AppRoot = styled("div", {
+  minHeight: "100vh",
+  color: "var(--ink)",
+  background: `url("${brickAndMossUrl}") center / cover fixed no-repeat`,
+  overflowX: "hidden",
+});
+
+const BgShapeA = styled("div", {
+  position: "fixed",
+  borderRadius: "999px",
+  filter: "blur(44px)",
+  pointerEvents: "none",
+  opacity: 0.45,
+  width: "380px",
+  height: "380px",
+  top: "-80px",
+  right: "-120px",
+  background: "#c99863",
+});
+
+const BgShapeB = styled("div", {
+  position: "fixed",
+  borderRadius: "999px",
+  filter: "blur(44px)",
+  pointerEvents: "none",
+  opacity: 0.45,
+  width: "300px",
+  height: "300px",
+  bottom: "-120px",
+  left: "-90px",
+  background: "#7d9566",
+});
+
+const AppShell = styled("main", {
+  maxWidth: "1440px",
+  margin: "28px auto",
+  padding: "20px",
+  border: "1px solid var(--border)",
+  borderRadius: "20px",
+  background: "var(--surface)",
+  backdropFilter: "blur(8px)",
+  animationName: riseInAnimation,
+  animationDuration: "320ms",
+  animationTimingFunction: "ease-out",
+  "@media (max-width: 860px)": {
+    margin: "12px",
+    padding: "14px",
+    borderRadius: "14px",
+  },
+});
+
+const AppHeader = styled("header", {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  gap: "16px",
+  "@media (max-width: 860px)": {
+    flexDirection: "column",
+    alignItems: "stretch",
+  },
+});
+
+const AppTitle = styled("h1", {
+  margin: 0,
+  fontFamily: "\"Avenir Next Condensed\", \"Franklin Gothic Medium\", sans-serif",
+  letterSpacing: "0.05em",
+  textTransform: "uppercase",
+});
+
+const AppSubtitle = styled("p", {
+  margin: "6px 0 0",
+  color: "var(--ink-soft)",
+});
+
+const HeaderStatus = styled("div", {
+  display: "grid",
+  gap: "8px",
+  justifyItems: "end",
+  "@media (max-width: 860px)": {
+    justifyItems: "start",
+  },
+});
+
+const SelectionPills = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "8px",
+  justifyContent: "flex-end",
+  "@media (max-width: 860px)": {
+    justifyContent: "flex-start",
+  },
+});
+
+const Pill = styled("div", ({ $tone }: { $tone: "info" | "ok" | "warn" }) => ({
+  border: "1px solid var(--border)",
+  borderRadius: "999px",
+  padding: "7px 12px",
+  fontSize: "0.85rem",
+  background: "var(--surface-strong)",
+  ...($tone === "info"
+    ? {
+        color: "#5d513f",
+        borderColor: "rgba(114, 83, 44, 0.28)",
+      }
+    : {}),
+  ...($tone === "ok"
+    ? {
+        color: "var(--ok)",
+        borderColor: "rgba(43, 122, 63, 0.35)",
+      }
+    : {}),
+  ...($tone === "warn"
+    ? {
+        color: "var(--warn)",
+        borderColor: "rgba(154, 107, 24, 0.35)",
+      }
+    : {}),
+}));
+
+const Tabs = styled("nav", {
+  marginTop: "20px",
+  display: "grid",
+  gap: "8px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+  "@media (max-width: 860px)": {
+    gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
+  },
+});
+
+const TabButton = styled("button", ({ $active }: { $active: boolean }) => ({
+  border: "1px solid var(--border)",
+  borderRadius: "10px",
+  padding: "10px 12px",
+  background: "var(--surface-strong)",
+  color: $active ? "var(--ink)" : "var(--ink-soft)",
+  fontWeight: 700,
+  cursor: "pointer",
+  transition: "all 180ms ease",
+  borderColor: $active ? "rgba(155, 77, 31, 0.5)" : "var(--border)",
+  boxShadow: $active ? "inset 0 -3px 0 var(--accent-soft)" : "none",
+  ":hover": {
+    color: "var(--ink)",
+    borderColor: "rgba(155, 77, 31, 0.5)",
+    boxShadow: "inset 0 -3px 0 var(--accent-soft)",
+  },
+}));
+
+const Panel = styled("section", {
+  marginTop: "16px",
+  display: "block",
+  animationName: fadeInAnimation,
+  animationDuration: "240ms",
+  animationTimingFunction: "ease",
+});
+
 function HeaderSelectionStatus(props: { health: "ok" | "warn" }) {
   const sheet = useCurrentSheet();
   const item = useCurrentItem();
@@ -39,13 +218,13 @@ function HeaderSelectionStatus(props: { health: "ok" | "warn" }) {
   const itemLabel = item.selected ? `${item.name || "Unnamed"} · #${item.selected.rowNumber}` : "No item selected";
 
   return (
-    <div className="app-header-status">
-      <div className={`pill ${props.health === "ok" ? "ok" : "warn"}`}>{props.health === "ok" ? "API healthy" : "API unavailable"}</div>
-      <div className="app-selection-pills">
-        <div className="pill info">Sheet: {sheetLabel}</div>
-        <div className="pill info">Item: {itemLabel}</div>
-      </div>
-    </div>
+    <HeaderStatus>
+      <Pill $tone={props.health === "ok" ? "ok" : "warn"}>{props.health === "ok" ? "API healthy" : "API unavailable"}</Pill>
+      <SelectionPills>
+        <Pill $tone="info">Sheet: {sheetLabel}</Pill>
+        <Pill $tone="info">Item: {itemLabel}</Pill>
+      </SelectionPills>
+    </HeaderStatus>
   );
 }
 
@@ -111,38 +290,38 @@ export default function App() {
   };
 
   return (
-    <>
-      <div className="bg-shape bg-a" />
-      <div className="bg-shape bg-b" />
+    <AppRoot>
+      <BgShapeA />
+      <BgShapeB />
 
       <CurrentSheetProvider value={currentSheet}>
         <CurrentItemProvider value={state.selected}>
-          <main className="app-shell">
-            <header className="app-header">
+          <AppShell>
+            <AppHeader>
               <div>
-                <h1>Velum Studio</h1>
-                <p>Spreadsheet-first desktop workflow for compendium authoring and publishing.</p>
+                <AppTitle>Velum Studio</AppTitle>
+                <AppSubtitle>Spreadsheet-first desktop workflow for compendium authoring and publishing.</AppSubtitle>
               </div>
               <HeaderSelectionStatus health={health} />
-            </header>
+            </AppHeader>
 
             <ErrorBanner error={state.error} onClose={actions.clearError} />
 
-            <nav className="tabs" aria-label="Workspace tabs">
+            <Tabs aria-label="Workspace tabs">
               {tabs.map((tab) => (
-                <button
+                <TabButton
+                  $active={state.activeTab === tab.key}
                   key={tab.key}
                   type="button"
-                  className={`tab ${state.activeTab === tab.key ? "active" : ""}`.trim()}
                   onClick={() => actions.setActiveTab(tab.key)}
                 >
                   {tab.label}
-                </button>
+                </TabButton>
               ))}
-            </nav>
+            </Tabs>
 
             {state.activeTab === "compendium" && (
-              <section className="panel active">
+              <Panel>
                 <CompendiumTab
                   loading={state.loading}
                   sources={state.sources}
@@ -185,11 +364,11 @@ export default function App() {
                   onOpenContext={onOpenContext}
                   onIntegrationAction={onIntegrationAction}
                 />
-              </section>
+              </Panel>
             )}
 
         {state.activeTab === "validations" && (
-          <section className="panel active">
+          <Panel>
             <ValidationsTab
               loading={state.loading}
               source={state.source}
@@ -197,11 +376,11 @@ export default function App() {
               cellCharLimit={cellCharLimit}
               onLoadValidationRows={(sheet) => actions.loadValidationSheetRows(sheet)}
             />
-          </section>
+          </Panel>
         )}
 
         {state.activeTab === "details" && (
-          <section className="panel active">
+          <Panel>
             <DetailsTab
               loading={state.loading}
               selected={state.selected}
@@ -222,11 +401,11 @@ export default function App() {
               }
               lookupFieldOptions={actions.lookupFieldOptions}
             />
-          </section>
+          </Panel>
         )}
 
         {state.activeTab === "formatter" && (
-          <section className="panel active">
+          <Panel>
             <FormatterTab
               loading={state.loading}
               source={state.source}
@@ -263,11 +442,11 @@ export default function App() {
                 })
               }
             />
-          </section>
+          </Panel>
         )}
 
         {state.activeTab === "intelligence" && (
-          <section className="panel active">
+          <Panel>
             <IntelligenceTab
               loading={state.loading}
               selected={state.selected}
@@ -281,11 +460,11 @@ export default function App() {
                 })
               }
             />
-          </section>
+          </Panel>
         )}
 
         {state.activeTab === "translator" && (
-          <section className="panel active">
+          <Panel>
             <TranslatorTab
               loading={state.loading}
               source={state.source}
@@ -302,11 +481,11 @@ export default function App() {
                 })
               }
             />
-          </section>
+          </Panel>
         )}
 
         {state.activeTab === "image" && (
-          <section className="panel active">
+          <Panel>
             <ImageTab
               loading={state.loading}
               selected={state.selected}
@@ -320,11 +499,11 @@ export default function App() {
                 })
               }
             />
-          </section>
+          </Panel>
         )}
 
         {state.activeTab === "money" && (
-          <section className="panel active">
+          <Panel>
             <MoneyTab
               loading={state.loading}
               moneyCatalog={state.moneyCatalog}
@@ -334,11 +513,11 @@ export default function App() {
                 })
               }
             />
-          </section>
+          </Panel>
         )}
 
         {state.activeTab === "timeline" && (
-          <section className="panel active">
+          <Panel>
             <TimelineTab
               loading={state.loading}
               timelineCatalog={state.timelineCatalog}
@@ -353,11 +532,11 @@ export default function App() {
                 })
               }
             />
-          </section>
+          </Panel>
         )}
 
             {state.activeTab === "settings" && (
-              <section className="panel active">
+              <Panel>
                 <SettingsTab
                   loading={state.loading}
                   source={state.source}
@@ -373,14 +552,14 @@ export default function App() {
                     })
                   }
                 />
-              </section>
+              </Panel>
             )}
-          </main>
+          </AppShell>
 
           <LoadingOverlay visible={state.loading} message="Working" />
           <ToastHost items={toasts.items} onDismiss={toasts.dismiss} />
         </CurrentItemProvider>
       </CurrentSheetProvider>
-    </>
+    </AppRoot>
   );
 }

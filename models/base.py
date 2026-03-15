@@ -4,9 +4,10 @@ Base entity classes for VelumCineris D&D 5e content models.
 Provides BaseEntity with dict-like access for backward compatibility.
 """
 
-from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional, Any, Dict, List
-import pandas as pd
+from collections.abc import Mapping
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class DictAccessMixin:
@@ -48,14 +49,14 @@ class BaseEntity(BaseModel, DictAccessMixin):
     fluff: Optional[Dict[str, Any]] = Field(None, description="Flavor text and lore")
 
     @classmethod
-    def from_row(cls, row: pd.Series, **kwargs):
+    def from_row(cls, row: Mapping[str, Any] | Any, **kwargs):
         """
-        Create entity from pandas DataFrame row.
+        Create entity from a tabular row mapping.
 
         Must be implemented by subclasses with entity-specific logic.
 
         Args:
-            row: DataFrame row with entity data
+            row: Row-like mapping with entity data
             **kwargs: Additional context (source, json_source, etc.)
 
         Returns:

@@ -1,17 +1,41 @@
-from models.datasets.sources import source, json_source, fantasy_sheets
-from Spreadsheet.core.converters.language import LanguageConverter
+from __future__ import annotations
+
+from typing import cast
+
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 from models.entities.language import Language
-from typing import List
+from Spreadsheet.core.converters.language import LanguageConverter
 
-df_language = fantasy_sheets.get_sheet_by_name("languages")
-df_language.head()
+from models.datasets.registry import get_converter as get_registered_converter
+from models.datasets.registry import load_dataset
+from models.datasets.sources import DEFAULT_SOURCE
 
-# NEW: Pydantic-based conversion for type safety
+_attr_cache: dict[str, object] = {}
 
 
-converter = LanguageConverter(fantasy_sheets)
-language_pydantic: List[Language] = converter.convert_all(
-    source_filter=None,  # Languages don't have Source column
-    source=source,
-    json_source=json_source
-)
+def get_converter() -> LanguageConverter:
+    return cast(LanguageConverter, get_registered_converter("languages"))
+
+
+def load_language_pydantic(source_code: str = DEFAULT_SOURCE) -> list[Language]:
+    return cast(list[Language], load_dataset("languages", source_code))
+
+
+_RESOLVERS = {
+    "converter": get_converter,
+    "language_pydantic": load_language_pydantic,
+}
+_CACHED_ATTRS: set[str] = set()
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_attr_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = ["get_converter", "load_language_pydantic", "converter", "language_pydantic"]

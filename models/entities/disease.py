@@ -4,8 +4,8 @@ Disease entity model for D&D 5e.
 Provides type-safe validation for disease data from Google Sheets.
 """
 
-import pandas as pd
 from ..base import BaseEntity
+from ..row_access import optional_int, optional_text, row_value
 
 
 class Disease(BaseEntity):
@@ -16,7 +16,7 @@ class Disease(BaseEntity):
     """
 
     @classmethod
-    def from_row(cls, row: pd.Series, source: str, json_source: str) -> 'Disease':
+    def from_row(cls, row, source: str, json_source: str) -> 'Disease':
         """
         Create Disease from DataFrame row.
 
@@ -31,12 +31,13 @@ class Disease(BaseEntity):
         # Collect entries (symptoms, effects, cure, prognosis)
         entries = []
         for field in ["Symptoms", "In-Game Effects", "Cure", "Prognosis"]:
-            if pd.notnull(row.get(field)):
-                entries.append(row.get(field))
+            value = optional_text(row_value(row, field))
+            if value:
+                entries.append(value)
 
         return cls(
             source=json_source,
-            name=row.get("Name", "Unnamed Disease"),
-            page=0,
+            name=optional_text(row_value(row, "Name")) or "Unnamed Disease",
+            page=optional_int(row_value(row, "Page"), 0),
             entries=entries
         )

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { MetaText, TableWrap, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceTitle } from "shared/library";
 import type { SpreadsheetRowsResponse } from "shared/types/api";
 import { asText, truncateText } from "shared/utils/text";
 
@@ -44,11 +45,11 @@ export function ValidationsTab(props: ValidationsTabProps) {
   const colCount = useMemo(() => Math.max(1, columns.length), [columns.length]);
 
   return (
-    <section className="workspace-card">
-      <h2>Validations</h2>
-      <p>Validation sheets are the source for dropdown and enum-like choices in details editing.</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Validations</WorkspaceTitle>
+      <WorkspaceLead>Validation sheets are the source for dropdown and enum-like choices in details editing.</WorkspaceLead>
 
-      <div className="toolbar">
+      <Toolbar>
         <label>
           Validation Sheet
           <select value={sheet} onChange={(event) => setSheet(event.target.value)} disabled={props.loading}>
@@ -59,11 +60,11 @@ export function ValidationsTab(props: ValidationsTabProps) {
             ))}
           </select>
         </label>
-      </div>
+      </Toolbar>
 
-      <div className="meta">{meta}</div>
+      <MetaText>{meta}</MetaText>
 
-      <div className="table-wrap">
+      <TableWrap>
         <table>
           <thead>
             <tr>
@@ -93,7 +94,7 @@ export function ValidationsTab(props: ValidationsTabProps) {
             )}
           </tbody>
         </table>
-      </div>
-    </section>
+      </TableWrap>
+    </WorkspaceCard>
   );
 }

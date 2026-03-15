@@ -11,7 +11,17 @@ Requires:
 import pandas as pd
 
 import random
-from gsheets_client import gsheets
+import sys
+from pathlib import Path
+
+try:
+  from Spreadsheet.sheets import gsheets
+except ModuleNotFoundError:
+  for parent in Path(__file__).resolve().parents:
+    if (parent / "Spreadsheet").is_dir():
+      sys.path.append(str(parent))
+      break
+  from Spreadsheet.sheets import gsheets
 from llm_wordgen.grammar_context import build_grammar_info, build_language_metadata
 
 def random_lexeme(word, language):

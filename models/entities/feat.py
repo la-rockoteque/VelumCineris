@@ -4,8 +4,8 @@ Feat entity model for D&D 5e.
 Provides type-safe validation for feat data from Google Sheets.
 """
 
-import pandas as pd
 from ..base import BaseEntity
+from ..row_access import iter_present_values, optional_text, row_value, values_after_key
 
 
 class Feat(BaseEntity):
@@ -16,7 +16,7 @@ class Feat(BaseEntity):
     """
 
     @classmethod
-    def from_row(cls, row: pd.Series, source: str, json_source: str) -> 'Feat':
+    def from_row(cls, row, source: str, json_source: str) -> 'Feat':
         """
         Create Feat from DataFrame row.
 
@@ -32,20 +32,20 @@ class Feat(BaseEntity):
         entries = []
 
         # Add flavor text
-        if pd.notnull(row.get("Flavor Text")):
-            entries.append(row.get("Flavor Text"))
+        flavor_text = optional_text(row_value(row, "Flavor Text"))
+        if flavor_text:
+            entries.append(flavor_text)
 
         # Add all columns after "Feat" column
         try:
-            feat_pos = row.index.get_loc("Feat")
-            feat_entries = row.iloc[feat_pos:].dropna().tolist()
+            feat_entries = iter_present_values(values_after_key(row, "Feat"))
             entries.extend(feat_entries)
-        except (KeyError, AttributeError):
+        except (KeyError, AttributeError, TypeError):
             # If "Feat" column doesn't exist, just use flavor text
             pass
 
         return cls(
             source=json_source,
-            name=row.get("Name", "Unnamed Feat").lower(),
+            name=(optional_text(row_value(row, "Name")) or "Unnamed Feat").lower(),
             entries=entries
         )

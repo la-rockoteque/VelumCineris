@@ -1,5 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
+import { styled } from "app/styletron";
 
+import {
+  ActionRow,
+  Button,
+  InsetCard,
+  InsetTitle,
+  SelectInput,
+  TableWrap,
+  TextArea,
+  Toolbar,
+  WorkbenchLayout,
+  WorkbenchMain,
+  WorkbenchSidebar,
+  WorkspaceCard,
+  WorkspaceLead,
+  WorkspaceOutput,
+  WorkspaceTitle,
+} from "shared/library";
 import type { SelectedRow, TranslatorContextResponse } from "shared/types/api";
 import { pickItemName } from "shared/utils/fields";
 import { truncateText } from "shared/utils/text";
@@ -16,6 +34,33 @@ interface TranslatorTabProps {
   onLoadContext: (target: string) => Promise<TranslatorContextResponse | null>;
   onTranslate: (target: string, text: string) => Promise<void>;
 }
+
+const ResultText = styled("p", {
+  margin: 0,
+  fontSize: "0.94rem",
+  color: "#3f3529",
+});
+
+const ContextSummary = styled("div", {
+  color: "#5d513f",
+  fontSize: "0.8rem",
+});
+
+const ContextContainer = styled("div", {
+  marginTop: "8px",
+  display: "grid",
+  gap: "8px",
+});
+
+const ContextBlock = styled("article", {
+  display: "grid",
+  gap: "6px",
+});
+
+const ContextEmpty = styled("div", {
+  fontSize: "0.78rem",
+  color: "#736854",
+});
 
 export function TranslatorTab(props: TranslatorTabProps) {
   const [targets, setTargets] = useState<string[]>([]);
@@ -76,28 +121,32 @@ export function TranslatorTab(props: TranslatorTabProps) {
   };
 
   return (
-    <section className="workspace-card">
-      <h2>Translator</h2>
-      <p>Translate text into your target language with romanized and symbolized outputs.</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Translator</WorkspaceTitle>
+      <WorkspaceLead>Translate text into your target language with romanized and symbolized outputs.</WorkspaceLead>
 
-      <div className="workspace-grid">
-        <div className="workspace-controls">
-          <div className="toolbar">
+      <WorkbenchLayout>
+        <WorkbenchSidebar>
+          <Toolbar>
             <label>
               Target
-              <select value={target} onChange={(event) => setTarget(event.target.value)} disabled={props.loading || !targets.length}>
+              <SelectInput
+                value={target}
+                onChange={(event) => setTarget(event.target.value)}
+                disabled={props.loading || !targets.length}
+              >
                 {targets.map((item) => (
                   <option key={item} value={item}>
                     {item}
                   </option>
                 ))}
-              </select>
+              </SelectInput>
             </label>
-          </div>
+          </Toolbar>
 
           <label>
             English Input
-            <textarea
+            <TextArea
               rows={6}
               value={input}
               onChange={(event) => setInput(event.target.value)}
@@ -106,44 +155,44 @@ export function TranslatorTab(props: TranslatorTabProps) {
             />
           </label>
 
-          <div style={{ display: "flex", gap: 8 }}>
-            <button className="btn" disabled={props.loading || !target || !input.trim()} onClick={() => void props.onTranslate(target, input)}>
+          <ActionRow>
+            <Button disabled={props.loading || !target || !input.trim()} onClick={() => void props.onTranslate(target, input)}>
               Translate
-            </button>
-            <button className="btn" disabled={props.loading || !target} onClick={() => void props.onLoadContext(target)}>
+            </Button>
+            <Button disabled={props.loading || !target} onClick={() => void props.onLoadContext(target)}>
               Reload Context
-            </button>
-            <button className="btn" disabled={props.loading || !props.romanized} onClick={playAudio}>
+            </Button>
+            <Button disabled={props.loading || !props.romanized} onClick={playAudio}>
               Pronunciation
-            </button>
-          </div>
+            </Button>
+          </ActionRow>
 
-          <div className="translator-card" style={{ marginTop: 10 }}>
-            <h3>Romanized</h3>
-            <p className="translator-result">{props.romanized || "-"}</p>
-          </div>
+          <InsetCard>
+            <InsetTitle>Romanized</InsetTitle>
+            <ResultText>{props.romanized || "-"}</ResultText>
+          </InsetCard>
 
-          <div className="translator-card">
-            <h3>Symbolized</h3>
-            <p className="translator-result">{props.symbolized || "-"}</p>
-          </div>
-        </div>
+          <InsetCard>
+            <InsetTitle>Symbolized</InsetTitle>
+            <ResultText>{props.symbolized || "-"}</ResultText>
+          </InsetCard>
+        </WorkbenchSidebar>
 
-        <div className="workspace-results">
-          <div className="translator-context-card">
-            <h3>Language Context</h3>
-            <div className="translator-context-summary">{contextSummary}</div>
-            <div className="translator-context" style={{ marginTop: 8 }}>
+        <WorkbenchMain>
+          <InsetCard>
+            <InsetTitle>Language Context</InsetTitle>
+            <ContextSummary>{contextSummary}</ContextSummary>
+            <ContextContainer>
               {(props.context?.sheets || []).map((section) => {
                 const rows = section.rows || [];
                 const preview = rows.slice(0, 5);
                 const columns = Object.keys(preview[0] || {});
                 return (
-                  <article key={section.sheet} className="translator-context-block">
+                  <ContextBlock key={section.sheet}>
                     <h4>{section.sheet}</h4>
-                    {!rows.length && <div className="translator-context-empty">No rows.</div>}
+                    {!rows.length && <ContextEmpty>No rows.</ContextEmpty>}
                     {!!rows.length && (
-                      <div className="table-wrap">
+                      <TableWrap>
                         <table>
                           <thead>
                             <tr>
@@ -162,17 +211,16 @@ export function TranslatorTab(props: TranslatorTabProps) {
                             ))}
                           </tbody>
                         </table>
-                      </div>
+                      </TableWrap>
                     )}
-                  </article>
+                  </ContextBlock>
                 );
               })}
-            </div>
-          </div>
-
-          <pre className="feature-output workspace-output">{props.output}</pre>
-        </div>
-      </div>
-    </section>
+            </ContextContainer>
+          </InsetCard>
+          <WorkspaceOutput>{props.output}</WorkspaceOutput>
+        </WorkbenchMain>
+      </WorkbenchLayout>
+    </WorkspaceCard>
   );
 }

@@ -6,7 +6,7 @@ from typing import Any
 
 from openpyxl import load_workbook
 
-from Spreadsheet.core.Helpers.sheets import SpreadsheetClient
+from Spreadsheet.sheets import SpreadsheetClient
 
 
 class SheetProvider(ABC):

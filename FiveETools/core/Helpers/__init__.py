@@ -1,6 +1,6 @@
 """FiveETools helper modules used by notebooks and scripts."""
 
-from FiveETools.core.Helpers.gsheets_client import (
+from Spreadsheet.sheets import (
     ContentSheetsClient,
     ContentType,
     fantasy_sheets,

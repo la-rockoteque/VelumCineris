@@ -1,5 +1,6 @@
 import { ManualDetailsForm } from "./ManualDetailsForm";
 import type { ItemDetailsFormProps } from "./types";
+import { styled } from "app/styletron";
 
 export function MonsterDetailsForm(props: ItemDetailsFormProps) {
   return (
@@ -72,12 +73,39 @@ export function MonsterDetailsForm(props: ItemDetailsFormProps) {
         },
         {
           title: "Actions",
-          fields: [
-            { field: "Actions", span: "full" },
-            { field: "Reactions", span: "full" },
-            { field: "Bonus Actions", span: "full" },
-            { field: "Legendary Actions", span: "full" },
-            { field: "Mythic Actions", span: "full" },
+          subsections: [
+            {
+              title: "Core",
+              fields: [
+                { field: "Actions", span: "full" },
+                { field: "Reactions", span: "full" },
+                { field: "Bonus Actions", span: "full" },
+              ],
+            },
+            {
+              title: "Legendary",
+              fields: [
+                {
+                  field: ["Legendary Action", "Legendary Actions"],
+                  label: "Legendary Actions",
+                  span: "full",
+                },
+                {
+                  field: "Legendary Count",
+                  aliases: ["Legendary Action Count", "Legendary Actions Count"],
+                  span: 3,
+                },
+              ],
+            },
+            {
+              title: "Mythic & Lair",
+              fields: [
+                { field: "Mythic Actions", aliases: ["Mythic Action"], span: "full" },
+                { field: "Lair Action", span: "full" },
+                { field: "Regional Effect", span: "full" },
+                { field: "Regional Fade", span: "full" },
+              ],
+            },
           ],
         },
         {

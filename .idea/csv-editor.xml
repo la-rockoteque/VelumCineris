@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="/DNDBeyond/out/Orimond.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/assets/Orimond_Species.csv">
           <value>
             <Attribute>
@@ -11,6 +18,13 @@
           </value>
         </entry>
         <entry key="/assets/Orimond_Species_Appearance.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/assets/loading_trivia.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

@@ -1,6 +1,6 @@
 import pandas as pd
 import inflection
-from Spreadsheet.core.Helpers.sheets import modern_sheets
+from Spreadsheet.sheets import modern_sheets
 
 pd.options.display.float_format = "{:,.0f}".format
 df_source = modern_sheets.get_sheet_by_name("sources")

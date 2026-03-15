@@ -1,5 +1,5 @@
 import pandas as pd
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
+from Spreadsheet.sheets import modern_sheets
 
 df_spells = modern_sheets.get_sheet_by_name("spells")
 df_spells.head()

@@ -1,34 +1,47 @@
-import pandas as pd
-from FiveETools.core.modern.sources import source, json_source
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
+from __future__ import annotations
 
-df_diety = modern_sheets.get_sheet_by_name("deities")
-df_diety.head()
+from FiveETools.core.modern import sources as source_catalog
+from FiveETools.datasets.json_loader import build_mapped_rows
+from FiveETools.mappers.deity_mapper import map_modern_deity_row
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 
-def row_to_diety(row):
-    return     {
-        "name": row.get("Name"),
-        "source": json_source,
-        "pantheon": "None",
-        "symbol": row.get("Symbol") if pd.notnull(row.get("Symbol")) else "",
-        "entries": [
-            row.get("Description") if pd.notnull(row.get("Description")) else "",
-        ],
-        "page": 0,
-        "alignment": [row.get("Alignment")[:1].upper()],
-        **({"altNames": row.get("Epithet").split(", ")} if pd.notnull(row.get("Epithet")) else {}),
-        # "domains": row.get("Domains").split(", ") if pd.notnull(row.get("Domains")) else [],
-        "customProperties": {
-            "Plane": row.get("Plane") if pd.notnull(row.get("Plane")) else "",
-            "Followers": row.get("Followers") if pd.notnull(row.get("Followers")) else "",
-            "Slogan": row.get("Slogan") if pd.notnull(row.get("Slogan")) else "",
-            "Lore": row.get("Lore") if pd.notnull(row.get("Lore")) else "",
-            "Quote": row.get("Quote") if pd.notnull(row.get("Quote")) else "",
-        }
-    }
+_cache: dict[str, object] = {}
 
-diety_list = [
-    row_to_diety(row)
-    for index, row in df_diety.iterrows()
-    if pd.notnull(row.get("Name"))
-]
+
+def row_to_diety(row, *, json_source: str):
+    return map_modern_deity_row(row, json_source=json_source)
+
+
+def build_diety_list(source_code: str | None = None) -> list[dict]:
+    return build_mapped_rows(
+        sheets_client=source_catalog.modern_sheets,
+        sheet_name="deities",
+        source_code=source_code,
+        default_source=source_catalog.DEFAULT_SOURCE,
+        resolve_source_context=source_catalog.resolve_source_context,
+        row_mapper=row_to_diety,
+        name_column="Name",
+        filter_by_source=False,
+    )
+
+
+_RESOLVERS = {
+    "json_source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[1],
+    "diety_list": build_diety_list,
+}
+_CACHED_ATTRS = {"diety_list"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = ["row_to_diety", "build_diety_list", "json_source", "diety_list"]

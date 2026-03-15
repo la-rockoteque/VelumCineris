@@ -6,8 +6,8 @@ Provides type-safe validation for magic item data from Google Sheets.
 
 from pydantic import Field
 from typing import Optional, List
-import pandas as pd
 from ..base import BaseEntity
+from ..row_access import is_missing, optional_text, row_value, split_csv
 
 
 class MagicItem(BaseEntity):
@@ -39,7 +39,7 @@ class MagicItem(BaseEntity):
     tier: Optional[str] = Field(None, description="Item tier")
 
     @classmethod
-    def from_row(cls, row: pd.Series, source: str, json_source: str) -> 'MagicItem':
+    def from_row(cls, row, source: str, json_source: str) -> 'MagicItem':
         """
         Create MagicItem from DataFrame row.
 
@@ -53,62 +53,54 @@ class MagicItem(BaseEntity):
         """
         # Parse properties
         properties = None
-        if pd.notnull(row.get("Property")):
-            props = [p.strip() for p in str(row.get("Property")).split(",")]
+        property_values = split_csv(row_value(row, "Property"))
+        if property_values:
             # Add "VS" prefix as in original code
-            properties = [f"VS{prop[2:]}" if len(prop) > 2 else prop for prop in props]
+            properties = [f"VS{prop[2:]}" if len(prop) > 2 else prop for prop in property_values]
 
         # Parse attached spells
         attached_spells = None
-        if pd.notnull(row.get("Attached Spells")):
-            attached_spells = [s.strip() for s in row.get("Attached Spells").split(",")]
+        attached_spells = split_csv(row_value(row, "Attached Spells")) or None
 
         # Parse description
         entries = []
-        if pd.notnull(row.get("Description")):
-            entries.append(row.get("Description"))
-
-        # Helper for optional string fields
-        def opt_str(field_name: str) -> Optional[str]:
-            value = row.get(field_name)
-            if pd.isna(value):
-                return None
-            stripped = str(value).strip()
-            return stripped if stripped else None
+        description = optional_text(row_value(row, "Description"))
+        if description:
+            entries.append(description)
 
         # Get type safely
-        item_type = row.get("Type ABRV")
-        if pd.isna(item_type) or not str(item_type).strip():
+        item_type = row_value(row, "Type ABRV")
+        if is_missing(item_type):
             item_type = "OTH"
         item_type = str(item_type)
 
         # Get rarity safely
-        rarity = row.get("Rarity", "common")
-        if pd.isna(rarity) or not str(rarity).strip():
+        rarity = row_value(row, "Rarity", "common")
+        if is_missing(rarity):
             rarity = "common"
         rarity = str(rarity).lower()
 
         return cls(
             source=json_source,
-            name=row.get("Name", "Unnamed Magic Item"),
+            name=optional_text(row_value(row, "Name")) or "Unnamed Magic Item",
             type=item_type,
             rarity=rarity,
             wondrous=True,
-            value=opt_str("Value"),
-            weight=opt_str("Weight"),
+            value=optional_text(row_value(row, "Value")),
+            weight=optional_text(row_value(row, "Weight")),
             page=0,
             entries=entries,
             # Weapon/armor fields
             properties=properties,
-            weaponCategory=opt_str("Category"),
-            dmg1=opt_str("Damage 1"),
-            dmg2=opt_str("Damage 2"),
-            dmgType=opt_str("Damage Type"),
-            range=opt_str("Extracted Range"),
+            weaponCategory=optional_text(row_value(row, "Category")),
+            dmg1=optional_text(row_value(row, "Damage 1")),
+            dmg2=optional_text(row_value(row, "Damage 2")),
+            dmgType=optional_text(row_value(row, "Damage Type")),
+            range=optional_text(row_value(row, "Extracted Range")),
             # Magic fields
-            recharge=opt_str("Recharge"),
-            reqAttunement=opt_str("Require Attunement"),
+            recharge=optional_text(row_value(row, "Recharge")),
+            reqAttunement=optional_text(row_value(row, "Require Attunement")),
             attachedSpells=attached_spells,
-            baseItem=opt_str("Base Item"),
-            tier=opt_str("Tier"),
+            baseItem=optional_text(row_value(row, "Base Item")),
+            tier=optional_text(row_value(row, "Tier")),
         )

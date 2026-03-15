@@ -14,9 +14,17 @@ Usage:
 
 import sys
 import math
+from pathlib import Path
 import pandas as pd
 
-from gsheets_client import gsheets, OfflineSheetsClient
+try:
+  from Spreadsheet.sheets import gsheets, OfflineTranslatorSheetsClient as OfflineSheetsClient
+except ModuleNotFoundError:
+  for parent in Path(__file__).resolve().parents:
+    if (parent / "Spreadsheet").is_dir():
+      sys.path.append(str(parent))
+      break
+  from Spreadsheet.sheets import gsheets, OfflineTranslatorSheetsClient as OfflineSheetsClient
 from script_generator import llm_script_char
 
 updates = []

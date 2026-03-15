@@ -6,8 +6,9 @@ Provides type-safe validation for background data from Google Sheets.
 
 from pydantic import Field
 from typing import Optional, List, Dict, Any
-import pandas as pd
+
 from ..base import BaseEntity
+from ..row_access import optional_text, row_value, split_csv
 
 
 class Background(BaseEntity):
@@ -26,7 +27,7 @@ class Background(BaseEntity):
     )
 
     @classmethod
-    def from_row(cls, row: pd.Series, source: str, json_source: str) -> 'Background':
+    def from_row(cls, row, source: str, json_source: str) -> 'Background':
         """
         Create Background from DataFrame row.
 
@@ -40,8 +41,8 @@ class Background(BaseEntity):
         """
         # Parse skill proficiencies
         skill_profs = None
-        if pd.notnull(row.get("Skills")) and row.get("Skills"):
-            skills = [s.strip() for s in row.get("Skills").split(",")]
+        skills = split_csv(row_value(row, "Skills"))
+        if skills:
             skill_profs = [{skill.lower(): True for skill in skills}]
 
         # Build entries list
@@ -49,34 +50,35 @@ class Background(BaseEntity):
 
         # Add proficiencies list
         items = []
-        if pd.notnull(row.get("Skills")) and row.get("Skills"):
-            skills = [s.strip() for s in row.get("Skills").split(",")]
+        if skills:
             items.append({
                 "type": "item",
                 "name": "Skill Proficiencies",
                 "entry": ", ".join(f"{{@skill {skill}}}" for skill in skills)
             })
 
-        if pd.notnull(row.get("Tools")) and row.get("Tools"):
+        tools = optional_text(row_value(row, "Tools"))
+        if tools:
             items.append({
                 "type": "item",
                 "name": "Tool Proficiencies",
-                "entry": row.get("Tools")
+                "entry": tools
             })
 
-        if pd.notnull(row.get("Languages")):
-            languages = [lang.strip() for lang in row.get("Languages").split(",")]
+        languages = split_csv(row_value(row, "Languages"))
+        if languages:
             items.append({
                 "type": "item",
                 "name": "Languages",
                 "entry": ", ".join(f"{{@language {lang}}}" for lang in languages)
             })
 
-        if pd.notnull(row.get("Items")) and row.get("Items"):
+        item_text = optional_text(row_value(row, "Items"))
+        if item_text:
             items.append({
                 "type": "item",
                 "name": "Equipment",
-                "entry": ", ".join(row.get("Items").split(", "))
+                "entry": ", ".join(item_text.split(", "))
             })
 
         if items:
@@ -87,23 +89,25 @@ class Background(BaseEntity):
             })
 
         # Add feature
-        if pd.notnull(row.get("Feature Name")):
+        feature_name = optional_text(row_value(row, "Feature Name"))
+        if feature_name:
+            feature = optional_text(row_value(row, "Feature"))
             entries.append({
-                "name": row.get("Feature Name"),
+                "name": feature_name,
                 "type": "entries",
-                "entries": [row.get("Feature")] if pd.notnull(row.get("Feature")) else [],
+                "entries": [feature] if feature else [],
                 "data": {"isFeature": True}
             })
 
         # Parse starting equipment
         starting_equipment = None
-        if pd.notnull(row.get("Starting Equipment")) and row.get("Starting Equipment"):
-            items = [item.strip() for item in row.get("Starting Equipment").split(",")]
-            starting_equipment = [{"_": [{"special": item} for item in items]}]
+        starting_equipment_items = split_csv(row_value(row, "Starting Equipment"))
+        if starting_equipment_items:
+            starting_equipment = [{"_": [{"special": item} for item in starting_equipment_items]}]
 
         return cls(
             source=json_source,
-            name=row.get("Background", "Unnamed Background"),
+            name=optional_text(row_value(row, "Background")) or "Unnamed Background",
             skillProficiencies=skill_profs,
             entries=entries,
             startingEquipment=starting_equipment

@@ -1,5 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
+import { styled } from "app/styletron";
 
+import {
+  Button,
+  InlineButton,
+  InsetCard,
+  InsetLead,
+  InsetTitle,
+  MetaText,
+  SelectInput,
+  TextArea,
+  TextInput,
+  Toolbar,
+  WorkbenchLayout,
+  WorkbenchMain,
+  WorkbenchSidebar,
+  WorkspaceCard,
+  WorkspaceLead,
+  WorkspaceOutput,
+  WorkspaceTitle,
+} from "shared/library";
 import type { SelectedRow, SpreadsheetRowsResponse } from "shared/types/api";
 import { pickItemName } from "shared/utils/fields";
 import { normalizeKey } from "shared/utils/text";
@@ -34,6 +54,60 @@ interface LibraryEntry {
   title: string;
   source: string;
 }
+
+const LibraryList = styled("div", {
+  display: "grid",
+  gap: "6px",
+});
+
+const LibraryItem = styled("div", {
+  border: "1px solid rgba(66, 48, 30, 0.15)",
+  borderRadius: "7px",
+  background: "#fff8ec",
+  padding: "6px 8px",
+  fontSize: "0.78rem",
+});
+
+const Presets = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "6px",
+  marginTop: "8px",
+});
+
+const PaletteList = styled("div", {
+  display: "grid",
+  gap: "8px",
+});
+
+const PaletteItem = styled("label", {
+  display: "grid",
+  gridTemplateColumns: "minmax(120px, 1fr) 46px minmax(120px, 1fr)",
+  alignItems: "center",
+  gap: "8px",
+});
+
+const PaletteToken = styled("span", {
+  fontSize: "0.76rem",
+  color: "#615543",
+  fontWeight: 700,
+});
+
+const ColorInput = styled("input", {
+  width: "100%",
+  minHeight: "34px",
+  padding: "3px",
+});
+
+const CssLabel = styled("label", {
+  marginTop: "8px",
+});
+
+const PreviewActionRow = styled("div", {
+  display: "flex",
+  justifyContent: "flex-end",
+  marginBottom: "8px",
+});
 
 function dedupeFormatterLibrary(entries: LibraryEntry[]): LibraryEntry[] {
   const seen = new Set<string>();
@@ -172,10 +246,7 @@ export function FormatterTab(props: FormatterTabProps) {
     });
   }, [folderHint, props.selected, target]);
 
-  const paletteSummary = useMemo(
-    () => `${palette.length} tokens | ${css.length} CSS chars`,
-    [css.length, palette.length],
-  );
+  const paletteSummary = useMemo(() => `${palette.length} tokens | ${css.length} CSS chars`, [css.length, palette.length]);
 
   const runPreview = async () => {
     if (!props.selected) {
@@ -285,36 +356,36 @@ export function FormatterTab(props: FormatterTabProps) {
   );
 
   return (
-    <section className="workspace-card">
-      <h2>Formatters</h2>
-      <p>Generate target-specific previews and manage Homebrewery style templates.</p>
+    <WorkspaceCard>
+      <WorkspaceTitle>Formatters</WorkspaceTitle>
+      <WorkspaceLead>Generate target-specific previews and manage Homebrewery style templates.</WorkspaceLead>
 
-      <div className="workspace-grid">
-        <div className="workspace-controls">
-          <div className="toolbar">
+      <WorkbenchLayout>
+        <WorkbenchSidebar>
+          <Toolbar>
             <label>
               Target
-              <select value={target} onChange={(event) => setTarget(event.target.value)} disabled={props.loading}>
+              <SelectInput value={target} onChange={(event) => setTarget(event.target.value)} disabled={props.loading}>
                 <option value="homebrewery">Homebrewery</option>
                 <option value="google_docs">Google Docs</option>
                 <option value="fivetools">5eTools</option>
-              </select>
+              </SelectInput>
             </label>
 
             <label>
               Item Type
-              <select value={itemType} onChange={(event) => setItemType(event.target.value)} disabled={props.loading}>
+              <SelectInput value={itemType} onChange={(event) => setItemType(event.target.value)} disabled={props.loading}>
                 {props.sheets.map((sheet) => (
                   <option key={sheet} value={sheet}>
                     {sheet}
                   </option>
                 ))}
-              </select>
+              </SelectInput>
             </label>
 
             <label>
               Item
-              <select
+              <SelectInput
                 value={itemRow ? String(itemRow) : ""}
                 onChange={(event) => {
                   const rowNumber = Number(event.target.value || 0);
@@ -331,37 +402,37 @@ export function FormatterTab(props: FormatterTabProps) {
                     {option.label}
                   </option>
                 ))}
-              </select>
+              </SelectInput>
             </label>
 
             <label>
               Drive Folder Hint
-              <input value={folderHint} onChange={(event) => setFolderHint(event.target.value)} placeholder="Google Drive folder name" />
+              <TextInput value={folderHint} onChange={(event) => setFolderHint(event.target.value)} placeholder="Google Drive folder name" />
             </label>
-          </div>
+          </Toolbar>
 
-          <div className="formatter-library-card">
-            <h3>Loaded Drafts</h3>
-            <p>
+          <InsetCard>
+            <InsetTitle>Loaded Drafts</InsetTitle>
+            <InsetLead>
               {visibleLibrary.length
                 ? `${visibleLibrary.length} candidate document(s) found.`
                 : "No document found for this target in selected row."}
-            </p>
-            <div className="formatter-library-list">
+            </InsetLead>
+            <LibraryList>
               {visibleLibrary.map((entry) => (
-                <div key={`${entry.provider}-${entry.title}-${entry.source}`} className="formatter-library-item">
+                <LibraryItem key={`${entry.provider}-${entry.title}-${entry.source}`}>
                   {entry.provider}: {entry.title} ({entry.source})
-                </div>
+                </LibraryItem>
               ))}
-            </div>
-          </div>
+            </LibraryList>
+          </InsetCard>
 
-          <div className="formatter-library-card">
-            <h3>Style Editor</h3>
-            <div className="toolbar">
+          <InsetCard>
+            <InsetTitle>Style Editor</InsetTitle>
+            <Toolbar>
               <label>
                 Template
-                <select
+                <SelectInput
                   value={template}
                   onChange={(event) => {
                     const next = event.target.value;
@@ -375,33 +446,37 @@ export function FormatterTab(props: FormatterTabProps) {
                       {item.label}
                     </option>
                   ))}
-                </select>
+                </SelectInput>
               </label>
-            </div>
+            </Toolbar>
 
-            <div className="formatter-style-presets" style={{ marginTop: 8 }}>
-              <button className="btn btn-inline" disabled={props.loading} onClick={() => applyPreset("warm")}>Warm</button>
-              <button className="btn btn-inline" disabled={props.loading} onClick={() => applyPreset("cool")}>Cool</button>
-              <button className="btn btn-inline" disabled={props.loading} onClick={() => applyPreset("contrast")}>Contrast</button>
-            </div>
+            <Presets>
+              <InlineButton disabled={props.loading} onClick={() => applyPreset("warm")}>
+                Warm
+              </InlineButton>
+              <InlineButton disabled={props.loading} onClick={() => applyPreset("cool")}>
+                Cool
+              </InlineButton>
+              <InlineButton disabled={props.loading} onClick={() => applyPreset("contrast")}>
+                Contrast
+              </InlineButton>
+            </Presets>
 
-            <div className="meta">{paletteSummary}</div>
-            <div className="formatter-style-palette">
+            <MetaText>{paletteSummary}</MetaText>
+            <PaletteList>
               {palette.map((token) => (
-                <label key={token.token} className="style-palette-item">
-                  <span>{token.token}</span>
-                  <input
+                <PaletteItem key={token.token}>
+                  <PaletteToken>{token.token}</PaletteToken>
+                  <ColorInput
                     type="color"
                     value={toHexColor(token.value)}
                     onInput={(event) => {
                       const next = (event.target as HTMLInputElement).value;
                       setCss((current) => applyPaletteTokenChange(current, token.token, next));
-                      setPalette((current) =>
-                        current.map((item) => (item.token === token.token ? { ...item, value: next } : item)),
-                      );
+                      setPalette((current) => current.map((item) => (item.token === token.token ? { ...item, value: next } : item)));
                     }}
                   />
-                  <input
+                  <TextInput
                     value={token.value}
                     onChange={(event) => {
                       const next = event.target.value.trim();
@@ -409,37 +484,35 @@ export function FormatterTab(props: FormatterTabProps) {
                         return;
                       }
                       setCss((current) => applyPaletteTokenChange(current, token.token, next));
-                      setPalette((current) =>
-                        current.map((item) => (item.token === token.token ? { ...item, value: next } : item)),
-                      );
+                      setPalette((current) => current.map((item) => (item.token === token.token ? { ...item, value: next } : item)));
                     }}
                   />
-                </label>
+                </PaletteItem>
               ))}
-            </div>
+            </PaletteList>
 
-            <label style={{ marginTop: 8 }}>
+            <CssLabel>
               CSS
-              <textarea rows={14} value={css} onChange={(event) => setCss(event.target.value)} />
-            </label>
+              <TextArea rows={14} value={css} onChange={(event) => setCss(event.target.value)} />
+            </CssLabel>
 
-            <button className="btn" style={{ marginTop: 8 }} disabled={props.loading} onClick={() => void saveStyleSettings()}>
+            <Button style={{ marginTop: "8px" }} disabled={props.loading} onClick={() => void saveStyleSettings()}>
               Save Style Settings
-            </button>
-          </div>
-        </div>
+            </Button>
+          </InsetCard>
+        </WorkbenchSidebar>
 
-        <div className="workspace-results">
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
-            <button className="btn" disabled={props.loading || !props.selected} onClick={() => void runPreview()}>
+        <WorkbenchMain>
+          <PreviewActionRow>
+            <Button disabled={props.loading || !props.selected} onClick={() => void runPreview()}>
               Run Formatter Preview
-            </button>
-          </div>
+            </Button>
+          </PreviewActionRow>
 
-          <div className="meta">{message}</div>
-          <pre className="feature-output workspace-output">{props.output}</pre>
-        </div>
-      </div>
-    </section>
+          <MetaText>{message}</MetaText>
+          <WorkspaceOutput>{props.output}</WorkspaceOutput>
+        </WorkbenchMain>
+      </WorkbenchLayout>
+    </WorkspaceCard>
   );
 }

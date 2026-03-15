@@ -1,44 +1,48 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-VelumCineris is a Python-first monorepo with domain modules at the top level: `Book/`, `DNDBeyond/`, `FiveETools/`, `Homebrewery/`, `Spreadsheet/`, `WorldAnvil/`, `ObsidianPortal/`, and `Kenji/`. Most modules follow a shared layout:
-- `core/` for implementation code and helpers
-- `scripts/` for maintenance/migration utilities
-- `tests/` for pytest suites
-- `DOCS/` for workflow and integration notes
+VelumCineris is a Python-first monorepo. Core domains live at the root (`Book/`, `DNDBeyond/`, `FiveETools/`, `Spreadsheet/`, `WorldAnvil/`, etc.) and generally follow:
+- `core/` implementation
+- `scripts/` tooling/migrations
+- `tests/` pytest coverage
+- `DOCS/` workflow notes
 
-Desktop app code lives in `apps/velum-studio/` (`backend/`, `frontend/`, `desktop/`). Shared automation and checks live in root `scripts/`.
+Velum Studio app code is in `apps/velum-studio/` (`backend/`, `frontend/`, `desktop/`).  
+Frontend tests must live in colocated `__tests__/` folders under `apps/velum-studio/frontend/src`.
 
 ## Build, Test, and Development Commands
-- `poetry install`: install root dependencies (Python 3.12).
-- `poetry run pytest`: run Python tests from repo root.
-- `poetry run ruff check .`: lint code.
-- `poetry run ruff format .`: format code (88-char line length).
-- `poetry run pyright`: static type checks.
-- `poetry run check-architecture`: enforce import-boundary rules.
-- `poetry run jupyter notebook`: open notebook workflows used by content pipelines.
-- `poetry run playwright install chromium`: required before D&D Beyond token automation.
-
-Velum Studio:
-- `poetry run uvicorn app.main:app --host 127.0.0.1 --port 8765 --app-dir apps/velum-studio/backend`
-- `cd apps/velum-studio/frontend && npm install && npm run dev`
+- `poetry install`: install Python deps.
+- `poetry run pytest`: run backend/domain tests.
+- `poetry run ruff check .` and `poetry run ruff format .`: lint/format.
+- `poetry run pyright`: static type checking.
+- `poetry run check-architecture`: import-boundary checks.
+- `poetry run uvicorn app.main:app --host 127.0.0.1 --port 8765 --app-dir apps/velum-studio/backend`: run backend.
+- `cd apps/velum-studio/frontend && bun run dev`: run frontend.
+- `cd apps/velum-studio/frontend && bun run typecheck && bun run test`: TS checks + Vitest.
 
 ## Coding Style & Naming Conventions
-Use 4-space indentation, double quotes, and max line length 88 (Ruff config in each module). Follow Python naming standards: `snake_case` for functions/variables/modules, `PascalCase` for classes, `UPPER_SNAKE_CASE` for constants. Keep modules focused by feature/entity (`spells.py`, `species.py`, `converter.py`).
+Use 4-space indentation, double quotes, and 88-char max line length.  
+Python: `snake_case` functions/modules, `PascalCase` classes, `UPPER_SNAKE_CASE` constants.
 
-Prefer canonical domain names in new code (`deities`, `deity`, `scriptures`). Legacy spellings (`dieties`, `diety`, `sciptures`) still appear in historical files/sheets and should be handled via compatibility aliases, not breaking renames.
+Frontend convention: use Styletron (`styled`) over CSS classes for component styling. Reuse shared primitives before adding one-off styles.
+
+## Frontend Style Architecture (Preferred)
+Keep shared UI in small, focused files:
+- `shared/library/layout/`: structural blocks (`Card`, `Section`, `Subsection`)
+- `shared/library/primitives/`: reusable UI atoms by concern (`Buttons`, `Workspace`, `Feedback`)
+- `shared/library/index.ts`: barrel exports only
+
+Avoid reintroducing monolithic files like a single `Layout.tsx` or `primitives.tsx`. When adding shared components, place them in the most specific existing module or create a new focused file.
 
 ## Testing Guidelines
-Use `pytest` with files named `test_*.py` and functions/classes named `test_*`/`Test*`. Add tests in the nearest module `tests/` directory (or `apps/velum-studio/backend/tests` for backend API logic). Cover converter edge cases, schema/typing behavior, and regressions when changing sync pipelines.
+Python tests: `test_*.py` with pytest.  
+Frontend tests: `*.test.ts(x)` under `__tests__/`.
 
-For every behavioral change, run at least: `poetry run pytest`, plus focused tests for touched areas (for example `poetry run pytest apps/velum-studio/backend/tests -q`).
+For behavior changes, run focused tests for touched areas plus relevant type checks.
 
 ## Commit & Pull Request Guidelines
-Current history favors short, imperative summaries (for example: `fix json`, `update urls`, `add fantasy sources`). Keep commits scoped to one logical change. PRs should include:
-- what changed and why
-- affected modules/directories
-- commands run (`pytest`, `ruff`, `pyright`)
-- screenshots for UI updates and sanitized request samples for API/sync changes
+Use short, imperative commit messages (for example `fix parser`, `add formatter test`). Keep commits scoped to one change.  
+PRs should include purpose, affected paths, test commands run, and screenshots for UI changes.
 
 ## Security & Configuration Tips
-Never commit secrets. Keep credentials in local `.env` files (for example D&D Beyond tokens, World Anvil cookies) and keep service keys such as Google Sheets credentials out of git. Sanitize exported request/response artifacts before committing.
+Never commit secrets. Keep API keys/tokens in local `.env` files and sanitize captured payloads before committing.

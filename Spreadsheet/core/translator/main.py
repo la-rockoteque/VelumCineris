@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 
 from engine import translate
-from gsheets_client import gsheets
 import sys
+from pathlib import Path
 
-from gsheets_client import gsheets, OfflineSheetsClient
-import sys
+try:
+  from Spreadsheet.sheets import gsheets, OfflineTranslatorSheetsClient as OfflineSheetsClient
+except ModuleNotFoundError:
+  for parent in Path(__file__).resolve().parents:
+    if (parent / "Spreadsheet").is_dir():
+      sys.path.append(str(parent))
+      break
+  from Spreadsheet.sheets import gsheets, OfflineTranslatorSheetsClient as OfflineSheetsClient
 
 import nltk
 

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { styled } from "app/styletron";
 
 import {
   BooleanField,
@@ -178,6 +179,10 @@ function isActionLikeField(normalized: string): boolean {
   );
 }
 
+function isXdyValue(value: string): boolean {
+  return /^\s*\d+\s*d\s*\d+(?:\s*[+-]\s*\d+)?\s*$/i.test(value);
+}
+
 export function FieldEditor(props: FieldEditorProps) {
   const raw = textValue(props.value);
   const normalized = normalizeKey(props.fieldName);
@@ -216,7 +221,7 @@ export function FieldEditor(props: FieldEditorProps) {
     return <DelimitedListField value={raw} options={options} onChange={(next) => props.onFieldChange(props.fieldName, next)} />;
   }
 
-  if (monster && normalized === "hitdice") {
+  if ((monster && normalized === "hitdice") || (normalized.includes("dice") && isXdyValue(raw))) {
     return <HitDiceField value={raw} onChange={(next) => props.onFieldChange(props.fieldName, next)} />;
   }
 

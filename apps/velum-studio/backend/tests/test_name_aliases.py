@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from app.services.integration_service import _normalize_name
 from app.services.spreadsheet_service import _first_matching_value, _normalize_key, _resolve_sheet_name
+from Spreadsheet.sheets import ContentSheetsClient
 
 
 def test_normalize_aliases_in_integration_service() -> None:
@@ -29,3 +30,11 @@ def test_resolve_sheet_name_supports_legacy_and_canonical_variants() -> None:
 def test_first_matching_value_supports_deity_alias() -> None:
     row = {"Deity": "Aerith", "Other": "ignored"}
     assert _first_matching_value(row, "Diety") == "Aerith"
+
+
+def test_content_sheets_client_supports_deities_aliases() -> None:
+    fantasy_gids = ContentSheetsClient.SHEET_GIDS["fantasy"]
+    modern_gids = ContentSheetsClient.SHEET_GIDS["modern"]
+
+    assert fantasy_gids["deities"] == fantasy_gids["dieties"]
+    assert modern_gids["deities"] == modern_gids["dieties"]

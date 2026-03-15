@@ -6,12 +6,12 @@ Provides type-safe validation for monster/creature data from Google Sheets.
 
 from pydantic import Field
 from typing import Optional, List, Dict, Any, Union, Literal
-import pandas as pd
 import re
 from fractions import Fraction
 
 from ..base import BaseEntity
 from ..fields.stats import Speed, AbilityScores
+from ..row_access import is_missing, optional_int, optional_text, row_value, split_csv
 
 # Valid size codes
 SizeType = Literal["T", "S", "M", "L", "H", "G"]
@@ -80,7 +80,7 @@ class Monster(BaseEntity):
     @staticmethod
     def parse_speed(value) -> Optional[int]:
         """Parse speed value from various formats."""
-        if pd.isna(value):
+        if is_missing(value):
             return None
         if isinstance(value, (int, float)):
             return int(value)
@@ -175,7 +175,7 @@ class Monster(BaseEntity):
         return immunities if immunities else []
 
     @classmethod
-    def from_row(cls, row: pd.Series, source: str, json_source: str) -> 'Monster':
+    def from_row(cls, row, source: str, json_source: str) -> 'Monster':
         """
         Create Monster from DataFrame row.
 
@@ -187,86 +187,85 @@ class Monster(BaseEntity):
         Returns:
             Validated Monster instance
         """
-        name = row.get("Name", "Unnamed Creature")
+        name = optional_text(row_value(row, "Name")) or "Unnamed Creature"
 
         # Parse speed
         speed_dict = {}
-        if (walk := cls.parse_speed(row.get("Speed (Walking)"))) is not None:
+        if (walk := cls.parse_speed(row_value(row, "Speed (Walking)"))) is not None:
             speed_dict["walk"] = walk
-        if (fly := cls.parse_speed(row.get("Speed (Flying)"))) is not None:
+        if (fly := cls.parse_speed(row_value(row, "Speed (Flying)"))) is not None:
             speed_dict["fly"] = fly
-        if (swim := cls.parse_speed(row.get("Speed (Swimming)"))) is not None:
+        if (swim := cls.parse_speed(row_value(row, "Speed (Swimming)"))) is not None:
             speed_dict["swim"] = swim
-        if (burrow := cls.parse_speed(row.get("Speed (Burrowing)"))) is not None:
+        if (burrow := cls.parse_speed(row_value(row, "Speed (Burrowing)"))) is not None:
             speed_dict["burrow"] = burrow
-        if (climb := cls.parse_speed(row.get("Speed (Climbing)"))) is not None:
+        if (climb := cls.parse_speed(row_value(row, "Speed (Climbing)"))) is not None:
             speed_dict["climb"] = climb
 
         # Helper to safely parse int with default
         def safe_int(value, default=10):
-            if pd.isna(value):
-                return default
-            try:
-                return int(value)
-            except (ValueError, TypeError):
-                return default
+            return optional_int(value, default)
 
         # Parse AC
         ac_list = [{
-            "ac": safe_int(row.get("Armor Class"), 10),
+            "ac": safe_int(row_value(row, "Armor Class"), 10),
             "from": [
-                row.get("Armor Type") if pd.notnull(row.get("Armor Type"))
-                else "natural armor"
+                optional_text(row_value(row, "Armor Type")) or "natural armor"
             ]
         }]
 
         # Parse HP
         hp_dict = {
-            "average": safe_int(row.get("Hit Points"), 1),
-            "formula": f"{row.get('Hit Dice', '1d8')} + {safe_int(row.get('CON Mod'), 0)}"
+            "average": safe_int(row_value(row, "Hit Points"), 1),
+            "formula": f"{row_value(row, 'Hit Dice', '1d8')} + {safe_int(row_value(row, 'CON Mod'), 0)}"
         }
 
         # Parse saves
         saves = None
-        if pd.notnull(row.get("Saving Throws")):
-            saves = cls.parse_saves(row.get("Saving Throws"))
+        saving_throws = optional_text(row_value(row, "Saving Throws"))
+        if saving_throws:
+            saves = cls.parse_saves(saving_throws)
 
         # Parse skills
         skills = None
-        if pd.notnull(row.get("Skills")):
-            skills = cls.parse_skills(row.get("Skills"))
+        skills_text = optional_text(row_value(row, "Skills"))
+        if skills_text:
+            skills = cls.parse_skills(skills_text)
 
         # Parse immunities
         immunities = None
-        if pd.notnull(row.get("Damage Immunities")):
-            immunities = cls.parse_immunities(row.get("Damage Immunities"))
+        damage_immunities = optional_text(row_value(row, "Damage Immunities"))
+        if damage_immunities:
+            immunities = cls.parse_immunities(damage_immunities)
 
         # Parse condition immunities
         condition_immunities = None
-        if pd.notnull(row.get("Condition Immunities")):
-            condition_immunities = [
-                ci.strip().lower()
-                for ci in row.get("Condition Immunities").split(",")
-            ]
+        condition_immunity_values = split_csv(row_value(row, "Condition Immunities"))
+        if condition_immunity_values:
+            condition_immunities = [ci.lower() for ci in condition_immunity_values]
 
         # Parse abilities
         actions = None
-        if pd.notnull(row.get("Actions")):
-            actions = cls.parse_entries(row.get("Actions"))
+        actions_text = optional_text(row_value(row, "Actions"))
+        if actions_text:
+            actions = cls.parse_entries(actions_text)
 
         reactions = None
-        if pd.notnull(row.get("Reactions")):
-            reactions = cls.parse_entries(row.get("Reactions"))
+        reactions_text = optional_text(row_value(row, "Reactions"))
+        if reactions_text:
+            reactions = cls.parse_entries(reactions_text)
 
         traits = None
-        if pd.notnull(row.get("Traits")):
-            traits = cls.parse_entries(row.get("Traits"))
+        traits_text = optional_text(row_value(row, "Traits"))
+        if traits_text:
+            traits = cls.parse_entries(traits_text)
 
         legendary_actions = None
         legendary_count = None
         legendary_header = None
-        if pd.notnull(row.get("Legendary Actions")):
-            legendary_actions = cls.parse_entries(row.get("Legendary Actions"))
+        legendary_text = optional_text(row_value(row, "Legendary Actions"))
+        if legendary_text:
+            legendary_actions = cls.parse_entries(legendary_text)
             legendary_count = 3
             legendary_header = [
                 f"The {name} can take 3 legendary actions, choosing from the options below. "
@@ -276,11 +275,12 @@ class Monster(BaseEntity):
 
         # Parse languages
         languages = None
-        if pd.notnull(row.get("Languages")):
-            languages = [lang.strip().lower() for lang in row.get("Languages").split(",")]
+        language_values = split_csv(row_value(row, "Languages"))
+        if language_values:
+            languages = [lang.lower() for lang in language_values]
 
         # Parse CR
-        cr_value = row.get("CR (Challenge Rating)", "0")
+        cr_value = row_value(row, "CR (Challenge Rating)", "0")
         try:
             cr = str(Fraction(cr_value))
         except (ValueError, TypeError):
@@ -288,16 +288,18 @@ class Monster(BaseEntity):
 
         # Parse fluff
         fluff_entries = []
-        if pd.notnull(row.get("Description")):
-            fluff_entries.append(row.get("Description"))
+        description = optional_text(row_value(row, "Description"))
+        if description:
+            fluff_entries.append(description)
 
         fluff_images = []
-        if pd.notnull(row.get("Image URL")):
+        image_url = optional_text(row_value(row, "Image URL"))
+        if image_url:
             fluff_images.append({
                 "type": "image",
                 "href": {
                     "type": "external",
-                    "url": row.get("Image URL")
+                    "url": image_url
                 }
             })
 
@@ -307,14 +309,14 @@ class Monster(BaseEntity):
         } if fluff_entries or fluff_images else None
 
         # Parse size safely
-        size_val = row.get("Size", "M")
-        if pd.isna(size_val):
+        size_val = row_value(row, "Size", "M")
+        if is_missing(size_val):
             size_val = "M"
         size_str = str(size_val)[:1].upper()
 
         # Parse alignment safely
-        align_val = row.get("Alignment", "N")
-        if pd.isna(align_val):
+        align_val = row_value(row, "Alignment", "N")
+        if is_missing(align_val):
             align_val = "N"
         align_str = str(align_val)[:1].upper()
 
@@ -322,20 +324,20 @@ class Monster(BaseEntity):
             source=json_source,
             name=name,
             size=[size_str],
-            type=str(row.get("Type", "humanoid")).lower() if pd.notnull(row.get("Type")) else "humanoid",
+            type=(optional_text(row_value(row, "Type")) or "humanoid").lower(),
             alignment=[align_str],
             ac=ac_list,
             hp=hp_dict,
             speed=speed_dict,
-            str_=safe_int(row.get("STR"), 10),
-            dex=safe_int(row.get("DEX"), 10),
-            con=safe_int(row.get("CON"), 10),
-            int_=safe_int(row.get("INT"), 10),
-            wis=safe_int(row.get("WIS"), 10),
-            cha=safe_int(row.get("CHA"), 10),
+            str_=safe_int(row_value(row, "STR"), 10),
+            dex=safe_int(row_value(row, "DEX"), 10),
+            con=safe_int(row_value(row, "CON"), 10),
+            int_=safe_int(row_value(row, "INT"), 10),
+            wis=safe_int(row_value(row, "WIS"), 10),
+            cha=safe_int(row_value(row, "CHA"), 10),
             skill=skills,
             save=saves,
-            passive=safe_int(row.get("Passive Perception"), 10) if pd.notnull(row.get("Passive Perception")) else None,
+            passive=None if is_missing(row_value(row, "Passive Perception")) else safe_int(row_value(row, "Passive Perception"), 10),
             immune=immunities,
             conditionImmune=condition_immunities,
             languages=languages,
@@ -346,7 +348,7 @@ class Monster(BaseEntity):
             legendary=legendary_actions,
             legendaryActions=legendary_count,
             legendaryHeader=legendary_header,
-            tokenUrl=row.get("Tokens URL") if pd.notnull(row.get("Tokens URL")) else None,
+            tokenUrl=optional_text(row_value(row, "Tokens URL")),
             fluff=fluff,
             entries=[],  # Monsters don't have entries field in 5etools
         )

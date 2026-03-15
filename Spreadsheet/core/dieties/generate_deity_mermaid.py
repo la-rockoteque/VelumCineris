@@ -9,7 +9,7 @@ repo_root = Path(__file__).resolve().parents[2]
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from Spreadsheet.core.Helpers.sheets import fantasy_sheets
+from Spreadsheet.sheets import fantasy_sheets  # noqa: E402
 
 
 def _slugify(value: str) -> str:

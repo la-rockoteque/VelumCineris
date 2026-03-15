@@ -4,8 +4,8 @@ Condition entity model for D&D 5e.
 Provides type-safe validation for condition data from Google Sheets.
 """
 
-import pandas as pd
 from ..base import BaseEntity
+from ..row_access import optional_text, row_value
 
 
 class Condition(BaseEntity):
@@ -16,7 +16,7 @@ class Condition(BaseEntity):
     """
 
     @classmethod
-    def from_row(cls, row: pd.Series, source: str, json_source: str) -> 'Condition':
+    def from_row(cls, row, source: str, json_source: str) -> 'Condition':
         """
         Create Condition from DataFrame row.
 
@@ -30,11 +30,12 @@ class Condition(BaseEntity):
         """
         # Split condition text by semicolons
         entries = []
-        if pd.notnull(row.get("Condition Text")):
-            entries = [e.strip() for e in row.get("Condition Text").split(";") if e.strip()]
+        condition_text = optional_text(row_value(row, "Condition Text"))
+        if condition_text:
+            entries = [e.strip() for e in condition_text.split(";") if e.strip()]
 
         return cls(
             source=json_source,
-            name=row.get("Condition Name", "Unnamed Condition"),
+            name=optional_text(row_value(row, "Condition Name")) or "Unnamed Condition",
             entries=entries
         )

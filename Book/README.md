@@ -10,23 +10,18 @@ The Book Generator consolidates homebrew content from Google Sheets into profess
 
 ```
 Book/
-├── book_api.py                    # Main orchestrator
-├── google_docs_client.py          # Google Docs API wrapper
-├── styles.py                      # PHB-style constants
-├── formatters/                    # Entity-specific formatters
-│   ├── base.py                   # Base formatter class
-│   ├── spells.py                 # Spell formatter
-│   ├── species.py                # Race/Species formatter
-│   ├── monsters.py               # Monster formatter
-│   └── ...                       # Additional formatters
-├── writers/                      # Book-specific writers
-│   ├── base.py                   # Base writer class
-│   ├── omnibook.py               # Complete book (all entities)
-│   ├── phb.py                    # Player's Handbook
-│   ├── dmg.py                    # Dungeon Master's Guide
-│   ├── monster_manual.py         # Monster Manual
-│   └── divine_codex.py           # Divine Codex
-└── book_generation.ipynb         # Jupyter notebook interface
+├── cli.py                         # Normalized CLI entrypoint
+├── datasets/                      # Source/sheets selection adapters
+├── exports/                       # Writer profile registry
+├── mappers/                       # Formatter registry adapters
+├── services/                      # Generation orchestration service
+├── core/                          # Legacy implementation internals
+│   ├── Helpers/
+│   ├── formatters/
+│   └── writers/
+├── book_api.py                    # Compatibility shim to core Helpers
+├── google_docs_client.py          # Compatibility shim to core Helpers
+└── book_generation.ipynb          # Jupyter notebook interface
 ```
 
 ## Quick Start
@@ -53,20 +48,24 @@ poetry run jupyter notebook Book/book_generation.ipynb
 
 ### 4. Generate a Book
 
+CLI:
+
+```bash
+poetry run python -m Book.cli generate --book-type omnibook --source fantasy --doc-id YOUR_GOOGLE_DOC_ID
+```
+
+Python service:
+
 ```python
-from Book.book_api import BookAPI
-from Book.google_docs_client import GoogleDocsClient
-from Book.core.writers import OmnibookWriter
-from FiveETools.gsheets_client import fantasy_sheets
+from Book.services import BookGenerationService
 
-# Initialize
-DOC_ID = "YOUR_GOOGLE_DOC_ID"
-gdocs = GoogleDocsClient(DOC_ID, "FiveETools/key.json")
-book_api = BookAPI(gdocs, fantasy_sheets)
-
-# Generate Omnibook
-writer = OmnibookWriter(book_api, source="fantasy")
-book_api.generate_book(writer, DOC_ID)
+service = BookGenerationService()
+service.generate_book(
+    book_type="omnibook",
+    source="fantasy",
+    doc_id="YOUR_GOOGLE_DOC_ID",
+    credentials_path="FiveETools/key.json",
+)
 ```
 
 ## Supported Book Types

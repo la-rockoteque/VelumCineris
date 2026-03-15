@@ -1,145 +1,99 @@
-import pandas as pd
-from FiveETools.core.modern.sources import source, json_source
-from FiveETools.core.Helpers.gsheets_client import modern_sheets
-import inflection
-try:
-    from scripts.image_generator import generate_icon
-except ImportError:
-    generate_icon = None  # Optional dependency
+from __future__ import annotations
 
-df_item_properties = modern_sheets.get_sheet_by_name("item_properties")
-df_item_properties.head()
+from typing import cast
 
-
-def row_to_property(row):
-    return {
-        "abbreviation": row.get("ABRV"),
-        "source": json_source,
-        "entries": [
-            {
-                "name": inflection.humanize(row.get("Name", "Generic Property")),
-                "type": "entries",
-                "entries": [row.get("Entry")],
-            }
-        ],
-    }
-
-
-item_property_list = [
-    row_to_property(row)
-    for index, row in df_item_properties.iterrows()
-    if pd.notnull(row.get("Name")) and str(row.get("Name")).strip() != ""
-]
-# %%
-df_items = modern_sheets.get_sheet_by_name("items")
-df_items.head()
-
-
-def row_to_item(row):
-    properties = (
-        row.get("Property ABRV") if not pd.isnull(row.get("Property ABRV")) else []
-    )
-    attached_spells = (
-        row.get("Attached Spells") if not pd.isnull(row.get("Attached Spells")) else []
-    )
-    type = row.get("Type ABRV") if not pd.isnull(row.get("Type ABRV")) else "OTH"
-    item = {
-        "name": row.get("Name", "Generic Item"),
-        "source": json_source,
-        "type": type,
-        "value": row.get("Value", ""),
-        "weight": row.get("Weight", ""),
-        "page": row.get("Page", ""),
-        "rarity": "none",
-        **(
-            {"recharge": row.get("Recharge", "")}
-            if not pd.isnull(row.get("Recharge"))
-            else {}
-        ),
-        **(
-            {"reqAttunement": row.get("Require Attunement", "")}
-            if not pd.isnull(row.get("Require Attunement"))
-            else {}
-        ),
-        **(
-            {"attachedSpells": [spell for spell in attached_spells.split(", ")]}
-            if not pd.isnull(row.get("Attached Spells"))
-            else {}
-        ),
-        **(
-            {"baseItem": row.get("Base Item", "")}
-            if not pd.isnull(row.get("Base Item"))
-            else {}
-        ),
-        **({"tier": row.get("Tier", "")} if not pd.isnull(row.get("Tier")) else {}),
-        # "currencyConversion": "credit",
-        **(
-            {"weaponCategory": row.get("Category", "")}
-            if not pd.isnull(row.get("Category"))
-            else {}
-        ),
-        **(
-            {"property": [property for property in properties.split(", ")]}
-            if not pd.isnull(row.get("Property"))
-            else {}
-        ),
-        **(
-            {"dmg1": row.get("Damage 1", "")}
-            if not pd.isnull(row.get("Damage 1"))
-            else {}
-        ),
-        **(
-            {"dmg2": row.get("Damage 2", "")}
-            if not pd.isnull(row.get("Damage 2"))
-            else {}
-        ),
-        **(
-            {"dmgType": row.get("Damage Type", "")}
-            if not pd.isnull(row.get("Damage Type"))
-            else {}
-        ),
-        **({"range": row.get("Range", "")} if not pd.isnull(row.get("Range")) else {}),
-        **(
-            {"bonusWeapon": row.get("Bonus Weapon", "")}
-            if not pd.isnull(row.get("Bonus Weapon"))
-            else {}
-        ),
-        **(
-            {
-                "entries": [row.get("Description", "")],
-            }
-            if not pd.isnull(row.get("Description"))
-            else {}
-        ),
-        # "images": [
-        #   {
-        #     "type": "image",
-        #     "href": {
-        #       "type": "external",
-        #       "url": generate_icon("Item", row.get("Name", "Magic Item"))
-        #     }
-        #   }
-        # ]
-    }
-    return item
-
-
-items_list = [
-    row_to_item(row)
-    for index, row in df_items.iterrows()
-    if pd.notnull(row.get("Name"))
-    and str(row.get("Name")).strip() != ""
-    and row.get("Source") == source
-]
-
-# NEW: Pydantic-based conversion for type safety
+from FiveETools.core.modern import sources as source_catalog
+from FiveETools.datasets.json_loader import build_mapped_rows
+from FiveETools.mappers.item_mapper import map_item_property_row, map_item_row
+from Spreadsheet.core.lazy_exports import resolve_lazy_attr
 from Spreadsheet.core.converters.item import ItemConverter
+from models.datasets import get_converter as get_dataset_converter
+from models.datasets import load_dataset
 from models.entities.item import Item
-from typing import List
 
-converter = ItemConverter(modern_sheets)
-items_pydantic: List[Item] = converter.convert_all(
-    source_filter=source,
-    source=source,
-    json_source=json_source
-)
+_cache: dict[str, object] = {}
+
+
+def row_to_property(row, *, json_source: str):
+    return map_item_property_row(row, json_source=json_source)
+
+
+def row_to_item(row, *, json_source: str):
+    return map_item_row(row, json_source=json_source)
+
+
+def get_converter() -> ItemConverter:
+    return cast(ItemConverter, get_dataset_converter("items", setting="modern"))
+
+
+def build_item_property_list(source_code: str | None = None) -> list[dict]:
+    return build_mapped_rows(
+        sheets_client=source_catalog.modern_sheets,
+        sheet_name="item_properties",
+        source_code=source_code,
+        default_source=source_catalog.DEFAULT_SOURCE,
+        resolve_source_context=source_catalog.resolve_source_context,
+        row_mapper=row_to_property,
+        name_column="Name",
+        filter_by_source=False,
+    )
+
+
+def build_items_list(source_code: str | None = None) -> list[dict]:
+    return build_mapped_rows(
+        sheets_client=source_catalog.modern_sheets,
+        sheet_name="items",
+        source_code=source_code,
+        default_source=source_catalog.DEFAULT_SOURCE,
+        resolve_source_context=source_catalog.resolve_source_context,
+        row_mapper=row_to_item,
+        name_column="Name",
+        filter_by_source=True,
+    )
+
+
+def build_items_pydantic(source_code: str | None = None) -> list[Item]:
+    return cast(
+        list[Item], load_dataset("items", source_code=source_code, setting="modern")
+    )
+
+
+_RESOLVERS = {
+    "source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[0],
+    "json_source": lambda: source_catalog.resolve_source_context(
+        source_catalog.DEFAULT_SOURCE
+    )[1],
+    "item_property_list": build_item_property_list,
+    "items_list": build_items_list,
+    "converter": get_converter,
+    "items_pydantic": build_items_pydantic,
+}
+_CACHED_ATTRS = {"item_property_list", "items_list", "items_pydantic"}
+
+
+def __getattr__(name: str):
+    return resolve_lazy_attr(
+        module_name=__name__,
+        attr_name=name,
+        cache=_cache,
+        resolvers=_RESOLVERS,
+        cached_attrs=_CACHED_ATTRS,
+    )
+
+
+__all__ = [
+    "row_to_property",
+    "row_to_item",
+    "get_converter",
+    "build_item_property_list",
+    "build_items_list",
+    "build_items_pydantic",
+    "source",
+    "json_source",
+    "item_property_list",
+    "items_list",
+    "converter",
+    "items_pydantic",
+]

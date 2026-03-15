@@ -4,7 +4,7 @@ This folder contains a centralized Google Sheets client for accessing content da
 
 ## Overview
 
-All data access files in `src/content/` now use a unified `gsheets_client.py` that provides:
+All data access files now use the shared client in `Spreadsheet/sheets.py`, which provides:
 - Centralized spreadsheet configuration
 - Consistent data loading interface
 - Built-in caching for performance
@@ -12,10 +12,20 @@ All data access files in `src/content/` now use a unified `gsheets_client.py` th
 
 ## Usage
 
+### Export CLI
+
+```bash
+# Build modern export to default path (FiveETools/out/...)
+python -m FiveETools.cli export --setting modern
+
+# Build fantasy export with explicit source and output path
+python -m FiveETools.cli export --setting fantasy --source ORIO --out FiveETools/out/custom.json
+```
+
 ### Basic Usage
 
 ```python
-from FiveETools.gsheets_client import fantasy_sheets, modern_sheets
+from Spreadsheet.sheets import fantasy_sheets, modern_sheets
 
 # Load fantasy content
 df_monsters = fantasy_sheets.get_sheet("736393386")
@@ -27,7 +37,7 @@ df_spells = modern_sheets.get_sheet("625265890")
 ### Using Named Sheets
 
 ```python
-from FiveETools.gsheets_client import ContentSheetsClient
+from Spreadsheet.sheets import ContentSheetsClient
 
 # Create a client for fantasy content
 client = ContentSheetsClient("fantasy")
@@ -40,7 +50,7 @@ df = client.get_sheet_by_name("monsters")
 
 ```python
 # Access a sheet by GID directly
-df = non_fantasy_sheets.get_sheet("1076107525")  # Feats
+df = modern_sheets.get_sheet("1076107525")  # Feats
 ```
 
 ## Spreadsheet Configuration
@@ -85,7 +95,7 @@ To:
 
 ```python
 # NEW
-from FiveETools.gsheets_client import modern_sheets
+from Spreadsheet.sheets import modern_sheets
 
 df = modern_sheets.get_sheet("{gid}")
 ```

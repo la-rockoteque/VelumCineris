@@ -9,10 +9,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from Book.core.Helpers.book_api import BookAPI
-from Book.core.Helpers.google_docs_client import GoogleDocsClient
+from Book.book_api import BookAPI
+from Book.google_docs_client import GoogleDocsClient
 from Book.core.writers.complete_phb import CompletePHBWriter
-from FiveETools.core.Helpers.gsheets_client import fantasy_sheets, modern_sheets
+from Spreadsheet.sheets import fantasy_sheets, modern_sheets
 
 # Configuration
 DOC_ID = "1_a0yx9UnrsE4oPdkDS1WSkF1nvf-L4PV4bSDKluSI-w"
