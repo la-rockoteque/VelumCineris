@@ -1,4 +1,4 @@
-import type { ValidationCatalogResponse } from "shared/types/api";
+import type { FieldSuggestionResponse, ValidationCatalogResponse } from "shared/types/api";
 import type { GroupedFields } from "shared/utils/fields";
 
 export interface ItemDetailsFormProps {
@@ -9,6 +9,7 @@ export interface ItemDetailsFormProps {
   lookupFieldOptions: (fieldName: string) => string[];
   onFieldChange: (fieldName: string, value: unknown) => void;
   onRowDataPatch: (patch: Record<string, unknown>) => void;
+  onSuggestField: (fieldName: string, validationOptions: string[]) => Promise<FieldSuggestionResponse>;
 }
 
 export interface ManualFieldConfig {

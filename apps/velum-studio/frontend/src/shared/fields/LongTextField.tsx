@@ -1,4 +1,4 @@
-import { styled } from "app/styletron";
+import { TextArea } from "shared/library";
 
 export interface LongTextFieldProps {
   value: string;
@@ -8,11 +8,9 @@ export interface LongTextFieldProps {
   className?: string;
 }
 
-const Textarea = styled("textarea", {});
-
 export function LongTextField(props: LongTextFieldProps) {
   return (
-    <Textarea
+    <TextArea
       className={props.className}
       rows={props.rows ?? 5}
       value={props.value}

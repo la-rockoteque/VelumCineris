@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { Button, FeatureOutput, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
+import { Button, FeatureOutput, SelectInput, TextInput, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
 import type { MoneyCatalogResponse } from "shared/types/api";
 
 interface MoneyTabProps {
@@ -66,29 +66,29 @@ export function MoneyTab(props: MoneyTabProps) {
       <Toolbar>
         <label>
           Amount
-          <input type="number" step="any" value={amount} onChange={(event) => setAmount(event.target.value)} disabled={props.loading} />
+          <TextInput type="number" step="any" value={amount} onChange={(event) => setAmount(event.target.value)} disabled={props.loading} />
         </label>
 
         <label>
           From
-          <select value={fromCurrency} onChange={(event) => setFromCurrency(event.target.value)} disabled={props.loading || !currencies.length}>
+          <SelectInput value={fromCurrency} onChange={(event) => setFromCurrency(event.target.value)} disabled={props.loading || !currencies.length}>
             {currencies.map((currency) => (
               <option key={currency} value={currency}>
                 {currency}
               </option>
             ))}
-          </select>
+          </SelectInput>
         </label>
 
         <label>
           To
-          <select value={toCurrency} onChange={(event) => setToCurrency(event.target.value)} disabled={props.loading || !currencies.length}>
+          <SelectInput value={toCurrency} onChange={(event) => setToCurrency(event.target.value)} disabled={props.loading || !currencies.length}>
             {currencies.map((currency) => (
               <option key={currency} value={currency}>
                 {currency}
               </option>
             ))}
-          </select>
+          </SelectInput>
         </label>
 
         <label>

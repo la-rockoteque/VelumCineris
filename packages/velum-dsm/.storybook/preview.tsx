@@ -76,7 +76,7 @@ const preview: Preview = {
       expanded: true,
     },
     backgrounds: {
-      disable: true,
+      disabled: true,
     },
     docs: {
       theme: velumStorybookTheme,

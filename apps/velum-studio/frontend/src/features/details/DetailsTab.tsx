@@ -11,8 +11,8 @@ import {
   SpellDetailsForm,
 } from "features/details/forms";
 import type { ItemDetailsFormProps } from "features/details/forms/types";
-import { Button, Card, EditableTitle, MetaText } from "shared/library";
-import type { SelectedRow, ValidationCatalogResponse } from "shared/types/api";
+import { Badge, Button, Card, EditableTitle, InsetCard, InsetTitle, MetaText, SegmentedControl } from "shared/library";
+import type { FieldSuggestionResponse, SelectedRow, ValidationCatalogResponse } from "shared/types/api";
 import {
   findRowKeyByNormalized,
   groupDetailFields,
@@ -36,6 +36,7 @@ interface DetailsTabProps {
   onRowDataChange: (next: Record<string, unknown>) => void;
   onItemAction: (integrationKey: string, operation: string, dryRun: boolean) => Promise<void>;
   lookupFieldOptions: (fieldName: string) => string[];
+  onSuggestField: (fieldName: string, validationOptions: string[]) => Promise<FieldSuggestionResponse>;
 }
 
 const DetailsWorkspace = styled("div", {
@@ -64,45 +65,11 @@ const DetailsSidebar = styled("aside", {
   },
 });
 
-const SidebarPanel = styled("section", {
-  border: "1px solid var(--border)",
-  borderRadius: "12px",
-  padding: "12px",
-  background: "var(--surface-strong)",
-});
-
-const SidebarPanelTitle = styled("h4", {
-  margin: "0 0 8px",
-  fontSize: "0.85rem",
-  textTransform: "uppercase",
-  letterSpacing: "0.04em",
-  color: "var(--ink-soft)",
-});
-
 const IntegrationActions = styled("div", {
   display: "grid",
   gap: "8px",
   gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
   marginTop: "10px",
-});
-
-const FullWidthButton = styled("button", {
-  border: "1px solid var(--border)",
-  borderRadius: "9px",
-  padding: "8px 10px",
-  font: "inherit",
-  color: "var(--ink)",
-  background: "var(--surface-strong)",
-  cursor: "pointer",
-  fontWeight: 600,
-  width: "100%",
-  ":disabled": {
-    opacity: 0.6,
-    cursor: "not-allowed",
-  },
-  ":hover:not(:disabled)": {
-    borderColor: "rgba(155, 77, 31, 0.5)",
-  },
 });
 
 const Main = styled("main", {
@@ -147,28 +114,10 @@ const HeroStatus = styled("div", {
   gap: "6px",
 });
 
-const StatusChip = styled("span", {
-  border: "1px solid rgba(66, 48, 30, 0.16)",
-  borderRadius: "999px",
-  padding: "3px 8px",
-  fontSize: "0.68rem",
-  color: "#6d624f",
-  background: "rgba(255, 249, 238, 0.78)",
-});
-
 const HeroChips = styled("div", {
   display: "flex",
   flexWrap: "wrap",
   gap: "8px",
-});
-
-const Chip = styled("span", {
-  border: "1px solid var(--border)",
-  borderRadius: "999px",
-  padding: "4px 10px",
-  fontSize: "0.74rem",
-  color: "#5d513f",
-  background: "rgba(255, 250, 240, 0.9)",
 });
 
 const Media = styled("div", {
@@ -218,20 +167,6 @@ const MediaFallback = styled("div", {
   letterSpacing: "0.02em",
   color: "#6b604f",
   padding: "12px",
-});
-
-const RelationSection = styled("section", {
-  border: "1px solid var(--border)",
-  borderRadius: "12px",
-  padding: "12px",
-  background: "#f7f0e5",
-});
-
-const RelationTitle = styled("h3", {
-  margin: 0,
-  fontSize: "0.9rem",
-  textTransform: "uppercase",
-  letterSpacing: "0.04em",
 });
 
 const RelationTableWrap = styled("div", {
@@ -352,6 +287,7 @@ export function DetailsTab(props: DetailsTabProps) {
     lookupFieldOptions: props.lookupFieldOptions,
     onFieldChange: changeField,
     onRowDataPatch: (patch) => props.onRowDataChange({ ...selected.rowData, ...patch }),
+    onSuggestField: props.onSuggestField,
   };
 
   return (
@@ -359,46 +295,47 @@ export function DetailsTab(props: DetailsTabProps) {
       <DetailsWorkspace>
         <DetailsShell>
           <DetailsSidebar>
-            <SidebarPanel>
-              <SidebarPanelTitle>Actions</SidebarPanelTitle>
+            <InsetCard>
+              <InsetTitle>Actions</InsetTitle>
               <label>
                 Mode
-                <select
+                <SegmentedControl
+                  ariaLabel="Mode"
                   value={props.actionMode}
-                  onChange={(event) => props.onActionModeChange(event.target.value === "live" ? "live" : "dry_run")}
-                  disabled={props.loading}
-                >
-                  <option value="dry_run">Dry Run</option>
-                  <option value="live">Live Execute</option>
-                </select>
+                  onChange={(value) => props.onActionModeChange(value === "live" ? "live" : "dry_run")}
+                  options={[
+                    { value: "dry_run", label: "Dry Run", disabled: props.loading },
+                    { value: "live", label: "Live Execute", disabled: props.loading },
+                  ]}
+                />
               </label>
               <IntegrationActions>
-                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "publish", props.actionMode !== "live")}>
+                <Button style={{ width: "100%" }} disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "publish", props.actionMode !== "live")}>
                   WA Publish
-                </FullWidthButton>
-                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "delete", props.actionMode !== "live")}>
+                </Button>
+                <Button style={{ width: "100%" }} disabled={props.loading} onClick={() => void props.onItemAction("worldanvil", "delete", props.actionMode !== "live")}>
                   WA Delete
-                </FullWidthButton>
-                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "publish", props.actionMode !== "live")}>
+                </Button>
+                <Button style={{ width: "100%" }} disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "publish", props.actionMode !== "live")}>
                   DDB Publish
-                </FullWidthButton>
-                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "delete", props.actionMode !== "live")}>
+                </Button>
+                <Button style={{ width: "100%" }} disabled={props.loading} onClick={() => void props.onItemAction("dndbeyond", "delete", props.actionMode !== "live")}>
                   DDB Delete
-                </FullWidthButton>
-                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "publish", props.actionMode !== "live")}>
+                </Button>
+                <Button style={{ width: "100%" }} disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "publish", props.actionMode !== "live")}>
                   OP Publish
-                </FullWidthButton>
-                <FullWidthButton disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "delete", props.actionMode !== "live")}>
+                </Button>
+                <Button style={{ width: "100%" }} disabled={props.loading} onClick={() => void props.onItemAction("obsidianportal", "delete", props.actionMode !== "live")}>
                   OP Delete
-                </FullWidthButton>
+                </Button>
               </IntegrationActions>
-            </SidebarPanel>
+            </InsetCard>
 
             {!!selected.sections.length && (
-              <SidebarPanel>
-                <SidebarPanelTitle>Related</SidebarPanelTitle>
+              <InsetCard>
+                <InsetTitle>Related</InsetTitle>
                 <MetaText>{selected.sections.reduce((acc, section) => acc + Number(section.count || 0), 0)} linked rows</MetaText>
-              </SidebarPanel>
+              </InsetCard>
             )}
           </DetailsSidebar>
 
@@ -414,7 +351,9 @@ export function DetailsTab(props: DetailsTabProps) {
                 {!!statusChips.length && (
                   <HeroStatus>
                     {statusChips.map((chip) => (
-                      <StatusChip key={chip}>{chip}</StatusChip>
+                      <Badge key={chip} tone="warn">
+                        {chip}
+                      </Badge>
                     ))}
                   </HeroStatus>
                 )}
@@ -422,7 +361,9 @@ export function DetailsTab(props: DetailsTabProps) {
                 {!!metaChips.length && (
                   <HeroChips>
                     {metaChips.map((chip) => (
-                      <Chip key={chip}>{chip}</Chip>
+                      <Badge key={chip} tone="info">
+                        {chip}
+                      </Badge>
                     ))}
                   </HeroChips>
                 )}
@@ -455,8 +396,8 @@ export function DetailsTab(props: DetailsTabProps) {
                 .map((section) => {
                   const columns = Object.keys(section.rows[0] || {});
                   return (
-                    <RelationSection key={`${section.section}-${section.sheet}`}>
-                      <RelationTitle>{`${section.section} (${section.count})`}</RelationTitle>
+                    <InsetCard key={`${section.section}-${section.sheet}`}>
+                      <InsetTitle>{`${section.section} (${section.count})`}</InsetTitle>
                       <RelationTableWrap>
                         <table>
                           <thead>
@@ -483,7 +424,7 @@ export function DetailsTab(props: DetailsTabProps) {
                           </tbody>
                         </table>
                       </RelationTableWrap>
-                    </RelationSection>
+                    </InsetCard>
                   );
                 })}
           </Main>

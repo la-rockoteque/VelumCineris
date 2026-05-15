@@ -9,6 +9,10 @@ if TYPE_CHECKING:
     from Book.core.Helpers.google_docs_client import GoogleDocsClient
 
 
+BATCH_REQUEST_CHUNK_SIZE = 500
+BATCH_REQUEST_PAUSE_SECONDS = 1.1
+
+
 class BookAPI:
     """Main orchestrator for book generation."""
 
@@ -113,48 +117,10 @@ class BookAPI:
         print("Clearing document...")
         self.gdocs.clear_document()
 
-        # Generate content
-        all_lines = []
+        self._validate_cover_image(writer)
 
-        # Cover page
-        print("Adding cover page...")
-        all_lines.extend(writer.write_cover_page())
-
-        # Table of contents placeholder
-        print("Adding table of contents...")
-        all_lines.extend(writer.write_table_of_contents())
-
-        # Get sections from writer
-        sections = writer.get_sections()
-
-        # Process each section
-        for section_name, entity_type, filter_func in sections:
-            print(f"Processing section: {section_name}...")
-
-            try:
-                # Load entities
-                entities = self.load_entities(
-                    entity_type, source=writer.source
-                )
-
-                # Apply filter if provided
-                if filter_func:
-                    entities = filter_func(entities)
-
-                # Get formatter for this entity type
-                formatter = writer.get_formatter(entity_type)
-
-                # Write section with error handling
-                section_lines = writer.write_section_with_error_handling(
-                    section_name, entities, formatter
-                )
-                all_lines.extend(section_lines)
-
-            except Exception as e:
-                print(f"  Error processing {section_name}: {e}")
-                import traceback
-                traceback.print_exc()
-                continue
+        print("Building document structure...")
+        all_lines = writer.build_document_lines()
 
         # Write all content to document
         print("Writing content to Google Docs...")
@@ -207,128 +173,300 @@ class BookAPI:
         print("\n" + "=" * 80)
         print(f"Preview complete ({len(entities)} entities)")
 
+    def _validate_cover_image(self, writer) -> None:
+        """Pre-flight check: clear cover_image_url if the URL is not publicly accessible."""
+        url = getattr(writer, "cover_image_url", None)
+        if not url:
+            return
+        if not self._is_image_url_accessible(url):
+            print(
+                f"  Warning: cover image URL not publicly accessible — skipping image.\n"
+                f"  URL tried: {url}\n"
+                f"  Make sure the Drive file is shared as 'Anyone with the link'."
+            )
+            writer.cover_image_url = None
+
+    def _is_image_url_accessible(self, url: str) -> bool:
+        """Return True if url resolves to an image without auth."""
+        import urllib.request
+        import urllib.error
+
+        try:
+            req = urllib.request.Request(
+                url,
+                headers={"Range": "bytes=0-255", "User-Agent": "Mozilla/5.0"},
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                return resp.status in (200, 206)
+        except urllib.error.HTTPError as exc:
+            return exc.code in (200, 206)
+        except Exception:
+            return False
+
     def _write_lines_to_doc(self, lines: List[str]) -> None:
         """
-        Write lines of text to the document using batched requests.
+        Write lines of text to the document using chunked transactions.
 
         Args:
             lines: List of text lines (with markdown-style formatting)
         """
-        # Build all requests first, then batch them
-        requests = []
-        index = 1
+        requests, _ = self._build_requests_for_lines(self._normalize_lines(lines), index=1)
 
-        # Batch size to stay under rate limits
-        BATCH_SIZE = 50
+        if not requests:
+            return
 
-        for line_idx, line in enumerate(lines):
-            if not line:
-                # Skip empty lines
+        estimated_batches = max(
+            1,
+            (len(requests) + BATCH_REQUEST_CHUNK_SIZE - 1) // BATCH_REQUEST_CHUNK_SIZE,
+        )
+        print(
+            f"  Writing {len(lines)} lines as {len(requests)} requests "
+            f"across about {estimated_batches} Google Docs batches..."
+        )
+        self.gdocs.batch_update_in_chunks(
+            requests,
+            chunk_size=BATCH_REQUEST_CHUNK_SIZE,
+            pause_seconds=BATCH_REQUEST_PAUSE_SECONDS,
+        )
+
+    def _normalize_lines(self, lines: List[str]) -> List[str]:
+        """Collapse runs of consecutive empty lines to a single empty line."""
+        result: List[str] = []
+        prev_empty = False
+        for line in lines:
+            is_empty = line == ""
+            if is_empty and prev_empty:
+                continue
+            result.append(line)
+            prev_empty = is_empty
+        return result
+
+    def _build_requests_for_lines(
+        self,
+        lines: List[str],
+        index: int,
+    ) -> tuple[List[Dict[str, Any]], int]:
+        requests: List[Dict[str, Any]] = []
+        current_layout: str | None = None
+        pending_layout: str | None = None
+
+        for line in lines:
+            if line == "":
+                line_start = index
+                requests.append({"insertText": {"location": {"index": index}, "text": "\n"}})
+                index += 1
+                if pending_layout is not None:
+                    requests.append(
+                        self.gdocs.create_section_style_request(
+                            start_index=line_start,
+                            end_index=index,
+                            columns=1 if pending_layout == "one_column" else 2,
+                        )
+                    )
+                    current_layout = pending_layout
+                    pending_layout = None
                 continue
 
-            # Parse markdown-style formatting
-            if line.startswith("#### "):
-                # Heading 4
-                text = line[5:] + "\n"
-                requests.append({"insertText": {"location": {"index": index}, "text": text}})
-                requests.append({
-                    "updateParagraphStyle": {
-                        "range": {"startIndex": index, "endIndex": index + len(text)},
-                        "paragraphStyle": {"namedStyleType": "HEADING_4"},
-                        "fields": "namedStyleType",
-                    }
-                })
-                index += len(text)
+            if not line:
+                continue
 
-            elif line.startswith("### "):
-                # Heading 3
-                text = line[4:] + "\n"
-                requests.append({"insertText": {"location": {"index": index}, "text": text}})
-                requests.append({
-                    "updateParagraphStyle": {
-                        "range": {"startIndex": index, "endIndex": index + len(text)},
-                        "paragraphStyle": {"namedStyleType": "HEADING_3"},
-                        "fields": "namedStyleType",
-                    }
-                })
-                index += len(text)
+            heading_level, heading_text = self._heading_for_line(line)
 
-            elif line.startswith("## "):
-                # Heading 2
-                text = line[3:] + "\n"
-                requests.append({"insertText": {"location": {"index": index}, "text": text}})
-                requests.append({
-                    "updateParagraphStyle": {
-                        "range": {"startIndex": index, "endIndex": index + len(text)},
-                        "paragraphStyle": {"namedStyleType": "HEADING_2"},
-                        "fields": "namedStyleType",
-                    }
-                })
-                index += len(text)
+            if heading_level in {1, 2, 3}:
+                if index > 1:
+                    requests.append(
+                        {
+                            "insertSectionBreak": {
+                                "sectionType": "CONTINUOUS",
+                                "location": {"index": index},
+                            }
+                        }
+                    )
+                    index += 2
 
-            elif line.startswith("# "):
-                # Heading 1
-                text = line[2:] + "\n"
+                line_start = index
+                text = heading_text + "\n"
                 requests.append({"insertText": {"location": {"index": index}, "text": text}})
-                requests.append({
-                    "updateParagraphStyle": {
-                        "range": {"startIndex": index, "endIndex": index + len(text)},
-                        "paragraphStyle": {"namedStyleType": "HEADING_1"},
-                        "fields": "namedStyleType",
-                    }
-                })
                 index += len(text)
+                requests.extend(
+                    self.gdocs.create_heading_style_requests(
+                        start_index=line_start,
+                        end_index=index,
+                        level=heading_level,
+                    )
+                )
+                requests.append(
+                    self.gdocs.create_section_style_request(
+                        start_index=line_start,
+                        end_index=index,
+                        columns=1,
+                    )
+                )
+                requests.append(
+                    {
+                        "insertSectionBreak": {
+                            "sectionType": "CONTINUOUS",
+                            "location": {"index": index},
+                        }
+                    }
+                )
+                index += 2
+                current_layout = None
+                pending_layout = "two_column"
+                continue
 
+            desired_layout = pending_layout or self._layout_for_line(line)
+            layout_switched = desired_layout is not None and desired_layout != current_layout
+
+            if layout_switched and current_layout is not None:
+                requests.append(
+                    {
+                        "insertSectionBreak": {
+                            "sectionType": "CONTINUOUS",
+                            "location": {"index": index},
+                        }
+                    }
+                )
+                index += 2
+
+            line_start = index
+            if heading_level == 4:
+                text = heading_text + "\n"
+                requests.append({"insertText": {"location": {"index": index}, "text": text}})
+                index += len(text)
+                requests.extend(
+                    self.gdocs.create_heading_style_requests(
+                        start_index=line_start,
+                        end_index=index,
+                        level=heading_level,
+                    )
+                )
             elif line.startswith("---"):
-                # Page break
                 requests.append({"insertPageBreak": {"location": {"index": index}}})
                 index += 1
-
-            else:
-                # Regular paragraph
+                continue
+            elif line.startswith("COVER_TAGLINE: "):
+                text = line[15:] + "\n"
+                requests.append({"insertText": {"location": {"index": index}, "text": text}})
+                index += len(text)
+                requests.extend(
+                    self.gdocs.create_cover_tagline_style_requests(
+                        start_index=line_start, end_index=index
+                    )
+                )
+            elif line.startswith("COVER_TITLE: "):
+                text = line[13:] + "\n"
+                requests.append({"insertText": {"location": {"index": index}, "text": text}})
+                index += len(text)
+                requests.extend(
+                    self.gdocs.create_cover_title_style_requests(
+                        start_index=line_start, end_index=index
+                    )
+                )
+            elif line.startswith("COVER_SUBTITLE: "):
+                text = line[16:] + "\n"
+                requests.append({"insertText": {"location": {"index": index}, "text": text}})
+                index += len(text)
+                requests.extend(
+                    self.gdocs.create_cover_subtitle_style_requests(
+                        start_index=line_start, end_index=index
+                    )
+                )
+            elif line.startswith("COVER_IMAGE: "):
+                uri = line[13:].strip()
+                from Book.core.Helpers.styles import COVER_IMAGE_HEIGHT_PT, COVER_IMAGE_WIDTH_PT
+                requests.append({
+                    "insertInlineImage": {
+                        "uri": uri,
+                        "location": {"index": index},
+                        "objectSize": {
+                            "height": {"magnitude": COVER_IMAGE_HEIGHT_PT, "unit": "PT"},
+                            "width": {"magnitude": COVER_IMAGE_WIDTH_PT, "unit": "PT"},
+                        },
+                    }
+                })
+                index += 1
+                requests.append({"insertText": {"location": {"index": index}, "text": "\n"}})
+                index += 1
+                requests.append(
+                    self.gdocs.create_paragraph_style_request(
+                        start_index=line_start,
+                        end_index=index,
+                        paragraph_style={
+                            "alignment": "CENTER",
+                            "spaceAbove": {"magnitude": 8, "unit": "PT"},
+                            "spaceBelow": {"magnitude": 8, "unit": "PT"},
+                        },
+                        fields=["alignment", "spaceAbove", "spaceBelow"],
+                    )
+                )
+            elif self._is_horizontal_rule(line):
                 text = line + "\n"
+                requests.append({"insertText": {"location": {"index": index}, "text": text}})
+                index += len(text)
+                requests.extend(
+                    self.gdocs.create_rule_style_requests(
+                        start_index=line_start,
+                        end_index=index,
+                    )
+                )
+            else:
+                clean_text = line.replace("***", "").replace("**", "").replace("*", "") + "\n"
+                requests.append({"insertText": {"location": {"index": index}, "text": clean_text}})
+                index += len(clean_text)
+                requests.extend(
+                    self.gdocs.create_body_style_requests(
+                        start_index=line_start,
+                        end_index=index,
+                    )
+                )
 
-                # Check for markdown styling
                 bold = "**" in line
                 italic = "*" in line and not bold
 
-                # Strip markdown for text
-                clean_text = line.replace("***", "").replace("**", "").replace("*", "") + "\n"
-
-                requests.append({"insertText": {"location": {"index": index}, "text": clean_text}})
-
-                # Apply styling if needed
                 if bold or italic:
-                    text_style = {}
-                    if bold:
-                        text_style["bold"] = True
-                    if italic:
-                        text_style["italic"] = True
+                    requests.append(
+                        self.gdocs.create_inline_text_style_request(
+                            start_index=line_start,
+                            end_index=index - 1,
+                            bold=bold,
+                            italic=italic,
+                        )
+                    )
 
-                    requests.append({
-                        "updateTextStyle": {
-                            "range": {
-                                "startIndex": index,
-                                "endIndex": index + len(clean_text) - 1,  # Exclude newline
-                            },
-                            "textStyle": text_style,
-                            "fields": ",".join(text_style.keys()),
-                        }
-                    })
+            if layout_switched:
+                requests.append(
+                    self.gdocs.create_section_style_request(
+                        start_index=line_start,
+                        end_index=index,
+                        columns=1 if desired_layout == "one_column" else 2,
+                    )
+                )
+            if desired_layout is not None:
+                current_layout = desired_layout
+                if pending_layout == desired_layout:
+                    pending_layout = None
 
-                index += len(clean_text)
+        return requests, index
 
-            # Execute batch when we reach batch size
-            if len(requests) >= BATCH_SIZE:
-                print(f"  Writing batch ({len(requests)} requests)...")
-                self.gdocs.batch_update(requests)
-                requests = []
+    def _layout_for_line(self, line: str) -> str | None:
+        if line.startswith(("# ", "## ", "### ", "COVER_")):
+            return "one_column"
+        if line.startswith("---"):
+            return None
+        return "two_column"
 
-                # Add delay to avoid rate limiting
-                import time
-                time.sleep(1.2)  # 60 requests/min = 1 per second, add buffer
+    def _heading_for_line(self, line: str) -> tuple[int | None, str]:
+        if line.startswith("#### "):
+            return 4, line[5:]
+        if line.startswith("### "):
+            return 3, line[4:]
+        if line.startswith("## "):
+            return 2, line[3:]
+        if line.startswith("# "):
+            return 1, line[2:]
+        return None, line
 
-        # Execute remaining requests
-        if requests:
-            print(f"  Writing final batch ({len(requests)} requests)...")
-            self.gdocs.batch_update(requests)
+    def _is_horizontal_rule(self, line: str) -> bool:
+        stripped_line = line.strip()
+        return bool(stripped_line) and set(stripped_line) == {"─"}

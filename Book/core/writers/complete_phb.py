@@ -56,6 +56,36 @@ class CompletePHBWriter(BaseWriter):
             ("Languages", "language", None),
         ]
 
+    def build_document_lines(self) -> List[str]:
+        lines = []
+
+        lines.extend(self.write_cover_page())
+        lines.extend(self.write_table_of_contents())
+
+        for section_name, entity_type, filter_func in self.get_sections():
+            print(f"Processing section: {section_name}...")
+
+            try:
+                entities = self.book_api.load_entities(entity_type, source=self.source)
+
+                if filter_func:
+                    entities = filter_func(entities)
+
+                formatter = self.get_formatter(entity_type)
+                section_lines = self.write_section_with_error_handling(
+                    section_name, entities, formatter
+                )
+                lines.extend(section_lines)
+            except Exception as e:
+                print(f"  Error processing {section_name}: {e}")
+                continue
+
+        if self.source == "modern":
+            print("Processing section: Classes (with subclasses)...")
+            lines.extend(self.write_classes_with_subclasses())
+
+        return lines
+
     def write_classes_with_subclasses(self) -> List[str]:
         """
         Write classes section with subclasses nested under each class.

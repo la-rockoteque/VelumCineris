@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { MetaText, TableWrap, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceTitle } from "shared/library";
+import { MetaText, SelectInput, TableWrap, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceTitle } from "shared/library";
 import type { SpreadsheetRowsResponse } from "shared/types/api";
 import { asText, truncateText } from "shared/utils/text";
 
@@ -52,13 +52,13 @@ export function ValidationsTab(props: ValidationsTabProps) {
       <Toolbar>
         <label>
           Validation Sheet
-          <select value={sheet} onChange={(event) => setSheet(event.target.value)} disabled={props.loading}>
+          <SelectInput value={sheet} onChange={(event) => setSheet(event.target.value)} disabled={props.loading}>
             {props.validationSheets.map((name) => (
               <option key={name} value={name}>
                 {name}
               </option>
             ))}
-          </select>
+          </SelectInput>
         </label>
       </Toolbar>
 

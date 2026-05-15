@@ -9,7 +9,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from Book.core.formatters import (
+from Book.core.formatters import (  # noqa: E402
     SpellFormatter,
     SpeciesFormatter,
     MonsterFormatter,
@@ -46,29 +46,55 @@ def test_spell_formatter():
 
 
 def test_species_formatter():
-    """Test SpeciesFormatter with sample species."""
+    """Test SpeciesFormatter — PHB inline-trait style."""
     formatter = SpeciesFormatter()
 
-    # Sample species in 5etools format
     species = {
         "name": "Dwarf",
-        "size": "M",
-        "speed": {"walk": 25},
+        "alias": ["Children of Stone"],
+        "slogan": "Built to Endure",
+        "quote": "Stone remembers what flesh forgets.",
         "ability": [{"con": 2}],
-        "entries": ["Bold and hardy, dwarves are known as skilled warriors."],
-        "trait": [
-            {
-                "name": "Darkvision",
-                "entries": ["You can see in dim light within 60 feet."],
-            }
+        "fluff": {
+            "entries": [
+                {
+                    "type": "entries",
+                    "name": "Intro",
+                    "entries": ["Dwarves are resilient folk shaped by mountain halls and long memory."],
+                },
+                {
+                    "type": "entries",
+                    "name": "Appearance",
+                    "entries": ["Broad frames, callused hands, and deliberate movement mark most dwarves."],
+                },
+                {
+                    "type": "entries",
+                    "name": "Life Underground",
+                    "entries": ["Dwarves carve their homes deep in the mountains."],
+                }
+            ]
+        },
+        "entries": [
+            "Dwarf Traits",  # title string — should be skipped
+            {"type": "entries", "name": "Age", "entries": ["Dwarves mature at 50 and live up to 350 years."]},
+            {"type": "entries", "name": "Darkvision", "entries": ["You can see in dim light within 60 feet."]},
         ],
     }
 
     lines = formatter.format_entity(species)
 
-    # Verify output
     assert len(lines) > 0
-    assert any("Dwarf" in line for line in lines)
+    assert lines[0] == "## Dwarf"
+    assert "*Children of Stone • Built to Endure*" in lines
+    assert "*Stone remembers what flesh forgets.*" in lines
+    assert "Dwarves are resilient folk shaped by mountain halls and long memory." in lines
+    assert "#### Appearance" in lines
+    assert "#### Life Underground" in lines
+    assert any("**Ability Score Increase.**" in line for line in lines)
+    assert "**Ability Score Increase.** Your Constitution score increases by 2." in lines
+    assert any("**Age.** Dwarves mature at 50 and live up to 350 years." in line for line in lines)
+    assert any("**Darkvision.**" in line for line in lines)
+    assert "---" not in lines
     print(f"✓ SpeciesFormatter test passed ({len(lines)} lines)")
 
 
@@ -105,6 +131,8 @@ def test_monster_formatter():
     # Verify output
     assert len(lines) > 0
     assert any("Goblin" in line for line in lines)
+    assert lines[0] == "### Goblin"
+    assert "---" not in lines
     print(f"✓ MonsterFormatter test passed ({len(lines)} lines)")
 
 
@@ -129,6 +157,8 @@ def test_background_formatter():
     # Verify output
     assert len(lines) > 0
     assert any("Acolyte" in line for line in lines)
+    assert lines[0] == "### Acolyte"
+    assert "---" not in lines
     print(f"✓ BackgroundFormatter test passed ({len(lines)} lines)")
 
 

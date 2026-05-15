@@ -10,16 +10,27 @@ from Book.core.formatters.base import BaseFormatter
 class BaseWriter(ABC):
     """Abstract base for all book writers."""
 
-    def __init__(self, book_api, source: str = "fantasy"):
+    DEFAULT_COVER_IMAGE_URL = (
+        "https://drive.google.com/thumbnail?id=1mERyOdTerZrbBzfbQ9mq52a4cmVYwRbH&sz=w2000"
+    )
+
+    def __init__(
+        self,
+        book_api,
+        source: str = "fantasy",
+        cover_image_url: Optional[str] = DEFAULT_COVER_IMAGE_URL,
+    ):
         """
         Initialize the writer.
 
         Args:
             book_api: BookAPI instance
             source: Content source ("fantasy" or "modern")
+            cover_image_url: HTTPS URL for cover artwork; None to omit the image
         """
         self.book_api = book_api
         self.source = source
+        self.cover_image_url = cover_image_url
 
         # Initialize formatters cache
         self._formatters = {}
@@ -44,6 +55,39 @@ class BaseWriter(ABC):
             Book title
         """
         pass
+
+    def build_document_lines(self) -> List[str]:
+        """
+        Build the complete document body for this writer.
+
+        Writers with more complex structure can override this instead of relying on
+        the default flat section loop.
+        """
+        lines: List[str] = []
+
+        lines.extend(self.write_cover_page())
+        lines.extend(self.write_table_of_contents())
+
+        for section_name, entity_type, filter_func in self.get_sections():
+            try:
+                entities = self.book_api.load_entities(entity_type, source=self.source)
+
+                if filter_func:
+                    entities = filter_func(entities)
+
+                formatter = self.get_formatter(entity_type)
+                section_lines = self.write_section_with_error_handling(
+                    section_name, entities, formatter
+                )
+                lines.extend(section_lines)
+            except Exception as e:
+                print(f"  Error processing {section_name}: {e}")
+                import traceback
+
+                traceback.print_exc()
+                continue
+
+        return lines
 
     def get_formatter(self, entity_type: str) -> BaseFormatter:
         """
@@ -98,30 +142,20 @@ class BaseWriter(ABC):
         return formatter
 
     def write_cover_page(self) -> List[str]:
-        """
-        Write the cover page.
+        """Write PHB-style cover: tagline → title → art → subtitle → page break."""
+        lines: List[str] = []
 
-        Returns:
-            List of formatted text lines
-        """
-        lines = []
-
-        # Title
-        lines.append(f"# {self.get_book_title()}")
+        setting = "Orimond" if self.source == "fantasy" else "Vestigium"
+        lines.append("COVER_TAGLINE: A Homebrew Compendium · D&D 5th Edition")
         lines.append("")
-
-        # Subtitle
-        lines.append(f"*A Homebrew Compendium for D&D 5th Edition*")
+        lines.append(f"COVER_TITLE: {setting}")
         lines.append("")
-
-        # Campaign setting
-        if self.source == "fantasy":
-            lines.append("**Campaign Setting:** Orimond")
-        else:
-            lines.append("**Campaign Setting:** Vestigium Guide to Concord City")
-
+        if self.cover_image_url:
+            lines.append(f"COVER_IMAGE: {self.cover_image_url}")
+            lines.append("")
+        lines.append(f"COVER_SUBTITLE: {self.get_book_title()}")
         lines.append("")
-        lines.append("---")  # Page break
+        lines.append("---")
         lines.append("")
 
         return lines

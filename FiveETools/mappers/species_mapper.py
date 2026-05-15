@@ -53,6 +53,33 @@ def _build_ability_scores_fantasy(row: Any) -> dict[str, int]:
     return abilities
 
 
+def _build_fluff_entries(
+    row: Any,
+    *,
+    df_species: pd.DataFrame,
+    end_column_fallback: str,
+) -> list[dict[str, Any]]:
+    columns = list(df_species.columns)
+    start_index = columns.index("Intro")
+
+    if "Playstyle & Roleplaying" in columns:
+        end_column = "Playstyle & Roleplaying"
+    else:
+        end_column = end_column_fallback
+
+    end_index = columns.index(end_column)
+
+    return [
+        {
+            "name": col,
+            "entries": [row[col]],
+            "type": "entries",
+        }
+        for col in columns[start_index : end_index + 1]
+        if pd.notnull(row.get(col))
+    ]
+
+
 def map_fantasy_species_row(
     row: Any,
     *,
@@ -86,10 +113,14 @@ def map_fantasy_species_row(
         "name": row.get("Name"),
         "source": row.get("Source"),
         "page": 1,
+        **({"demonym": row.get("Demonym")} if pd.notnull(row.get("Demonym")) else {}),
         "ability": [abilities] if abilities else [],
         "size": size,
         **({"traitTags": row.get("Tag").split(", ")} if pd.notnull(row.get("Tag")) else {}),
         **({"alias": [row.get("Alias")]} if pd.notnull(row.get("Alias")) else {}),
+        **({"slogan": row.get("Slogan")} if pd.notnull(row.get("Slogan")) else {}),
+        **({"quote": row.get("Quote")} if pd.notnull(row.get("Quote")) else {}),
+        **({"charGen": row.get("CharGen")} if pd.notnull(row.get("CharGen")) else {}),
         "speed": row.get("Walk Speed"),
         "entries": [
             f"{row.get('Name')} Traits",
@@ -127,17 +158,11 @@ def map_fantasy_species_row(
             }
         ],
         "fluff": {
-            "entries": [
-                {
-                    "name": col,
-                    "entries": [row[col]],
-                    "type": "entries",
-                }
-                for col in df_species.columns[
-                    df_species.columns.get_loc("Intro") : df_species.columns.get_loc("Life in Orimond") + 1
-                ]
-                if pd.notnull(row[col])
-            ],
+            "entries": _build_fluff_entries(
+                row,
+                df_species=df_species,
+                end_column_fallback="Life in Orimond",
+            ),
             **(
                 {
                     "images": [
@@ -179,6 +204,7 @@ def map_modern_species_row(
         "name": row.get("Name"),
         "source": row.get("Source"),
         "page": 1,
+        **({"demonym": row.get("Demonym")} if pd.notnull(row.get("Demonym")) else {}),
         "ability": [
             {
                 f"{row.get('Ability 1')[:3].lower()}": row.get("Score 1"),
@@ -188,6 +214,9 @@ def map_modern_species_row(
         "size": [row.get("Size ABRV")[:1].upper()],
         **({"traitTags": row.get("Tag").split(", ")} if pd.notnull(row.get("Tag")) else {}),
         **({"alias": [row.get("Alias")]} if pd.notnull(row.get("Alias")) else {}),
+        **({"slogan": row.get("Slogan")} if pd.notnull(row.get("Slogan")) else {}),
+        **({"quote": row.get("Quote")} if pd.notnull(row.get("Quote")) else {}),
+        **({"charGen": row.get("CharGen")} if pd.notnull(row.get("CharGen")) else {}),
         "speed": row.get("Walk Speed"),
         "entries": [
             f"{row.get('Name')} Traits",
@@ -225,17 +254,11 @@ def map_modern_species_row(
             }
         ],
         "fluff": {
-            "entries": [
-                {
-                    "name": col,
-                    "entries": [row[col]],
-                    "type": "entries",
-                }
-                for col in df_species.columns[
-                    df_species.columns.get_loc("Intro") : df_species.columns.get_loc("Life in the City") + 1
-                ]
-                if pd.notnull(row[col])
-            ],
+            "entries": _build_fluff_entries(
+                row,
+                df_species=df_species,
+                end_column_fallback="Life in the City",
+            ),
             **(
                 {
                     "images": [

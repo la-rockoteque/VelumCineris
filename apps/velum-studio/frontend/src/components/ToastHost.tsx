@@ -1,5 +1,6 @@
 import type { ToastItem } from "app/useToasts";
 import { styled } from "app/styletron";
+import { InlineButton } from "shared/library";
 
 interface ToastHostProps {
   items: ToastItem[];
@@ -56,17 +57,6 @@ const ToastText = styled("div", {
   color: "#4f4638",
 });
 
-const CloseButton = styled("button", {
-  border: "0",
-  background: "transparent",
-  color: "#73685a",
-  fontSize: "0.82rem",
-  fontWeight: 700,
-  cursor: "pointer",
-  lineHeight: 1,
-  padding: "2px 4px",
-});
-
 export function ToastHost({ items, onDismiss }: ToastHostProps) {
   if (!items.length) {
     return null;
@@ -77,9 +67,23 @@ export function ToastHost({ items, onDismiss }: ToastHostProps) {
       {items.map((item) => (
         <Toast key={item.id} style={{ borderColor: levelBorders[item.level] }}>
           <ToastText>{item.message}</ToastText>
-          <CloseButton type="button" onClick={() => onDismiss(item.id)}>
+          <InlineButton
+            type="button"
+            aria-label="Dismiss notification"
+            style={{
+              border: 0,
+              background: "transparent",
+              color: "#73685a",
+              fontSize: "0.82rem",
+              fontWeight: 700,
+              lineHeight: 1,
+              padding: "2px 4px",
+              minWidth: "unset",
+            }}
+            onClick={() => onDismiss(item.id)}
+          >
             ×
-          </CloseButton>
+          </InlineButton>
         </Toast>
       ))}
     </Host>

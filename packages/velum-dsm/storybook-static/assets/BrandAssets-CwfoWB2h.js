@@ -1,1 +1,0 @@
-import{i as s}from"./iframe-v_xVpIIQ.js";const o={marks:["SigilMark","RuneDivider","CornerFlourish"],icons:Object.keys(s),surfaces:["BrickAndMoss"],motion:["DiceLottie"],tone:"parchment-ember-moss"};export{o as b};

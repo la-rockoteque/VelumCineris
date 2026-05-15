@@ -1,7 +1,19 @@
 import { useEffect, useState } from "react";
 import { styled } from "app/styletron";
 
-import { ActionRowEnd, Button, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
+import {
+  ActionRowEnd,
+  Button,
+  SegmentedControl,
+  SelectInput,
+  TextArea,
+  TextInput,
+  Toolbar,
+  WorkspaceCard,
+  WorkspaceLead,
+  WorkspaceOutput,
+  WorkspaceTitle,
+} from "shared/library";
 import type { SelectedRow } from "shared/types/api";
 
 interface IntelligenceTabProps {
@@ -52,35 +64,41 @@ export function IntelligenceTab(props: IntelligenceTabProps) {
       <Toolbar>
         <label>
           Mode
-          <select value={mode} onChange={(event) => setMode(event.target.value)} disabled={props.loading || !props.selected}>
-            <option value="custom">Custom</option>
-            <option value="balance">Balance</option>
-            <option value="rewrite">Rewrite</option>
-            <option value="qa">QA</option>
-          </select>
+          <SegmentedControl
+            ariaLabel="Intelligence mode"
+            value={mode}
+            onChange={setMode}
+            options={[
+              { value: "custom", label: "Custom", disabled: props.loading || !props.selected },
+              { value: "balance", label: "Balance", disabled: props.loading || !props.selected },
+              { value: "rewrite", label: "Rewrite", disabled: props.loading || !props.selected },
+              { value: "qa", label: "QA", disabled: props.loading || !props.selected },
+            ]}
+          />
         </label>
 
         <label>
           Model
-          <input value={model} onChange={(event) => setModel(event.target.value)} disabled={props.loading || !props.selected} />
+          <TextInput value={model} onChange={(event) => setModel(event.target.value)} disabled={props.loading || !props.selected} />
         </label>
 
         <label>
           Provider
-          <select
+          <SegmentedControl
+            ariaLabel="Provider"
             value={useLocal ? "true" : "false"}
-            onChange={(event) => setUseLocal(event.target.value === "true")}
-            disabled={props.loading || !props.selected}
-          >
-            <option value="true">Local LLM</option>
-            <option value="false">Remote</option>
-          </select>
+            onChange={(value) => setUseLocal(value === "true")}
+            options={[
+              { value: "true", label: "Local LLM", disabled: props.loading || !props.selected },
+              { value: "false", label: "Remote", disabled: props.loading || !props.selected },
+            ]}
+          />
         </label>
       </Toolbar>
 
       <InstructionLabel>
         Instruction
-        <textarea
+        <TextArea
           rows={6}
           value={instruction}
           onChange={(event) => setInstruction(event.target.value)}

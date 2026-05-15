@@ -28,7 +28,7 @@ describe("SettingsTab", () => {
     );
 
     await user.selectOptions(screen.getByLabelText("Default Source"), "google");
-    await user.selectOptions(screen.getByLabelText("Minimal Columns by Default"), "false");
+    await user.click(screen.getByLabelText("Disabled"));
     await user.clear(screen.getByLabelText("Minimal Column Count"));
     await user.type(screen.getByLabelText("Minimal Column Count"), "40");
     await user.clear(screen.getByLabelText("Cell Char Limit"));

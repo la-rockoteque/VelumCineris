@@ -1,10 +1,10 @@
 # Book Generator
 
-Generate D&D sourcebooks in Google Docs with PHB-style formatting.
+Generate D&D sourcebooks in Google Docs or Homebrewery with PHB-style formatting.
 
 ## Overview
 
-The Book Generator consolidates homebrew content from Google Sheets into professional-looking books with two-column PHB-style layout. It supports multiple book types (Omnibook, PHB, DMG, Monster Manual, Divine Codex) and two campaign settings (Fantasy/Orimond and Modern/Concord City).
+The Book Generator consolidates homebrew content from Google Sheets into professional-looking books with two-column PHB-style layout. It supports multiple book types (Omnibook, PHB, DMG, Monster Manual, Divine Codex) and two campaign settings (Fantasy/Orimond and Modern/Concord City). The same writer profiles can target Google Docs or Homebrewery markdown.
 
 ## Architecture
 
@@ -54,6 +54,12 @@ CLI:
 poetry run python -m Book.cli generate --book-type omnibook --source fantasy --doc-id YOUR_GOOGLE_DOC_ID
 ```
 
+Homebrewery export:
+
+```bash
+poetry run python -m Book.cli export-homebrewery --book-type campaign_handbook --source fantasy --output Book/exports/orimond-campaign-handbook.homebrewery.md
+```
+
 Python service:
 
 ```python
@@ -65,6 +71,12 @@ service.generate_book(
     source="fantasy",
     doc_id="YOUR_GOOGLE_DOC_ID",
     credentials_path="FiveETools/key.json",
+)
+
+service.export_homebrewery(
+    book_type="campaign_handbook",
+    source="fantasy",
+    output_path="Book/exports/orimond-campaign-handbook.homebrewery.md",
 )
 ```
 

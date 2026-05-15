@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import csv
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
@@ -9,11 +8,14 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from .config import settings
+from .loading_trivia import load_loading_trivia_items
 from .schemas import (
     AppSettingsResponse,
     AppSettingsUpdateRequest,
     BookFormatterRequest,
     BookFormatterResponse,
+    FieldSuggestionRequest,
+    FieldSuggestionResponse,
     FormatterStyleTemplateResponse,
     FormatterStyleTemplatesResponse,
     ImageGenerationRequest,
@@ -26,7 +28,6 @@ from .schemas import (
     IntegrationSyncResponse,
     IntelligenceRequest,
     IntelligenceResponse,
-    LoadingTriviaItem,
     LoadingTriviaResponse,
     ItemActionRequest,
     ItemActionResponse,
@@ -97,22 +98,8 @@ def loading_trivia() -> LoadingTriviaResponse:
     if not trivia_path.exists():
         return LoadingTriviaResponse(items=[])
 
-    items: list[LoadingTriviaItem] = []
     try:
-        with trivia_path.open("r", newline="", encoding="utf-8") as handle:
-            reader = csv.DictReader(handle)
-            for row in reader:
-                tidbit = str(row.get("tidbit", "")).strip()
-                if not tidbit:
-                    continue
-                items.append(
-                    LoadingTriviaItem(
-                        tidbit=tidbit,
-                        entity_type=(str(row.get("entity_type", "")).strip() or None),
-                        entity_name=(str(row.get("entity_name", "")).strip() or None),
-                        source=(str(row.get("source", "")).strip() or None),
-                    )
-                )
+        items = load_loading_trivia_items(trivia_path)
     except Exception as exc:
         raise HTTPException(
             status_code=500,
@@ -439,6 +426,21 @@ def intelligence_suggest(body: IntelligenceRequest) -> IntelligenceResponse:
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return IntelligenceResponse.model_validate(payload)
+
+
+@app.post("/api/intelligence/field-suggest", response_model=FieldSuggestionResponse)
+def intelligence_field_suggest(body: FieldSuggestionRequest) -> FieldSuggestionResponse:
+    try:
+        payload = intelligence_service.suggest_field(
+            sheet=body.sheet,
+            field_name=body.field_name,
+            row_data=body.row_data,
+            validation_options=body.validation_options,
+            model=body.model,
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return FieldSuggestionResponse.model_validate(payload)
 
 
 @app.get("/api/translator/targets", response_model=TranslatorTargetsResponse)

@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { styled } from "app/styletron";
 import { FieldEditor } from "features/details/FieldEditors";
+import type { FieldSuggestionResponse } from "shared/types/api";
 import { findPrimaryNameFieldKey, findRowKeyByNormalized } from "shared/utils/fields";
 import { asText, normalizeKey } from "shared/utils/text";
 
@@ -22,6 +24,12 @@ interface ResolvedField {
   label: string;
   value: unknown;
   abbreviation: AbbreviationEntry | null;
+}
+
+interface FieldSuggestionState {
+  status: "loading" | "ready" | "error";
+  response?: FieldSuggestionResponse;
+  error?: string;
 }
 
 function isAbbreviationField(normalizedField: string): boolean {
@@ -131,7 +139,7 @@ const SectionGrid = styled("div", {
   gap: "10px",
 });
 
-const FieldItem = styled("label", ({ $span }: { $span: ManualFieldConfig["span"] }) => {
+const FieldShell = styled("div", ({ $span }: { $span: ManualFieldConfig["span"] }) => {
   const defaultSpan = 4;
   const computedSpan =
     $span === "full"
@@ -142,11 +150,15 @@ const FieldItem = styled("label", ({ $span }: { $span: ManualFieldConfig["span"]
 
   return {
     gridColumn: computedSpan,
-    display: "flex",
-    flexDirection: "column",
-    gap: "6px",
-    fontSize: "0.82rem",
-    color: "var(--ink-soft)",
+    position: "relative",
+    ":hover [data-field-intelligence='true']": {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+    ":focus-within [data-field-intelligence='true']": {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
     "@media (max-width: 860px)": {
       gridColumn: "span 6",
     },
@@ -154,6 +166,14 @@ const FieldItem = styled("label", ({ $span }: { $span: ManualFieldConfig["span"]
       gridColumn: "span 12",
     },
   };
+});
+
+const FieldItem = styled("label", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "6px",
+  fontSize: "0.82rem",
+  color: "var(--ink-soft)",
 });
 
 const FieldTitleRow = styled("span", {
@@ -168,10 +188,19 @@ const FieldTitleRow = styled("span", {
   color: "#645a49",
 });
 
+const FieldTitleLeft = styled("span", {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "8px",
+  minWidth: 0,
+});
+
 const FieldTitleText = styled("span", {
   display: "inline-flex",
   alignItems: "baseline",
   gap: "6px",
+  minWidth: 0,
+  flexWrap: "wrap",
 });
 
 const FieldKeyHint = styled("small", {
@@ -191,6 +220,88 @@ const AbbrevChip = styled("em", {
   borderRadius: "999px",
   padding: "2px 8px",
   background: "rgba(250, 242, 231, 0.92)",
+});
+
+const FieldSuggestionTrigger = styled("button", {
+  width: "22px",
+  height: "22px",
+  minWidth: "22px",
+  padding: 0,
+  borderRadius: "999px",
+  borderColor: "rgba(82, 107, 133, 0.24)",
+  background: "rgba(238, 244, 250, 0.84)",
+  color: "#51657d",
+  fontSize: "0.8rem",
+  lineHeight: 1,
+  opacity: 0,
+  transform: "translateY(-2px)",
+  transition: "opacity 140ms ease, transform 140ms ease, background 140ms ease",
+  ":hover": {
+    background: "rgba(220, 232, 244, 0.96)",
+  },
+});
+
+const SuggestionCard = styled("div", {
+  display: "grid",
+  gap: "8px",
+  border: "1px solid rgba(86, 108, 129, 0.22)",
+  borderRadius: "10px",
+  background: "linear-gradient(180deg, rgba(244, 248, 252, 0.98), rgba(235, 242, 248, 0.96))",
+  padding: "10px",
+});
+
+const SuggestionMeta = styled("div", {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: "8px",
+  fontSize: "0.68rem",
+  fontWeight: 700,
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+  color: "#5a6980",
+});
+
+const SuggestionStatus = styled("span", {
+  fontSize: "0.66rem",
+  fontWeight: 800,
+  color: "#6e5a2a",
+});
+
+const SuggestionValue = styled("div", {
+  whiteSpace: "pre-wrap",
+  fontSize: "0.82rem",
+  lineHeight: 1.5,
+  color: "#304252",
+});
+
+const SuggestionRationale = styled("div", {
+  fontSize: "0.76rem",
+  lineHeight: 1.45,
+  color: "#526272",
+});
+
+const SuggestionActions = styled("div", {
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: "8px",
+  flexWrap: "wrap",
+});
+
+const SuggestionActionButton = styled("button", {
+  border: "1px solid var(--border)",
+  borderRadius: "8px",
+  background: "var(--surface-strong)",
+  color: "var(--ink)",
+  fontSize: "0.76rem",
+  padding: "6px 10px",
+  cursor: "pointer",
+});
+
+const SuggestionError = styled("div", {
+  fontSize: "0.76rem",
+  lineHeight: 1.45,
+  color: "#7a3f2f",
 });
 
 function buildAbbreviationMap(rowData: Record<string, unknown>) {
@@ -247,34 +358,125 @@ function resolveConfiguredFields(
 function renderResolvedField(
   field: ResolvedField,
   props: ItemDetailsFormProps,
+  suggestionState: FieldSuggestionState | undefined,
+  onRequestSuggestion: (fieldName: string, validationOptions: string[]) => void,
+  onAcceptSuggestion: (fieldName: string, suggestion: string) => void,
+  onDismissSuggestion: (fieldName: string) => void,
 ) {
+  const validationOptions = resolveValidationOptions(
+    field.key,
+    props.validationCatalog,
+    props.lookupFieldOptions,
+  );
+
   return (
-    <FieldItem key={field.key} $span={field.config.span}>
-      <FieldTitleRow>
-        <FieldTitleText>
-          <span>{field.label}</span>
-          {field.label !== field.key && <FieldKeyHint>{field.key}</FieldKeyHint>}
-        </FieldTitleText>
-        {field.abbreviation && asText(field.abbreviation.value) && (
-          <AbbrevChip>{asText(field.abbreviation.value)}</AbbrevChip>
-        )}
-      </FieldTitleRow>
-      <FieldEditor
-        sheet={props.sheet}
-        fieldName={field.key}
-        value={field.value}
-        rowData={props.rowData}
-        validationOptions={resolveValidationOptions(
-          field.key,
-          props.validationCatalog,
-          props.lookupFieldOptions,
-        )}
-        validationCatalogByField={props.validationCatalog?.options_by_field || {}}
-        validationCatalogBySheet={props.validationCatalog?.options_by_sheet || {}}
-        onFieldChange={props.onFieldChange}
-        onRowDataPatch={props.onRowDataPatch}
-      />
-    </FieldItem>
+    <FieldShell key={field.key} $span={field.config.span}>
+      <FieldItem>
+        <FieldTitleRow>
+          <FieldTitleLeft>
+            <FieldSuggestionTrigger
+              type="button"
+              data-field-intelligence="true"
+              title={`Suggest a balanced value for ${field.label}`}
+              aria-label={`Suggest balanced value for ${field.label}`}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onRequestSuggestion(field.key, validationOptions);
+              }}
+            >
+              ✦
+            </FieldSuggestionTrigger>
+            <FieldTitleText>
+              <span>{field.label}</span>
+              {field.label !== field.key && <FieldKeyHint>{field.key}</FieldKeyHint>}
+            </FieldTitleText>
+          </FieldTitleLeft>
+          {field.abbreviation && asText(field.abbreviation.value) && (
+            <AbbrevChip>{asText(field.abbreviation.value)}</AbbrevChip>
+          )}
+        </FieldTitleRow>
+        <FieldEditor
+          sheet={props.sheet}
+          fieldName={field.key}
+          value={field.value}
+          rowData={props.rowData}
+          validationOptions={validationOptions}
+          validationCatalogByField={props.validationCatalog?.options_by_field || {}}
+          validationCatalogBySheet={props.validationCatalog?.options_by_sheet || {}}
+          onFieldChange={props.onFieldChange}
+          onRowDataPatch={props.onRowDataPatch}
+        />
+      </FieldItem>
+      {suggestionState?.status === "loading" && (
+        <SuggestionCard>
+          <SuggestionMeta>
+            <span>Field Intelligence</span>
+            <SuggestionStatus>Generating</SuggestionStatus>
+          </SuggestionMeta>
+          <SuggestionRationale>Consulting ChatGPT with the current item context and balance constraints.</SuggestionRationale>
+        </SuggestionCard>
+      )}
+      {suggestionState?.status === "error" && (
+        <SuggestionCard>
+          <SuggestionMeta>
+            <span>Field Intelligence</span>
+            <SuggestionStatus>Error</SuggestionStatus>
+          </SuggestionMeta>
+          <SuggestionError>{suggestionState.error || "Unable to generate a field suggestion."}</SuggestionError>
+          <SuggestionActions>
+            <SuggestionActionButton
+              type="button"
+              aria-label={`Reject suggestion for ${field.label}`}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onDismissSuggestion(field.key);
+              }}
+            >
+              Dismiss
+            </SuggestionActionButton>
+          </SuggestionActions>
+        </SuggestionCard>
+      )}
+      {suggestionState?.status === "ready" && suggestionState.response && (
+        <SuggestionCard>
+          <SuggestionMeta>
+            <span>{suggestionState.response.provider === "chatgpt" ? "ChatGPT Suggestion" : "Fallback Suggestion"}</span>
+            <SuggestionStatus>{suggestionState.response.status}</SuggestionStatus>
+          </SuggestionMeta>
+          <SuggestionValue>{suggestionState.response.suggested_value || "(No suggested value returned)"}</SuggestionValue>
+          <SuggestionRationale>{suggestionState.response.rationale}</SuggestionRationale>
+          {suggestionState.response.reason && (
+            <SuggestionError>{suggestionState.response.reason}</SuggestionError>
+          )}
+          <SuggestionActions>
+            <SuggestionActionButton
+              type="button"
+              aria-label={`Reject suggestion for ${field.label}`}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onDismissSuggestion(field.key);
+              }}
+            >
+              Reject
+            </SuggestionActionButton>
+            <SuggestionActionButton
+              type="button"
+              aria-label={`Accept suggestion for ${field.label}`}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onAcceptSuggestion(field.key, suggestionState.response?.suggested_value || "");
+              }}
+            >
+              Accept
+            </SuggestionActionButton>
+          </SuggestionActions>
+        </SuggestionCard>
+      )}
+    </FieldShell>
   );
 }
 
@@ -326,9 +528,57 @@ function resolveSectionSubsections(
 export function ManualDetailsForm(
   props: ItemDetailsFormProps & { schema: ManualSectionConfig[] },
 ) {
+  const [suggestionsByField, setSuggestionsByField] = useState<Record<string, FieldSuggestionState>>({});
   const abbreviationByRoot = buildAbbreviationMap(props.rowData);
   const used = new Set<string>();
   const primaryNameKey = findPrimaryNameFieldKey(props.sheet, props.rowData);
+  const rowIdentity = `${props.sheet}:${asText(props.rowData._sheet_row)}`;
+
+  useEffect(() => {
+    setSuggestionsByField({});
+  }, [rowIdentity]);
+
+  const requestSuggestion = (fieldName: string, validationOptions: string[]) => {
+    setSuggestionsByField((current) => ({
+      ...current,
+      [fieldName]: { status: "loading" },
+    }));
+
+    props
+      .onSuggestField(fieldName, validationOptions)
+      .then((response) => {
+        setSuggestionsByField((current) => ({
+          ...current,
+          [fieldName]: { status: "ready", response },
+        }));
+      })
+      .catch((error: unknown) => {
+        setSuggestionsByField((current) => ({
+          ...current,
+          [fieldName]: {
+            status: "error",
+            error: error instanceof Error ? error.message : String(error),
+          },
+        }));
+      });
+  };
+
+  const acceptSuggestion = (fieldName: string, suggestion: string) => {
+    props.onFieldChange(fieldName, suggestion);
+    setSuggestionsByField((current) => {
+      const next = { ...current };
+      delete next[fieldName];
+      return next;
+    });
+  };
+
+  const dismissSuggestion = (fieldName: string) => {
+    setSuggestionsByField((current) => {
+      const next = { ...current };
+      delete next[fieldName];
+      return next;
+    });
+  };
 
   return (
     <>
@@ -370,7 +620,16 @@ export function ManualDetailsForm(
 
             {!!sectionFields.length && (
               <SectionGrid>
-                {sectionFields.map((field) => renderResolvedField(field, props))}
+                {sectionFields.map((field) =>
+                  renderResolvedField(
+                    field,
+                    props,
+                    suggestionsByField[field.key],
+                    requestSuggestion,
+                    acceptSuggestion,
+                    dismissSuggestion,
+                  ),
+                )}
               </SectionGrid>
             )}
 
@@ -378,7 +637,16 @@ export function ManualDetailsForm(
               <Subsection key={`${section.title}-${subsection.config.title}`}>
                 <SubsectionTitle>{subsection.config.title}</SubsectionTitle>
                 <SectionGrid>
-                  {subsection.fields.map((field) => renderResolvedField(field, props))}
+                  {subsection.fields.map((field) =>
+                    renderResolvedField(
+                      field,
+                      props,
+                      suggestionsByField[field.key],
+                      requestSuggestion,
+                      acceptSuggestion,
+                      dismissSuggestion,
+                    ),
+                  )}
                 </SectionGrid>
               </Subsection>
             ))}

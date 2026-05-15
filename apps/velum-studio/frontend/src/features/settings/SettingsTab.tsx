@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { ActionRow, Button, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
+import { ActionRow, Button, SegmentedControl, SelectInput, TextInput, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceOutput, WorkspaceTitle } from "shared/library";
 
 interface SettingsTabProps {
   loading: boolean;
@@ -62,33 +62,34 @@ export function SettingsTab(props: SettingsTabProps) {
       <Toolbar>
         <label>
           Default Source
-          <select value={defaultSource} onChange={(event) => setDefaultSource(event.target.value)} disabled={props.loading}>
+          <SelectInput value={defaultSource} onChange={(event) => setDefaultSource(event.target.value)} disabled={props.loading}>
             <option value="auto">auto</option>
             <option value="xlsx">xlsx</option>
             <option value="google">google</option>
-          </select>
+          </SelectInput>
         </label>
 
         <label>
           Minimal Columns by Default
-          <select
+          <SegmentedControl
+            ariaLabel="Minimal Columns by Default"
             value={minimalEnabled ? "true" : "false"}
-            onChange={(event) => setMinimalEnabled(event.target.value === "true")}
-            disabled={props.loading}
-          >
-            <option value="true">Enabled</option>
-            <option value="false">Disabled</option>
-          </select>
+            onChange={(value) => setMinimalEnabled(value === "true")}
+            options={[
+              { value: "true", label: "Enabled", disabled: props.loading },
+              { value: "false", label: "Disabled", disabled: props.loading },
+            ]}
+          />
         </label>
 
         <label>
           Minimal Column Count
-          <input type="number" min={1} max={30} value={minimalCount} onChange={(event) => setMinimalCount(event.target.value)} disabled={props.loading} />
+          <TextInput type="number" min={1} max={30} value={minimalCount} onChange={(event) => setMinimalCount(event.target.value)} disabled={props.loading} />
         </label>
 
         <label>
           Cell Char Limit
-          <input type="number" min={40} max={1000} value={cellLimit} onChange={(event) => setCellLimit(event.target.value)} disabled={props.loading} />
+          <TextInput type="number" min={40} max={1000} value={cellLimit} onChange={(event) => setCellLimit(event.target.value)} disabled={props.loading} />
         </label>
       </Toolbar>
 

@@ -37,7 +37,6 @@ class ClassFormatter(BaseFormatter):
 
         # Add spacing
         lines.append("")
-        lines.append("---")
         lines.append("")
 
         return lines

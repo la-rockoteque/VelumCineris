@@ -238,6 +238,25 @@ class IntelligenceResponse(BaseModel):
     suggestions: str
 
 
+class FieldSuggestionRequest(BaseModel):
+    sheet: str
+    field_name: str
+    row_data: dict[str, Any] | None = None
+    validation_options: list[str] = Field(default_factory=list)
+    model: str = "gpt-5-mini"
+
+
+class FieldSuggestionResponse(BaseModel):
+    provider: str
+    model: str
+    status: str
+    field_name: str
+    current_value: str = ""
+    suggested_value: str = ""
+    rationale: str = ""
+    reason: str | None = None
+
+
 class TranslatorTargetsResponse(BaseModel):
     source: str
     targets: list[str]

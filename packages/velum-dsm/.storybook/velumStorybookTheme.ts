@@ -1,4 +1,4 @@
-import { create } from "@storybook/theming/create";
+import { create } from "storybook/theming/create";
 
 import d20IconUrl from "../src/assets/Icons/D20.svg";
 import { colorFamilies } from "../src/tokens/ColorFamilies/ColorFamilies";

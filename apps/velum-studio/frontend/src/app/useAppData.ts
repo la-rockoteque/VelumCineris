@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { apiDelete, apiGet, apiPost, apiPut } from "shared/api/client";
 import type {
   AppSettingsResponse,
+  FieldSuggestionRequest,
+  FieldSuggestionResponse,
   MoneyCatalogResponse,
   SelectedRow,
   SourceInfo,
@@ -319,23 +321,29 @@ export function useAppData() {
     [queryClient],
   );
 
-  const loadMoneyCatalog = useCallback(async () => {
-    const payload = await queryClient.fetchQuery({
-      queryKey: queryKeys.moneyCatalog(state.source),
-      queryFn: () => apiGet<MoneyCatalogResponse>(`/api/money/catalog?source=${encodeURIComponent(state.source)}`),
-    });
-    setState((current) => ({ ...current, moneyCatalog: payload }));
-    return payload;
-  }, [queryClient, state.source]);
+  const loadMoneyCatalog = useCallback(
+    async (source = state.source) => {
+      const payload = await queryClient.fetchQuery({
+        queryKey: queryKeys.moneyCatalog(source),
+        queryFn: () => apiGet<MoneyCatalogResponse>(`/api/money/catalog?source=${encodeURIComponent(source)}`),
+      });
+      setState((current) => (current.source === source ? { ...current, moneyCatalog: payload } : current));
+      return payload;
+    },
+    [queryClient, state.source],
+  );
 
-  const loadTimelineCatalog = useCallback(async () => {
-    const payload = await queryClient.fetchQuery({
-      queryKey: queryKeys.timelineCatalog(state.source),
-      queryFn: () => apiGet<TimelineCatalogResponse>(`/api/timeline/catalog?source=${encodeURIComponent(state.source)}`),
-    });
-    setState((current) => ({ ...current, timelineCatalog: payload }));
-    return payload;
-  }, [queryClient, state.source]);
+  const loadTimelineCatalog = useCallback(
+    async (source = state.source) => {
+      const payload = await queryClient.fetchQuery({
+        queryKey: queryKeys.timelineCatalog(source),
+        queryFn: () => apiGet<TimelineCatalogResponse>(`/api/timeline/catalog?source=${encodeURIComponent(source)}`),
+      });
+      setState((current) => (current.source === source ? { ...current, timelineCatalog: payload } : current));
+      return payload;
+    },
+    [queryClient, state.source],
+  );
 
   const saveTimelineCatalog = useCallback(
     async (payload: Record<string, unknown>) => {
@@ -397,6 +405,24 @@ export function useAppData() {
     [state.validationCatalog],
   );
 
+  const loadAuxiliaryCatalogs = useCallback(
+    async (source: string) => {
+      const results = await Promise.allSettled([loadMoneyCatalog(source), loadTimelineCatalog(source)]);
+      const failures = results
+        .filter((result): result is PromiseRejectedResult => result.status === "rejected")
+        .map((result) => (result.reason instanceof Error ? result.reason.message : String(result.reason)))
+        .filter(Boolean);
+
+      if (failures.length) {
+        setState((current) => ({
+          ...current,
+          error: failures.join(" "),
+        }));
+      }
+    },
+    [loadMoneyCatalog, loadTimelineCatalog],
+  );
+
   useEffect(() => {
     void withLoading(async () => {
       const settings = await loadSettings();
@@ -407,12 +433,11 @@ export function useAppData() {
       await loadSheets(source);
       await loadValidationCatalog(source);
       await loadRows({ source });
-      await loadMoneyCatalog();
-      await loadTimelineCatalog();
       setState((current) => ({
         ...current,
         settings: settings ?? current.settings,
       }));
+      void loadAuxiliaryCatalogs(source);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -422,11 +447,15 @@ export function useAppData() {
       setActiveTab: (tab: TabKey) => setState((current) => ({ ...current, activeTab: tab })),
       setSource: async (source: string) =>
         withLoading(async () => {
+          setState((current) => ({
+            ...current,
+            moneyCatalog: current.source === source ? current.moneyCatalog : null,
+            timelineCatalog: current.source === source ? current.timelineCatalog : null,
+          }));
           await loadSheets(source);
           await loadValidationCatalog(source);
           await loadRows({ source, offset: 0 });
-          await loadMoneyCatalog();
-          await loadTimelineCatalog();
+          void loadAuxiliaryCatalogs(source);
         }),
       setSheet: async (sheet: string) =>
         withLoading(async () => {
@@ -516,6 +545,17 @@ export function useAppData() {
           setState((current) => ({ ...current, intelligenceOutput: JSON.stringify(payload, null, 2) }));
           return payload;
         }),
+      requestFieldSuggestion: async (fieldName: string, validationOptions: string[]) => {
+        if (!state.selected) {
+          throw new Error("Select a row first");
+        }
+        return apiPost<FieldSuggestionResponse, FieldSuggestionRequest>("/api/intelligence/field-suggest", {
+          sheet: state.selected.sheet,
+          field_name: fieldName,
+          row_data: state.selected.rowData,
+          validation_options: validationOptions,
+        });
+      },
       runImagePlan: async (body: Record<string, unknown>) =>
         withLoading(async () => {
           const payload = await apiPost<Record<string, unknown>, Record<string, unknown>>("/api/image-generator/generate", body);
@@ -540,6 +580,7 @@ export function useAppData() {
       loadRows,
       loadSheets,
       loadTimelineCatalog,
+      loadAuxiliaryCatalogs,
       loadTranslatorContext,
       loadValidationCatalog,
       lookupFieldOptions,

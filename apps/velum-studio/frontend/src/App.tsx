@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { brickAndMossUrl } from "@velum/dsm";
 import { styled } from "app/styletron";
-import brickAndMossUrl from "../assets/brick_and_moss.png?url";
 
 import { CurrentItemProvider, CurrentSheetProvider, useCurrentItem, useCurrentSheet } from "app/currentSelectionContext";
 import { useAppData } from "app/useAppData";
@@ -18,6 +18,7 @@ import { SettingsTab } from "features/settings/SettingsTab";
 import { TimelineTab } from "features/timeline/TimelineTab";
 import { TranslatorTab } from "features/translator/TranslatorTab";
 import { ValidationsTab } from "features/validations/ValidationsTab";
+import { Badge, TabBar } from "shared/library";
 import type { HealthResponse, TabKey } from "shared/types/api";
 
 const tabs: Array<{ key: TabKey; label: string }> = [
@@ -148,59 +149,9 @@ const SelectionPills = styled("div", {
   },
 });
 
-const Pill = styled("div", ({ $tone }: { $tone: "info" | "ok" | "warn" }) => ({
-  border: "1px solid var(--border)",
-  borderRadius: "999px",
-  padding: "7px 12px",
-  fontSize: "0.85rem",
-  background: "var(--surface-strong)",
-  ...($tone === "info"
-    ? {
-        color: "#5d513f",
-        borderColor: "rgba(114, 83, 44, 0.28)",
-      }
-    : {}),
-  ...($tone === "ok"
-    ? {
-        color: "var(--ok)",
-        borderColor: "rgba(43, 122, 63, 0.35)",
-      }
-    : {}),
-  ...($tone === "warn"
-    ? {
-        color: "var(--warn)",
-        borderColor: "rgba(154, 107, 24, 0.35)",
-      }
-    : {}),
-}));
-
-const Tabs = styled("nav", {
+const Tabs = styled("div", {
   marginTop: "20px",
-  display: "grid",
-  gap: "8px",
-  gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-  "@media (max-width: 860px)": {
-    gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
-  },
 });
-
-const TabButton = styled("button", ({ $active }: { $active: boolean }) => ({
-  border: "1px solid var(--border)",
-  borderRadius: "10px",
-  padding: "10px 12px",
-  background: "var(--surface-strong)",
-  color: $active ? "var(--ink)" : "var(--ink-soft)",
-  fontWeight: 700,
-  cursor: "pointer",
-  transition: "all 180ms ease",
-  borderColor: $active ? "rgba(155, 77, 31, 0.5)" : "var(--border)",
-  boxShadow: $active ? "inset 0 -3px 0 var(--accent-soft)" : "none",
-  ":hover": {
-    color: "var(--ink)",
-    borderColor: "rgba(155, 77, 31, 0.5)",
-    boxShadow: "inset 0 -3px 0 var(--accent-soft)",
-  },
-}));
 
 const Panel = styled("section", {
   marginTop: "16px",
@@ -219,10 +170,10 @@ function HeaderSelectionStatus(props: { health: "ok" | "warn" }) {
 
   return (
     <HeaderStatus>
-      <Pill $tone={props.health === "ok" ? "ok" : "warn"}>{props.health === "ok" ? "API healthy" : "API unavailable"}</Pill>
+      <Badge tone={props.health === "ok" ? "ok" : "warn"}>{props.health === "ok" ? "API healthy" : "API unavailable"}</Badge>
       <SelectionPills>
-        <Pill $tone="info">Sheet: {sheetLabel}</Pill>
-        <Pill $tone="info">Item: {itemLabel}</Pill>
+        <Badge tone="info">Sheet: {sheetLabel}</Badge>
+        <Badge tone="info">Item: {itemLabel}</Badge>
       </SelectionPills>
     </HeaderStatus>
   );
@@ -307,17 +258,18 @@ export default function App() {
 
             <ErrorBanner error={state.error} onClose={actions.clearError} />
 
-            <Tabs aria-label="Workspace tabs">
-              {tabs.map((tab) => (
-                <TabButton
-                  $active={state.activeTab === tab.key}
-                  key={tab.key}
-                  type="button"
-                  onClick={() => actions.setActiveTab(tab.key)}
-                >
-                  {tab.label}
-                </TabButton>
-              ))}
+            <Tabs>
+              <TabBar
+                ariaLabel="Workspace tabs"
+                activeKey={state.activeTab}
+                onChange={(value) => actions.setActiveTab(value as TabKey)}
+                layout="wrap"
+                size="sm"
+                items={tabs.map((tab) => ({
+                  key: tab.key,
+                  label: tab.label,
+                }))}
+              />
             </Tabs>
 
             {state.activeTab === "compendium" && (
@@ -400,6 +352,7 @@ export default function App() {
                   })
               }
               lookupFieldOptions={actions.lookupFieldOptions}
+              onSuggestField={(fieldName, validationOptions) => actions.requestFieldSuggestion(fieldName, validationOptions)}
             />
           </Panel>
         )}

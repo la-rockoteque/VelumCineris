@@ -50,6 +50,7 @@ describe("CompendiumTab", () => {
 
     expect(screen.getByText("Compendium")).toBeInTheDocument();
     expect(screen.getByText("Arc Flash")).toBeInTheDocument();
+    expect(screen.queryByRole("columnheader", { name: "Actions" })).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Details" }));
     expect(onOpenContext).toHaveBeenCalledWith(2, "details");

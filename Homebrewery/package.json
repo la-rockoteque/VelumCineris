@@ -7,6 +7,10 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
+  "overrides": {
+    "ajv": "^8.18.0",
+    "mdast-util-to-hast": "^13.2.1"
+  },
 	"scripts": {
 		"verify": "test-json-brew Velum_Cineris\\;everyday_guideto_concord_city.json"
 	}

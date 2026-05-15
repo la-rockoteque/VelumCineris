@@ -1,4 +1,4 @@
-import { styled } from "app/styletron";
+import { TextInput } from "shared/library";
 
 export interface NumberFieldProps {
   value: string;
@@ -10,11 +10,9 @@ export interface NumberFieldProps {
   className?: string;
 }
 
-const Input = styled("input", {});
-
 export function NumberField(props: NumberFieldProps) {
   return (
-    <Input
+    <TextInput
       className={props.className}
       type="number"
       value={props.value}

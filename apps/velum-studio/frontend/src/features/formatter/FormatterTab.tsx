@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ComponentProps } from "react";
 import { styled } from "app/styletron";
 
 import {
@@ -93,12 +93,6 @@ const PaletteToken = styled("span", {
   fontWeight: 700,
 });
 
-const ColorInput = styled("input", {
-  width: "100%",
-  minHeight: "34px",
-  padding: "3px",
-});
-
 const CssLabel = styled("label", {
   marginTop: "8px",
 });
@@ -147,6 +141,10 @@ function applyPaletteTokenChange(css: string, token: string, nextColor: string):
     return replaced;
   }
   return `${css}\n:root { ${token}: ${nextColor}; }\n`;
+}
+
+function ColorInput(props: ComponentProps<typeof TextInput>) {
+  return <TextInput {...props} type="color" style={{ width: "100%", minHeight: "34px", padding: "3px", ...props.style }} />;
 }
 
 export function FormatterTab(props: FormatterTabProps) {

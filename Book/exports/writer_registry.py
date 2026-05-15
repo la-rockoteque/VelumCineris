@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from Book.core.writers import (
     BaseWriter,
+    CampaignHandbookWriter,
     CompletePHBWriter,
     DMGWriter,
     DivineCodexWriter,
@@ -16,6 +17,8 @@ _WRITERS: dict[str, WriterClass] = {
     "omnibook": OmnibookWriter,
     "phb": PHBWriter,
     "complete_phb": CompletePHBWriter,
+    "campaign_handbook": CampaignHandbookWriter,
+    "full_handbook": CampaignHandbookWriter,
     "dmg": DMGWriter,
     "monster_manual": MonsterManualWriter,
     "divine_codex": DivineCodexWriter,
@@ -37,4 +40,3 @@ def get_writer_class(book_type: str) -> WriterClass:
 
 def list_book_types() -> tuple[str, ...]:
     return tuple(_WRITERS.keys())
-

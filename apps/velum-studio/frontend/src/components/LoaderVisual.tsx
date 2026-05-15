@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { diceLottieUrl } from "@velum/dsm";
 import { styled } from "app/styletron";
-import diceLottieUrl from "../../assets/dice.lottie?url";
 
 interface LoaderVisualProps {
   sizeClass?: "loader-visual--tiny" | "loader-visual--small" | "loader-visual--button" | "loader-visual--table" | "loader-visual--global";

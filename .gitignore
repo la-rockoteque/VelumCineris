@@ -252,6 +252,12 @@ out
 .nuxt
 dist
 
+# Storybook local/runtime output
+.storybook-home/
+.storybook-home-clean/
+storybook-static/
+debug-storybook.log
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js

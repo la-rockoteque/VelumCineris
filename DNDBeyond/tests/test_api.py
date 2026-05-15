@@ -347,6 +347,39 @@ class TestSpellUpdateEndpoints:
         assert form_data["spell-modifier-sub-type"] == "68"
         assert form_data["fixed-value"] == "2"
 
+    def test_create_modifier_normalizes_readable_payload_fields(self):
+        """Should normalize readable modifier payload values to DDB form IDs."""
+        spell_id = "3135829"
+        modifier_data = {
+            "type": "save",
+            "subtype": "dexterity",
+            "dice_count": "1",
+            "dice_type": "4",
+            "duration_amount": "1",
+            "duration_unit": "hour",
+            "details": "Target gains a bonus to Dexterity saves.",
+            "use_primary_stat": "true",
+        }
+
+        mock_response = Mock()
+        mock_response.status_code = 303
+        self.session.post = Mock(return_value=mock_response)
+
+        result = self.api.create_modifier(spell_id, modifier_data)
+
+        assert result is True
+        call_args = self.session.post.call_args
+        form_data = call_args[1]["data"]
+
+        assert form_data["spell-modifier-type"] == "4"
+        assert form_data["spell-modifier-sub-type"] == "2"
+        assert form_data["dice-count"] == "1"
+        assert form_data["dice-value"] == "4"
+        assert form_data["duration"] == "1"
+        assert form_data["duration-unit"] == "3"
+        assert form_data["restriction"] == "Target gains a bonus to Dexterity saves."
+        assert form_data["primary-stat"] == "y"
+
     def test_create_condition_success(self):
         """Should successfully create a spell condition"""
         spell_id = "3135829"

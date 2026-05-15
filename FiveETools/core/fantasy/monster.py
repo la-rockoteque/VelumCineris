@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import re
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
+
+import pandas as pd
 
 from FiveETools.core.fantasy import sources as source_catalog
 from FiveETools.datasets.json_loader import build_mapped_rows
@@ -29,7 +31,6 @@ def parse_speed(value):
 
 
 def parse_entries(raw_text):
-    pattern = re.compile(r"([A-Z][^.]+?)\.\s+(.*?)(?=(?:[A-Z][^.]+?\.)|$)", re.S)
     entries = []
 
     for text in raw_text.split("\n"):
@@ -159,6 +160,12 @@ _RESOLVERS = {
     "monster_pydantic": build_monster_pydantic,
 }
 _CACHED_ATTRS = {"monster_list", "monster_pydantic"}
+
+if TYPE_CHECKING:
+    json_source: str
+    monster_list: list[dict[str, Any]]
+    converter: MonsterConverter
+    monster_pydantic: list[Monster]
 
 
 def __getattr__(name: str):

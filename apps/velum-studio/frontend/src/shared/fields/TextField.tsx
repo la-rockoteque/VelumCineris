@@ -1,4 +1,4 @@
-import { styled } from "app/styletron";
+import { TextInput } from "shared/library";
 
 export interface TextFieldProps {
   value: string;
@@ -9,11 +9,9 @@ export interface TextFieldProps {
   className?: string;
 }
 
-const Input = styled("input", {});
-
 export function TextField(props: TextFieldProps) {
   return (
-    <Input
+    <TextInput
       className={props.className}
       value={props.value}
       onChange={(event) => props.onChange(event.target.value)}

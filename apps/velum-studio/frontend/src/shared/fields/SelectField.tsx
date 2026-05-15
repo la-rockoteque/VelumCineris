@@ -1,4 +1,4 @@
-import { styled } from "app/styletron";
+import { SelectInput } from "shared/library";
 
 export interface SelectFieldProps {
   value: string;
@@ -7,18 +7,15 @@ export interface SelectFieldProps {
   className?: string;
 }
 
-const Select = styled("select", {});
-const Option = styled("option", {});
-
 export function SelectField(props: SelectFieldProps) {
   return (
-    <Select className={props.className} value={props.value} onChange={(event) => props.onChange(event.target.value)}>
-      <Option value="" />
+    <SelectInput className={props.className} value={props.value} onChange={(event) => props.onChange(event.target.value)}>
+      <option value="" />
       {props.options.map((option) => (
-        <Option key={option} value={option}>
+        <option key={option} value={option}>
           {option}
-        </Option>
+        </option>
       ))}
-    </Select>
+    </SelectInput>
   );
 }

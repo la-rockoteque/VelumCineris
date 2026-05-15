@@ -143,7 +143,6 @@ class MonsterFormatter(BaseFormatter):
 
         # Add spacing after monster
         lines.append("")
-        lines.append("---")  # Page break
         lines.append("")
 
         return lines

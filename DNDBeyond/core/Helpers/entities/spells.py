@@ -2,6 +2,52 @@ from .base import BaseEntity
 
 
 class SpellEntity(BaseEntity):
+    _MODIFIER_TYPE_IDS = {
+        "ac": "1",
+        "armor class": "1",
+        "attack": "2",
+        "attack roll": "2",
+        "attack rolls": "2",
+        "damage": "3",
+        "save": "4",
+        "saving throw": "4",
+        "saving throws": "4",
+        "ability check": "5",
+        "ability checks": "5",
+        "skill": "6",
+        "skills": "6",
+        "speed": "7",
+        "initiative": "8",
+        "hp": "9",
+        "hit points": "9",
+        "temp hp": "10",
+        "temporary hit points": "10",
+    }
+    _MODIFIER_SUBTYPE_IDS = {
+        "strength": "1",
+        "str": "1",
+        "dexterity": "2",
+        "dex": "2",
+        "constitution": "3",
+        "con": "3",
+        "intelligence": "4",
+        "int": "4",
+        "wisdom": "5",
+        "wis": "5",
+        "charisma": "6",
+        "cha": "6",
+    }
+    _DURATION_UNIT_IDS = {
+        "round": "1",
+        "rounds": "1",
+        "minute": "2",
+        "minutes": "2",
+        "hour": "3",
+        "hours": "3",
+        "day": "4",
+        "days": "4",
+    }
+    _TRUE_VALUES = {"1", "true", "y", "yes", "on"}
     entity_type_id = 1118725998
     create_path = "/homebrew/creations/create-spell/create"
     edit_path_template = "/homebrew/creations/spells/{id}-{slug}/edit"
@@ -70,6 +116,20 @@ class SpellEntity(BaseEntity):
             return [("class-mapping", (None, str(c))) for c in classes]
         return []
 
+    @staticmethod
+    def _normalize_choice_id(value, mapping):
+        text = str(value or "").strip()
+        if not text:
+            return ""
+        return mapping.get(text.lower(), text)
+
+    @classmethod
+    def _modifier_primary_stat_enabled(cls, modifier_data):
+        value = modifier_data.get("primary_stat")
+        if value in (None, ""):
+            value = modifier_data.get("use_primary_stat")
+        return str(value or "").strip().lower() in cls._TRUE_VALUES
+
     def create_higher_level(self, spell_id, level_data):
         try:
             path = f"/spells/additional/create/{spell_id}"
@@ -102,11 +162,25 @@ class SpellEntity(BaseEntity):
         try:
             path = f"/spells/modifier/create/{spell_id}"
 
-            # Support both old field names (modifier_type) and new field names (type)
-            modifier_type = modifier_data.get("modifier_type") or modifier_data.get("type", "")
-            modifier_sub_type = modifier_data.get("modifier_sub_type") or modifier_data.get("subtype", "")
+            modifier_type = self._normalize_choice_id(
+                modifier_data.get("modifier_type") or modifier_data.get("type", ""),
+                self._MODIFIER_TYPE_IDS,
+            )
+            modifier_sub_type = self._normalize_choice_id(
+                modifier_data.get("modifier_sub_type")
+                or modifier_data.get("modifier_subtype")
+                or modifier_data.get("sub_type")
+                or modifier_data.get("subtype", ""),
+                self._MODIFIER_SUBTYPE_IDS,
+            )
             dice_count = modifier_data.get("dice_count", "")
             dice_value = modifier_data.get("dice_value") or modifier_data.get("dice_type", "")
+            duration = modifier_data.get("duration")
+            if duration in (None, ""):
+                duration = modifier_data.get("duration_amount", "")
+            restriction = modifier_data.get("restriction")
+            if restriction in (None, ""):
+                restriction = modifier_data.get("details", "")
 
             form_data = {
                 "security-token": self.client.security_token,
@@ -116,13 +190,17 @@ class SpellEntity(BaseEntity):
                 "dice-count": str(dice_count),
                 "dice-value": str(dice_value),
                 "fixed-value": str(modifier_data.get("fixed_value", "")),
-                "duration": str(modifier_data.get("duration", "")),
-                "duration-unit": str(modifier_data.get("duration_unit", "")),
-                "restriction": str(modifier_data.get("restriction", "")),
+                "duration": str(duration or ""),
+                "duration-unit": str(
+                    self._normalize_choice_id(
+                        modifier_data.get("duration_unit", ""),
+                        self._DURATION_UNIT_IDS,
+                    )
+                ),
+                "restriction": str(restriction or ""),
             }
 
-            # Add primary-stat field if present (optional field)
-            if modifier_data.get("primary_stat"):
+            if self._modifier_primary_stat_enabled(modifier_data):
                 form_data["primary-stat"] = "y"
 
             response = self.client.post(

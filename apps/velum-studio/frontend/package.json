@@ -12,6 +12,7 @@
     "test:watch": "NODE_PATH=$PWD/node_modules vitest --config vitest.config.ts"
   },
   "dependencies": {
+    "@velum/dsm": "file:../../../packages/velum-dsm",
     "@lottiefiles/dotlottie-web": "^0.52.0",
     "@tanstack/react-query": "^5.90.21",
     "react": "^18.3.1",

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
+import { TextInput } from "@velum/dsm";
 import { styled } from "app/styletron";
-
+ 
 
 interface EditableTitleProps {
   value: string;
@@ -21,13 +22,6 @@ const Title = styled("h3", ({ $editable }: { $editable: boolean }) => ({
     : {}),
 }));
 
-const TitleInput = styled("input", {
-  fontSize: "1.2rem",
-  fontFamily: "\"Avenir Next Condensed\", \"Trebuchet MS\", sans-serif",
-  letterSpacing: "0.03em",
-  textTransform: "uppercase",
-});
-
 export function EditableTitle(props: EditableTitleProps) {
   const [editing, setEditing] = useState(false);
   const display = useMemo(() => props.value || props.placeholder || "Untitled", [props.placeholder, props.value]);
@@ -45,9 +39,15 @@ export function EditableTitle(props: EditableTitleProps) {
   }
 
   return (
-    <TitleInput
+    <TextInput
       autoFocus
       defaultValue={props.value}
+      style={{
+        fontSize: "1.2rem",
+        fontFamily: "\"Avenir Next Condensed\", \"Trebuchet MS\", sans-serif",
+        letterSpacing: "0.03em",
+        textTransform: "uppercase",
+      }}
       onBlur={(event) => {
         props.onCommit(event.target.value.trim());
         setEditing(false);

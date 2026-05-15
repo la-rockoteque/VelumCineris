@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ComponentProps } from "react";
 import { styled } from "app/styletron";
 
-import { Button, InlineButton, MetaText, TableWrap, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceTitle } from "shared/library";
+import { Button, Checkbox, InlineButton, MetaText, iconAssets, SelectInput, TabBar, TableWrap, TextInput, Toolbar, WorkspaceCard, WorkspaceLead, WorkspaceTitle } from "shared/library";
 import type { SourceInfo } from "shared/types/api";
 import { pickItemName } from "shared/utils/fields";
 import { asText, truncateText } from "shared/utils/text";
@@ -53,111 +53,39 @@ const SheetTabsLabel = styled("div", {
   color: "#6c604f",
 });
 
-const SheetTabbarWrap = styled("div", {
-  overflowX: "auto",
-  overflowY: "hidden",
-  borderBottom: "1px solid rgba(118, 87, 42, 0.35)",
-  scrollbarWidth: "thin",
-});
-
-const SheetTabbar = styled("div", {
-  display: "inline-flex",
-  alignItems: "flex-end",
-  minWidth: "100%",
-  width: "max-content",
-  padding: "0 4px",
-  minHeight: "40px",
-});
-
-const SheetTab = styled("button", ({ $active }: { $active: boolean }) => ({
-  flex: "0 0 auto",
-  border: "1px solid rgba(118, 87, 42, 0.35)",
-  borderBottom: "none",
-  borderRadius: "10px 10px 0 0",
-  marginRight: "-1px",
-  padding: "8px 14px 7px",
-  font: "inherit",
-  fontSize: "0.8rem",
-  fontWeight: 700,
-  letterSpacing: "0.01em",
-  whiteSpace: "nowrap",
-  background: $active
-    ? "linear-gradient(180deg, #f6eab9 0%, #f0d88b 100%)"
-    : "linear-gradient(180deg, #efd99f 0%, #e7c874 100%)",
-  color: $active ? "#30220f" : "#5c4827",
-  cursor: "pointer",
-  boxShadow: $active
-    ? "inset 0 1px 0 rgba(255, 255, 236, 0.8)"
-    : "inset 0 1px 0 rgba(255, 250, 225, 0.65)",
-  position: "relative",
-  top: "1px",
-  transform: $active ? "translateY(0)" : "translateY(12px)",
-  transition: "border-color 160ms ease, background 160ms ease, color 160ms ease, filter 160ms ease, transform 180ms ease",
-  borderColor: $active ? "rgba(112, 78, 34, 0.5)" : "rgba(118, 87, 42, 0.35)",
-  zIndex: $active ? 2 : 1,
-  ":hover:not(:disabled)": {
-    filter: "brightness(1.04)",
-    color: "#3f2f18",
-    transform: "translateY(0)",
-    zIndex: 2,
-  },
-  ":focus-visible": {
-    transform: "translateY(0)",
-    zIndex: 2,
-  },
-  ":disabled": {
-    opacity: 1,
-    cursor: "default",
-  },
-}));
-
-const ActionHeadCell = styled("th", {
-  width: "280px",
-  minWidth: "280px",
-});
-
-const ActionCell = styled("td", {
-  width: "280px",
-  minWidth: "280px",
-});
-
 const DataRow = styled("tr", {
+  cursor: "pointer",
   ":hover td": {
     background: "#f9f0e5",
   },
   ":hover [data-row-actions='true']": {
     opacity: 1,
-    transform: "translateX(0)",
+    transform: "translateY(-50%) translateX(0)",
   },
 });
 
 const RowActions = styled("div", {
+  position: "absolute",
+  top: "50%",
+  right: "8px",
   display: "flex",
   gap: "6px",
   justifyContent: "flex-end",
   alignItems: "center",
   opacity: 0,
-  transform: "translateX(8px)",
+  transform: "translateY(-50%) translateX(8px)",
   transition: "opacity 140ms ease, transform 140ms ease",
 });
 
-const RowActionButton = styled("button", {
-  border: "1px solid var(--border)",
-  borderRadius: "8px",
-  padding: "4px 8px",
-  font: "inherit",
-  fontSize: "0.72rem",
-  fontWeight: 600,
-  minWidth: "56px",
-  background: "var(--surface-strong)",
-  cursor: "pointer",
-  ":disabled": {
-    opacity: 0.6,
-    cursor: "not-allowed",
-  },
-  ":hover:not(:disabled)": {
-    borderColor: "rgba(155, 77, 31, 0.5)",
-  },
+const RowActionGlyph = styled("span", {
+  fontSize: "0.9rem",
+  lineHeight: 1,
+});
+
+const RowActionImage = styled("img", {
+  width: "14px",
+  height: "14px",
+  objectFit: "contain",
 });
 
 const RowActionMenu = styled("details", {
@@ -168,10 +96,12 @@ const RowActionMenuSummary = styled("summary", {
   listStyle: "none",
   border: "1px solid var(--border)",
   borderRadius: "8px",
-  padding: "4px 8px",
-  fontSize: "0.72rem",
-  fontWeight: 700,
+  width: "28px",
+  height: "28px",
   background: "var(--surface-strong)",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
   cursor: "pointer",
 });
 
@@ -188,21 +118,6 @@ const RowActionMenuList = styled("div", {
   padding: "4px",
   display: "grid",
   gap: "4px",
-});
-
-const RowActionMenuButton = styled("button", {
-  border: "1px solid transparent",
-  background: "transparent",
-  textAlign: "left",
-  padding: "6px 8px",
-  borderRadius: "6px",
-  fontSize: "0.76rem",
-  cursor: "pointer",
-  color: "#4f4537",
-  ":hover": {
-    borderColor: "rgba(155, 77, 31, 0.35)",
-    background: "#f6ecdd",
-  },
 });
 
 const Pager = styled("div", {
@@ -235,14 +150,29 @@ const ColumnMenuTitle = styled("div", {
   borderBottom: "1px solid rgba(66, 48, 30, 0.14)",
 });
 
-const ColumnMenuItem = styled("label", {
-  display: "flex",
-  alignItems: "center",
-  gap: "8px",
-  padding: "4px 0",
-  color: "var(--ink)",
-  fontSize: "0.84rem",
-});
+function RowActionButton(props: ComponentProps<typeof InlineButton>) {
+  return <InlineButton {...props} style={{ width: "28px", height: "28px", minWidth: "28px", padding: 0, ...props.style }} />;
+}
+
+function RowActionMenuButton(props: ComponentProps<typeof InlineButton>) {
+  return (
+    <InlineButton
+      {...props}
+      style={{
+        width: "100%",
+        justifyContent: "flex-start",
+        borderColor: "transparent",
+        background: "transparent",
+        textAlign: "left",
+        padding: "6px 8px",
+        borderRadius: "6px",
+        fontSize: "0.76rem",
+        color: "#4f4537",
+        ...props.style,
+      }}
+    />
+  );
+}
 
 const integrationOptions: Array<{ key: string; label: string; operations: string[] }> = [
   { key: "worldanvil", label: "WorldAnvil", operations: ["publish", "delete"] },
@@ -278,19 +208,19 @@ export function CompendiumTab(props: CompendiumTabProps) {
       <Toolbar>
         <label>
           Source
-          <select value={props.source} onChange={(event) => void props.onSourceChange(event.target.value)} disabled={props.loading}>
+          <SelectInput value={props.source} onChange={(event) => void props.onSourceChange(event.target.value)} disabled={props.loading}>
             {props.sources.map((source) => (
               <option key={source.source} value={source.source}>
                 {source.source}
                 {source.available ? "" : " (unavailable)"}
               </option>
             ))}
-          </select>
+          </SelectInput>
         </label>
 
         <label>
           Search
-          <input
+          <TextInput
             value={props.query}
             onChange={(event) => props.onQueryChange(event.target.value)}
             onKeyDown={(event) => {
@@ -304,13 +234,13 @@ export function CompendiumTab(props: CompendiumTabProps) {
 
         <label>
           Page Size
-          <select value={String(props.limit)} onChange={(event) => void props.onLimitChange(Number(event.target.value))}>
+          <SelectInput value={String(props.limit)} onChange={(event) => void props.onLimitChange(Number(event.target.value))}>
             {[25, 50, 100, 200].map((value) => (
               <option key={value} value={value}>
                 {value}
               </option>
             ))}
-          </select>
+          </SelectInput>
         </label>
 
         <label>
@@ -323,26 +253,16 @@ export function CompendiumTab(props: CompendiumTabProps) {
 
       <SheetTabsRow>
         <SheetTabsLabel>Sheet</SheetTabsLabel>
-        <SheetTabbarWrap>
-          <SheetTabbar role="tablist" aria-label="Sheet">
-            {props.sheets.map((sheet) => {
-              const isActive = sheet === props.sheet;
-              return (
-                <SheetTab
-                  key={sheet}
-                  type="button"
-                  role="tab"
-                  $active={isActive}
-                  aria-selected={isActive}
-                  onClick={() => void props.onSheetChange(sheet)}
-                  disabled={props.loading || isActive}
-                >
-                  {sheet}
-                </SheetTab>
-              );
-            })}
-          </SheetTabbar>
-        </SheetTabbarWrap>
+        <TabBar
+          ariaLabel="Sheet"
+          activeKey={props.sheet}
+          onChange={(value) => void props.onSheetChange(value)}
+          items={props.sheets.map((sheet) => ({
+            key: sheet,
+            label: sheet,
+            disabled: props.loading || sheet === props.sheet,
+          }))}
+        />
       </SheetTabsRow>
 
       <MetaText>
@@ -365,7 +285,6 @@ export function CompendiumTab(props: CompendiumTabProps) {
                   {column}
                 </th>
               ))}
-              <ActionHeadCell>Actions</ActionHeadCell>
             </tr>
           </thead>
           <tbody>
@@ -373,46 +292,93 @@ export function CompendiumTab(props: CompendiumTabProps) {
               const rowNumber = Number(row._sheet_row || 0);
               const rowTitle = pickItemName(row);
               return (
-                <DataRow key={rowNumber || rowTitle || JSON.stringify(row)}>
+                <DataRow
+                  key={rowNumber || rowTitle || JSON.stringify(row)}
+                  onClick={() => void props.onOpenContext(rowNumber, "details")}
+                >
                   <td>{rowNumber || ""}</td>
-                  {visibleColumns.map((column) => {
+                  {visibleColumns.map((column, columnIndex) => {
                     const full = asText(row[column]);
                     const short = truncateText(full, props.cellCharLimit);
+                    const isLastColumn = columnIndex === visibleColumns.length - 1;
                     return (
-                      <td key={`${rowNumber}-${column}`} title={short !== full ? full : undefined}>
+                      <td
+                        key={`${rowNumber}-${column}`}
+                        title={short !== full ? full : undefined}
+                        style={isLastColumn ? { position: "relative", paddingRight: "210px" } : undefined}
+                      >
                         {short}
+                        {isLastColumn ? (
+                          <RowActions data-row-actions="true">
+                            <InlineButton
+                              type="button"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                void props.onOpenContext(rowNumber, "details");
+                              }}
+                            >
+                              Details
+                            </InlineButton>
+                            <RowActionButton
+                              type="button"
+                              title="Open Intelligence"
+                              aria-label="Open Intelligence"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                void props.onOpenContext(rowNumber, "intelligence");
+                              }}
+                            >
+                              <RowActionGlyph>✦</RowActionGlyph>
+                            </RowActionButton>
+                            <RowActionButton
+                              type="button"
+                              title="Open Image Generator"
+                              aria-label="Open Image Generator"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                void props.onOpenContext(rowNumber, "image");
+                              }}
+                            >
+                              <RowActionGlyph>◫</RowActionGlyph>
+                            </RowActionButton>
+
+                            {integrationOptions.map((integration) => (
+                              <RowActionMenu key={`${rowNumber}-${integration.key}`} onClick={(event) => event.stopPropagation()}>
+                                <RowActionMenuSummary
+                                  title={integration.label}
+                                  aria-label={integration.label}
+                                >
+                                  {integration.key === "worldanvil" ? (
+                                    <RowActionImage alt="" src={iconAssets.WA} />
+                                  ) : integration.key === "dndbeyond" ? (
+                                    <RowActionImage alt="" src={iconAssets.DNDBeyond} />
+                                  ) : (
+                                    <RowActionImage alt="" src={iconAssets.OP} />
+                                  )}
+                                </RowActionMenuSummary>
+                                <RowActionMenuList>
+                                  {integration.operations.map((operation) => (
+                                    <RowActionMenuButton
+                                      key={operation}
+                                      onClick={() => void props.onIntegrationAction(rowNumber, integration.key, operation)}
+                                    >
+                                      {operation}
+                                    </RowActionMenuButton>
+                                  ))}
+                                </RowActionMenuList>
+                              </RowActionMenu>
+                            ))}
+                          </RowActions>
+                        ) : null}
                       </td>
                     );
                   })}
-                  <ActionCell>
-                    <RowActions data-row-actions="true">
-                      <RowActionButton onClick={() => void props.onOpenContext(rowNumber, "details")}>Details</RowActionButton>
-                      <RowActionButton onClick={() => void props.onOpenContext(rowNumber, "intelligence")}>AI</RowActionButton>
-                      <RowActionButton onClick={() => void props.onOpenContext(rowNumber, "image")}>Image</RowActionButton>
-
-                      {integrationOptions.map((integration) => (
-                        <RowActionMenu key={`${rowNumber}-${integration.key}`}>
-                          <RowActionMenuSummary>{integration.label}</RowActionMenuSummary>
-                          <RowActionMenuList>
-                            {integration.operations.map((operation) => (
-                              <RowActionMenuButton
-                                key={operation}
-                                onClick={() => void props.onIntegrationAction(rowNumber, integration.key, operation)}
-                              >
-                                {operation}
-                              </RowActionMenuButton>
-                            ))}
-                          </RowActionMenuList>
-                        </RowActionMenu>
-                      ))}
-                    </RowActions>
-                  </ActionCell>
                 </DataRow>
               );
             })}
             {!props.rows.length && (
               <tr>
-                <td colSpan={visibleColumns.length + 2}>No rows.</td>
+                <td colSpan={visibleColumns.length + 1}>No rows.</td>
               </tr>
             )}
           </tbody>
@@ -435,10 +401,13 @@ export function CompendiumTab(props: CompendiumTabProps) {
         <ColumnMenu style={{ left: headerMenu.x, top: headerMenu.y }} onMouseLeave={() => setHeaderMenu(null)}>
           <ColumnMenuTitle>Columns ({props.columns.length})</ColumnMenuTitle>
           {props.columns.map((column) => (
-            <ColumnMenuItem key={column}>
-              <input type="checkbox" checked={visibleColumns.includes(column)} onChange={() => void toggleColumn(column)} />
-              <span>{column}</span>
-            </ColumnMenuItem>
+            <Checkbox
+              key={column}
+              checked={visibleColumns.includes(column)}
+              onChange={() => void toggleColumn(column)}
+              label={column}
+              style={{ padding: "4px 0" }}
+            />
           ))}
         </ColumnMenu>
       )}

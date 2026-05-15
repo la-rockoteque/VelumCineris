@@ -184,6 +184,25 @@ export interface LoadingTriviaResponse {
   items: LoadingTriviaItem[];
 }
 
+export interface FieldSuggestionRequest {
+  sheet: string;
+  field_name: string;
+  row_data: Record<string, unknown>;
+  validation_options: string[];
+  model?: string;
+}
+
+export interface FieldSuggestionResponse {
+  provider: string;
+  model: string;
+  status: string;
+  field_name: string;
+  current_value: string;
+  suggested_value: string;
+  rationale: string;
+  reason?: string | null;
+}
+
 export type TabKey =
   | "compendium"
   | "validations"
