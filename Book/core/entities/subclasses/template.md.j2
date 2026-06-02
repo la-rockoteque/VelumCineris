@@ -1,0 +1,11 @@
+{% if entity.className -%}
+### {{ entity.name | default("Unknown Subclass") }} ({{ entity.className }})
+{% else -%}
+### {{ entity.name | default("Unknown Subclass") }}
+{% endif %}
+
+{{ entity.entries | default([]) | render_entries }}
+{% if entity.subclassFeatures %}
+
+#### Subclass Features
+{% endif %}

@@ -1,9 +1,11 @@
 """
-Main BookAPI orchestrator that coordinates formatters and writers.
+Main BookAPI orchestrator that coordinates markdown renderers and writers.
 """
 
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 import importlib
+
+from Book.core.markdown import GoogleDocsMarkdownRenderer, normalize_markdown
 
 if TYPE_CHECKING:
     from Book.core.Helpers.google_docs_client import GoogleDocsClient
@@ -119,12 +121,15 @@ class BookAPI:
 
         self._validate_cover_image(writer)
 
-        print("Building document structure...")
-        all_lines = writer.build_document_lines()
+        print("Building canonical markdown...")
+        if hasattr(writer, "build_markdown"):
+            markdown = writer.build_markdown()
+        else:
+            markdown = "\n\n".join(writer.build_document_lines()) + "\n"
 
         # Write all content to document
         print("Writing content to Google Docs...")
-        self._write_lines_to_doc(all_lines)
+        self._write_markdown_to_doc(markdown)
 
         # Apply two-column layout
         print("Applying PHB-style layout...")
@@ -148,26 +153,14 @@ class BookAPI:
         # Load entities
         entities = self.load_entities(entity_type, source=source)[:limit]
 
-        # Get appropriate formatter
-        from Book.core.formatters import SpellFormatter, SpeciesFormatter, MonsterFormatter
+        from Book.core.entities import get_entity_renderer
 
-        formatter_map = {
-            "spell": SpellFormatter(),
-            "species": SpeciesFormatter(),
-            "race": SpeciesFormatter(),
-            "monster": MonsterFormatter(),
-        }
-
-        formatter = formatter_map.get(entity_type.lower())
-        if not formatter:
-            print(f"No formatter available for {entity_type}")
-            return
+        renderer = get_entity_renderer(entity_type)
 
         # Format and display
         for entity in entities:
-            lines = formatter.format_entity(entity)
             print("\n" + "=" * 80)
-            for line in lines:
+            for line in renderer.render_markdown(entity).splitlines():
                 print(line)
 
         print("\n" + "=" * 80)
@@ -203,24 +196,22 @@ class BookAPI:
         except Exception:
             return False
 
-    def _write_lines_to_doc(self, lines: List[str]) -> None:
+    def _write_markdown_to_doc(self, markdown: str) -> None:
         """
-        Write lines of text to the document using chunked transactions.
-
-        Args:
-            lines: List of text lines (with markdown-style formatting)
+        Write markdown to the document using chunked transactions.
         """
-        requests, _ = self._build_requests_for_lines(self._normalize_lines(lines), index=1)
+        requests, _ = self._build_requests_for_markdown(markdown, index=1)
 
         if not requests:
             return
 
+        line_count = len(markdown.splitlines())
         estimated_batches = max(
             1,
             (len(requests) + BATCH_REQUEST_CHUNK_SIZE - 1) // BATCH_REQUEST_CHUNK_SIZE,
         )
         print(
-            f"  Writing {len(lines)} lines as {len(requests)} requests "
+            f"  Writing {line_count} markdown lines as {len(requests)} requests "
             f"across about {estimated_batches} Google Docs batches..."
         )
         self.gdocs.batch_update_in_chunks(
@@ -228,6 +219,15 @@ class BookAPI:
             chunk_size=BATCH_REQUEST_CHUNK_SIZE,
             pause_seconds=BATCH_REQUEST_PAUSE_SECONDS,
         )
+
+    def _write_lines_to_doc(self, lines: List[str]) -> None:
+        """
+        Compatibility adapter for older tests/callers.
+
+        Args:
+            lines: List of text lines (with markdown-style formatting)
+        """
+        self._write_markdown_to_doc("\n\n".join(self._normalize_lines(lines)))
 
     def _normalize_lines(self, lines: List[str]) -> List[str]:
         """Collapse runs of consecutive empty lines to a single empty line."""
@@ -242,6 +242,24 @@ class BookAPI:
         return result
 
     def _build_requests_for_lines(
+        self,
+        lines: List[str],
+        index: int,
+    ) -> tuple[List[Dict[str, Any]], int]:
+        """Compatibility adapter; canonical rendering takes markdown."""
+        return self._build_requests_for_markdown("\n\n".join(lines), index=index)
+
+    def _build_requests_for_markdown(
+        self,
+        markdown: str,
+        index: int,
+    ) -> tuple[List[Dict[str, Any]], int]:
+        return GoogleDocsMarkdownRenderer(self.gdocs).build_requests(
+            normalize_markdown(markdown),
+            index=index,
+        )
+
+    def _build_requests_for_lines_legacy(
         self,
         lines: List[str],
         index: int,

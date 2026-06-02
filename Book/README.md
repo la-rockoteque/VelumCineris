@@ -4,7 +4,7 @@ Generate D&D sourcebooks in Google Docs or Homebrewery with PHB-style formatting
 
 ## Overview
 
-The Book Generator consolidates homebrew content from Google Sheets into professional-looking books with two-column PHB-style layout. It supports multiple book types (Omnibook, PHB, DMG, Monster Manual, Divine Codex) and two campaign settings (Fantasy/Orimond and Modern/Concord City). The same writer profiles can target Google Docs or Homebrewery markdown.
+The Book Generator consolidates homebrew content from Google Sheets into professional-looking books with two-column PHB-style layout. It supports multiple book types (Omnibook, PHB, DMG, Monster Manual, Divine Codex) and two campaign settings (Fantasy/Orimond and Modern/Concord City). Writer profiles now produce canonical markdown first; Google Docs and Homebrewery exports are derived from that markdown.
 
 ## Architecture
 
@@ -13,11 +13,13 @@ Book/
 ├── cli.py                         # Normalized CLI entrypoint
 ├── datasets/                      # Source/sheets selection adapters
 ├── exports/                       # Writer profile registry
-├── mappers/                       # Formatter registry adapters
+├── mappers/                       # Compatibility registry adapters
 ├── services/                      # Generation orchestration service
-├── core/                          # Legacy implementation internals
+├── core/                          # Book rendering internals
 │   ├── Helpers/
-│   ├── formatters/
+│   ├── entities/                  # Entity-owned markdown renderers
+│   ├── markdown/                  # Jinja, helpers, Docs markdown renderer
+│   ├── formatters/                # Compatibility wrappers during migration
 │   └── writers/
 ├── book_api.py                    # Compatibility shim to core Helpers
 ├── google_docs_client.py          # Compatibility shim to core Helpers
@@ -60,6 +62,25 @@ Homebrewery export:
 poetry run python -m Book.cli export-homebrewery --book-type campaign_handbook --source fantasy --output Book/exports/orimond-campaign-handbook.homebrewery.md
 ```
 
+Canonical markdown export:
+
+```bash
+poetry run python -m Book.cli export-markdown --book-type campaign_handbook --source fantasy --output Book/exports/orimond-campaign-handbook.md
+```
+
+Standalone module export:
+
+```bash
+poetry run python -m Book.cli export-module-markdown --entity-type spell --source fantasy --title "Starter Spells" --limit 20 --output Book/exports/starter-spells.md
+poetry run python -m Book.cli export-module-homebrewery --entity-type monster --source fantasy --output Book/exports/monsters.homebrewery.md
+```
+
+Standalone Google Docs module:
+
+```bash
+poetry run python -m Book.cli generate-module --entity-type species --source fantasy --doc-id YOUR_GOOGLE_DOC_ID
+```
+
 Python service:
 
 ```python
@@ -77,6 +98,20 @@ service.export_homebrewery(
     book_type="campaign_handbook",
     source="fantasy",
     output_path="Book/exports/orimond-campaign-handbook.homebrewery.md",
+)
+
+service.export_markdown(
+    book_type="campaign_handbook",
+    source="fantasy",
+    output_path="Book/exports/orimond-campaign-handbook.md",
+)
+
+service.export_module_markdown(
+    entity_type="spell",
+    source="fantasy",
+    title="Starter Spells",
+    limit=20,
+    output_path="Book/exports/starter-spells.md",
 )
 ```
 
@@ -170,59 +205,42 @@ Formatters convert 5etools format entities into formatted text for Google Docs.
 - ⏳ **LanguageFormatter** - Languages with scripts
 - ⏳ **DiseaseFormatter** - Diseases with effects
 
-### Creating a New Formatter
+### Creating a New Entity Markdown Renderer
 
-1. Create a new file in `Book/core/formatters/`:
+1. Create an entity package under `Book/core/entities/<entity_type>/` with a context builder and Jinja-backed renderer:
 
 ```python
-# Book/core/formatters/backgrounds.py
-from typing import Dict, List, Any
-from Book.core.formatters.base import BaseFormatter
+# Book/core/entities/backgrounds/renderer.py
+from typing import Any
 
-class BackgroundFormatter(BaseFormatter):
-    def format_entity(self, background: Dict[str, Any]) -> List[str]:
-        lines = []
+from Book.core.entities.base import EntityMarkdownRenderer
 
-        # Format background name
-        name = background.get("name", "Unknown Background")
-        lines.extend(self.format_heading(name, level=3))
 
-        # Format description
-        entries = background.get("entries", [])
-        lines.extend(self.format_entries(entries))
+class BackgroundMarkdownRenderer(EntityMarkdownRenderer):
+    template_name = "entities/backgrounds/template.md.j2"
 
-        # Format features
-        if "feature" in background:
-            for feature in background["feature"]:
-                lines.extend(self._format_feature(feature))
-
-        return lines
-
-    def _format_feature(self, feature: Dict[str, Any]) -> List[str]:
-        lines = []
-        name = feature.get("name", "")
-        if name:
-            lines.extend(self.format_text(name, bold=True))
-        entries = feature.get("entries", [])
-        lines.extend(self.format_entries(entries))
-        return lines
+    def build_context(self, background: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "name": background.get("name", "Unknown Background"),
+            "entries": background.get("entries", []),
+        }
 ```
 
-2. Update `Book/core/formatters/__init__.py`:
+2. Add the renderer to `Book/core/entities/registry.py`:
 
 ```python
-from Book.core.formatters.backgrounds import BackgroundFormatter
-
-__all__ = [..., "BackgroundFormatter"]
-```
-
-3. Update `Book/core/writers/base.py` formatter map:
-
-```python
-formatter_map = {
+_RENDERER_CLASSES = {
     ...
-    "background": BackgroundFormatter(),
+    "background": BackgroundMarkdownRenderer,
 }
+```
+
+3. Add a Jinja markdown template:
+
+```jinja
+### {{ name }}
+
+{{ entries | render_entries }}
 ```
 
 ## Google Docs API
@@ -345,6 +363,7 @@ class BookAPI:
     def load_entities(entity_type: str, source: str = "fantasy") -> List[Dict]
     def generate_book(writer: BaseWriter, doc_id: str = None)
     def preview_section(entity_type: str, source: str = "fantasy", limit: int = 5)
+    def _build_requests_for_markdown(markdown: str, index: int)
 ```
 
 ### GoogleDocsClient
@@ -359,17 +378,13 @@ class GoogleDocsClient:
     def batch_update(requests: List[Dict])
 ```
 
-### BaseFormatter
+### EntityMarkdownRenderer
 
 ```python
-class BaseFormatter(ABC):
-    def format_entity(entity: Dict) -> List[str]  # Abstract method
-    def format_heading(text: str, level: int = 2) -> List[str]
-    def format_property(label: str, value: Any, bold_label: bool = True) -> List[str]
-    def format_list_item(text: str, level: int = 0) -> List[str]
-    def format_text(text: str, bold: bool = False, italic: bool = False) -> List[str]
-    def format_table(headers: List[str], rows: List[List[str]]) -> List[str]
-    def format_entries(entries: List[Any]) -> List[str]
+class EntityMarkdownRenderer(ABC):
+    template_name: str
+    def build_context(entity: dict) -> dict
+    def render_markdown(entity: dict) -> str
 ```
 
 ### BaseWriter
@@ -378,16 +393,17 @@ class BaseFormatter(ABC):
 class BaseWriter(ABC):
     def get_sections() -> List[Tuple[str, str, Optional[Callable]]]  # Abstract
     def get_book_title() -> str  # Abstract
-    def get_formatter(entity_type: str) -> BaseFormatter
-    def write_cover_page() -> List[str]
-    def write_table_of_contents() -> List[str]
-    def write_section(section_name: str, entities: List[Dict], formatter: BaseFormatter) -> List[str]
+    def build_markdown() -> str
+    def get_entity_renderer(entity_type: str) -> EntityMarkdownRenderer
+    def write_cover_page() -> str
+    def write_table_of_contents() -> str
+    def write_section(section_name: str, entities: List[Dict], entity_type: str) -> str
 ```
 
 ## Future Enhancements
 
-- [ ] Implement remaining formatters (backgrounds, feats, items, etc.)
-- [ ] Add image support via Google Docs `inlineObjects` API
+- [ ] Replace remaining formatter-backed entity adapters with native context builders.
+- [x] Add image support for markdown and cover image directives.
 - [ ] Implement automatic table of contents with page numbers
 - [ ] Add custom styling options (fonts, colors, margins)
 - [ ] Support for exporting to PDF directly

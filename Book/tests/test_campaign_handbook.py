@@ -117,7 +117,7 @@ def test_campaign_handbook_writer_includes_outline_and_sourced_sections() -> Non
     assert "### 10.1 Species Overview" in lines
     assert "### 10.2 Species Entries" in lines
     assert "## Dwarf" in lines
-    assert "*Stoneborn • Steady in the Deep*" in lines
+    assert "*Stoneborn - Steady in the Deep*" in lines
     assert "### 10.6 Species Tables" in lines
     assert "**Dwarf** | Ability: CON +2 | Size: Medium | Speed: 25 ft." in lines
     assert "### 19.4 Spell Lists" in lines

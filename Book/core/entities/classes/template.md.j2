@@ -1,0 +1,7 @@
+## {{ entity.name | default("Unknown Class") }}
+
+{{ entity.entries | default([]) | render_entries }}
+{% if entity.classFeatures %}
+
+### Class Features
+{% endif %}

@@ -8,6 +8,7 @@ from collections import defaultdict
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from Book.datasets import load_timeline_catalog
+from Book.core.markdown import normalize_markdown
 from Book.core.writers.base import BaseWriter
 
 _COSMOLOGY_DOC_ID = "1Jy8hDGNodeoAhjlw8OciuO8ZvOOIiWXt0HTNULQ83Os"
@@ -51,8 +52,11 @@ class CampaignHandbookWriter(BaseWriter):
 
         return lines
 
+    def build_markdown(self) -> str:
+        return normalize_markdown("\n".join(self.build_document_lines()))
+
     def _build_cover_page(self) -> List[str]:
-        return self.write_cover_page()
+        return self.write_cover_page().splitlines()
 
     def _build_front_matter(self) -> List[str]:
         toc_lines = [
@@ -625,12 +629,12 @@ class CampaignHandbookWriter(BaseWriter):
         if not entities:
             return [f"*No {entity_type} entries are currently available for this source.*", ""]
 
-        formatter = self.get_formatter(entity_type)
+        renderer = self.get_entity_renderer(entity_type)
         lines: List[str] = []
 
         for entity in entities:
             try:
-                lines.extend(formatter.format_entity(entity))
+                lines.extend(renderer.render_markdown(entity).splitlines())
             except Exception as error:
                 entity_name = entity.get("name", "unknown")
                 lines.extend(
@@ -782,11 +786,17 @@ class CampaignHandbookWriter(BaseWriter):
         return str(sizes) if sizes else "Unknown"
 
     def _species_speed_summary(self, species: Dict[str, Any]) -> str:
-        speed = species.get("Walk Speed")
+        speed = species.get("Walk Speed", species.get("speed"))
         if speed is None or speed == "":
             return "Unknown"
         if isinstance(speed, (int, float)):
             return f"{int(speed)} ft."
+        if isinstance(speed, dict):
+            walk = speed.get("walk")
+            if isinstance(walk, (int, float)):
+                return f"{int(walk)} ft."
+            if walk:
+                return str(walk)
         return str(speed)
 
     def _get_cosmology_sections(self) -> List[Tuple[str, List[str]]]:

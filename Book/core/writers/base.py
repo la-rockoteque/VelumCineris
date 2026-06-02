@@ -4,7 +4,10 @@ Base writer class for all book writers.
 
 from abc import ABC, abstractmethod
 from typing import List, Tuple, Optional, Callable, Dict, Any
-from Book.core.formatters.base import BaseFormatter
+
+from Book.core.entities import get_entity_renderer
+from Book.core.entities.base import EntityMarkdownRenderer
+from Book.core.markdown import normalize_markdown, page_break
 
 
 class BaseWriter(ABC):
@@ -32,8 +35,7 @@ class BaseWriter(ABC):
         self.source = source
         self.cover_image_url = cover_image_url
 
-        # Initialize formatters cache
-        self._formatters = {}
+        self._entity_renderers: dict[str, EntityMarkdownRenderer] = {}
 
     @abstractmethod
     def get_sections(self) -> List[Tuple[str, str, Optional[Callable]]]:
@@ -56,30 +58,35 @@ class BaseWriter(ABC):
         """
         pass
 
-    def build_document_lines(self) -> List[str]:
+    def build_markdown(self) -> str:
         """
-        Build the complete document body for this writer.
+        Build the complete canonical markdown document for this writer.
 
         Writers with more complex structure can override this instead of relying on
         the default flat section loop.
         """
-        lines: List[str] = []
+        parts: list[str] = [
+            self.write_cover_page(),
+            self.write_table_of_contents(),
+        ]
 
-        lines.extend(self.write_cover_page())
-        lines.extend(self.write_table_of_contents())
-
-        for section_name, entity_type, filter_func in self.get_sections():
+        for chapter_number, (section_name, entity_type, filter_func) in enumerate(
+            self.get_sections(),
+            start=1,
+        ):
             try:
                 entities = self.book_api.load_entities(entity_type, source=self.source)
 
                 if filter_func:
                     entities = filter_func(entities)
 
-                formatter = self.get_formatter(entity_type)
-                section_lines = self.write_section_with_error_handling(
-                    section_name, entities, formatter
+                section_markdown = self.write_section_with_error_handling(
+                    section_name,
+                    entities,
+                    entity_type,
+                    chapter_number=chapter_number,
                 )
-                lines.extend(section_lines)
+                parts.append(section_markdown)
             except Exception as e:
                 print(f"  Error processing {section_name}: {e}")
                 import traceback
@@ -87,85 +94,76 @@ class BaseWriter(ABC):
                 traceback.print_exc()
                 continue
 
-        return lines
+        return normalize_markdown("\n".join(parts))
 
-    def get_formatter(self, entity_type: str) -> BaseFormatter:
+    def build_document_lines(self) -> List[str]:
+        """Compatibility adapter for older callers; markdown is canonical."""
+        return self.build_markdown().splitlines()
+
+    def get_entity_renderer(self, entity_type: str) -> EntityMarkdownRenderer:
         """
-        Get the appropriate formatter for an entity type.
+        Get the appropriate markdown renderer for an entity type.
 
         Args:
             entity_type: Type of entity
 
         Returns:
-            Formatter instance
+            Entity markdown renderer instance
         """
-        # Cache formatters to avoid recreating them
-        if entity_type in self._formatters:
-            return self._formatters[entity_type]
+        if entity_type not in self._entity_renderers:
+            self._entity_renderers[entity_type] = get_entity_renderer(entity_type)
+        return self._entity_renderers[entity_type]
 
-        # Import formatters
-        from Book.core.formatters import (
-            SpellFormatter,
-            SpeciesFormatter,
-            MonsterFormatter,
-            BackgroundFormatter,
-            FeatFormatter,
-            ClassFormatter,
-            SubclassFormatter,
-            ItemFormatter,
-            MagicItemFormatter,
-            LanguageFormatter,
-            DiseaseFormatter,
-        )
+    def get_formatter(self, entity_type: str):
+        """Compatibility shim for old callers."""
+        from Book.mappers.formatter_registry import get_formatter
 
-        # Map entity types to formatters
-        formatter_map = {
-            "spell": SpellFormatter(),
-            "species": SpeciesFormatter(),
-            "race": SpeciesFormatter(),
-            "monster": MonsterFormatter(),
-            "background": BackgroundFormatter(),
-            "feat": FeatFormatter(),
-            "class": ClassFormatter(),
-            "subclass": SubclassFormatter(),
-            "item": ItemFormatter(),
-            "magicitem": MagicItemFormatter(),
-            "language": LanguageFormatter(),
-            "disease": DiseaseFormatter(),
-        }
+        return get_formatter(entity_type)
 
-        formatter = formatter_map.get(entity_type.lower())
-        if not formatter:
-            raise ValueError(f"No formatter available for entity type: {entity_type}")
-
-        self._formatters[entity_type] = formatter
-        return formatter
-
-    def write_cover_page(self) -> List[str]:
-        """Write PHB-style cover: tagline → title → art → subtitle → page break."""
-        lines: List[str] = []
-
+    def write_cover_page(self) -> str:
+        """Write Homebrewery-style front cover markdown."""
         setting = "Orimond" if self.source == "fantasy" else "Vestigium"
-        lines.append("COVER_TAGLINE: A Homebrew Compendium · D&D 5th Edition")
-        lines.append("")
-        lines.append(f"COVER_TITLE: {setting}")
-        lines.append("")
+        subtitle = self._cover_subtitle(setting)
+        lines: list[str] = [
+            "{{frontCover}}",
+            "",
+            "{{logo ![](https://homebrewery.naturalcrit.com/assets/naturalCritLogoRed.svg)}}",
+            "",
+            f"# {setting}",
+            f"## {subtitle}",
+            "___",
+            "",
+            "{{banner HOMEBREW}}",
+            "",
+            "{{footnote",
+            "  A Homebrew Compendium · D&D 5th Edition",
+            "}}",
+        ]
         if self.cover_image_url:
-            lines.append(f"COVER_IMAGE: {self.cover_image_url}")
             lines.append("")
-        lines.append(f"COVER_SUBTITLE: {self.get_book_title()}")
+            lines.append(
+                f"![Cover Image]({self.cover_image_url})"
+                "{position:absolute,top:0,right:0px,height:100%}"
+            )
         lines.append("")
-        lines.append("---")
+        lines.append(page_break())
         lines.append("")
 
-        return lines
+        return "\n".join(lines)
 
-    def write_table_of_contents(self) -> List[str]:
+    def _cover_subtitle(self, setting: str) -> str:
+        title = self.get_book_title()
+        for prefix in (f"{setting} ", "Orimond ", "Vestigium "):
+            if title.startswith(prefix):
+                return title[len(prefix) :]
+        return title
+
+    def write_table_of_contents(self) -> str:
         """
         Write the table of contents.
 
         Returns:
-            List of formatted text lines
+            Canonical markdown string
         """
         lines = []
 
@@ -178,57 +176,45 @@ class BaseWriter(ABC):
             lines.append(f"{idx}. {section_name}")
 
         lines.append("")
-        lines.append("---")  # Page break
+        lines.append(page_break())
         lines.append("")
 
-        return lines
+        return "\n".join(lines)
 
     def write_section(
         self,
         section_name: str,
         entities: List[Dict[str, Any]],
-        formatter: BaseFormatter,
-    ) -> List[str]:
+        entity_type: str,
+        *,
+        chapter_number: int | None = None,
+    ) -> str:
         """
         Format and write a complete section.
 
         Args:
             section_name: Name of the section
             entities: List of entity dictionaries
-            formatter: Formatter to use
+            entity_type: Entity type to render
 
         Returns:
-            List of formatted text lines
+            Canonical markdown string
         """
-        lines = []
-
-        # Section header
-        lines.append(f"# {section_name}")
-        lines.append("")
-
-        # Format each entity
-        for entity in entities:
-            try:
-                entity_lines = formatter.format_entity(entity)
-                lines.extend(entity_lines)
-            except Exception as e:
-                # Log error but continue
-                print(f"  Error formatting entity {entity.get('name', 'unknown')}: {e}")
-                continue
-
-        # Add page break after section
-        lines.append("")
-        lines.append("---")
-        lines.append("")
-
-        return lines
+        return self.write_section_with_error_handling(
+            section_name,
+            entities,
+            entity_type,
+            chapter_number=chapter_number,
+        )
 
     def write_section_with_error_handling(
         self,
         section_name: str,
         entities: List[Dict[str, Any]],
-        formatter: BaseFormatter,
-    ) -> List[str]:
+        entity_type: str,
+        *,
+        chapter_number: int | None = None,
+    ) -> str:
         """
         Format and write a complete section with detailed error handling and progress.
 
@@ -240,11 +226,11 @@ class BaseWriter(ABC):
         Returns:
             List of formatted text lines
         """
-        lines = []
-
-        # Section header
-        lines.append(f"# {section_name}")
-        lines.append("")
+        renderer = self.get_entity_renderer(entity_type)
+        parts: list[str] = []
+        if chapter_number is not None:
+            parts.append(self.write_section_cover_page(section_name, chapter_number))
+        parts.extend([f"# {section_name}", ""])
 
         success_count = 0
         error_count = 0
@@ -252,8 +238,7 @@ class BaseWriter(ABC):
         # Format each entity with error handling
         for idx, entity in enumerate(entities):
             try:
-                entity_lines = formatter.format_entity(entity)
-                lines.extend(entity_lines)
+                parts.append(renderer.render_markdown(entity))
                 success_count += 1
 
                 # Progress indicator for large sections
@@ -266,11 +251,56 @@ class BaseWriter(ABC):
                 print(f"  Warning: Error formatting {entity_name}: {e}")
                 # Continue with next entity
 
-        # Add page break after section
-        lines.append("")
-        lines.append("---")
-        lines.append("")
+        parts.append("")
+        parts.append(page_break())
+        parts.append("")
 
         print(f"  Added {success_count} entities ({error_count} errors)")
 
-        return lines
+        return normalize_markdown("\n".join(parts))
+
+    def write_section_cover_page(self, section_name: str, chapter_number: int) -> str:
+        chapter_label = self._roman_numeral(chapter_number)
+        return "\n".join(
+            [
+                f"# Chapter {chapter_label}",
+                "",
+                f"## {section_name}",
+                "",
+                "{{imageMaskEdge8,--offset:10cm,--rotation:180",
+                (
+                    f"  ![Chapter {chapter_label} Cover]"
+                    "(https://homebrewery.naturalcrit.com/assets/frigate.webp)"
+                    "{position:absolute,bottom:0,right:0,height:100%}"
+                ),
+                "}}",
+                "",
+                "{{pageNumber,auto}}",
+                page_break(),
+                "",
+            ]
+        )
+
+    def _roman_numeral(self, value: int) -> str:
+        numerals = [
+            (1000, "M"),
+            (900, "CM"),
+            (500, "D"),
+            (400, "CD"),
+            (100, "C"),
+            (90, "XC"),
+            (50, "L"),
+            (40, "XL"),
+            (10, "X"),
+            (9, "IX"),
+            (5, "V"),
+            (4, "IV"),
+            (1, "I"),
+        ]
+        remaining = value
+        result: list[str] = []
+        for number, numeral in numerals:
+            while remaining >= number:
+                result.append(numeral)
+                remaining -= number
+        return "".join(result)

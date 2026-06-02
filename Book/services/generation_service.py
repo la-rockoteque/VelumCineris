@@ -5,6 +5,7 @@ from pathlib import Path
 
 from Book.core.Helpers.book_api import BookAPI
 from Book.core.renderers import HomebreweryRenderer
+from Book.core.writers import ModuleWriter
 from Book.datasets import get_sheets_client, normalize_source
 from Book.exports import get_writer_class
 
@@ -77,10 +78,125 @@ class BookGenerationService:
         writer_class = get_writer_class(book_type)
         writer = writer_class(book_api, source=normalized_source)
 
-        lines = writer.build_document_lines()
-        rendered = HomebreweryRenderer().render(lines)
+        markdown = self._writer_markdown(writer)
+        rendered = HomebreweryRenderer().render_markdown(markdown)
 
         path = Path(output_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(rendered, encoding="utf-8")
         return path
+
+    def render_markdown(
+        self,
+        *,
+        book_type: str,
+        source: str = "fantasy",
+    ) -> str:
+        normalized_source = normalize_source(source)
+        book_api = self.create_book_api(source=normalized_source)
+        writer_class = get_writer_class(book_type)
+        writer = writer_class(book_api, source=normalized_source)
+        return self._writer_markdown(writer)
+
+    def export_markdown(
+        self,
+        *,
+        book_type: str,
+        output_path: str | Path,
+        source: str = "fantasy",
+    ) -> Path:
+        rendered = self.render_markdown(book_type=book_type, source=source)
+        path = Path(output_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(rendered, encoding="utf-8")
+        return path
+
+    def generate_module(
+        self,
+        *,
+        entity_type: str,
+        doc_id: str,
+        source: str = "fantasy",
+        title: str | None = None,
+        limit: int | None = None,
+        credentials_path: str = "FiveETools/key.json",
+    ) -> Any:
+        normalized_source = normalize_source(source)
+        book_api = self.create_book_api(
+            source=normalized_source,
+            doc_id=doc_id,
+            credentials_path=credentials_path,
+        )
+        writer = ModuleWriter(
+            book_api,
+            entity_type=entity_type,
+            source=normalized_source,
+            title=title,
+            limit=limit,
+        )
+        return book_api.generate_book(writer, doc_id=doc_id)
+
+    def render_module_markdown(
+        self,
+        *,
+        entity_type: str,
+        source: str = "fantasy",
+        title: str | None = None,
+        limit: int | None = None,
+    ) -> str:
+        normalized_source = normalize_source(source)
+        book_api = self.create_book_api(source=normalized_source)
+        writer = ModuleWriter(
+            book_api,
+            entity_type=entity_type,
+            source=normalized_source,
+            title=title,
+            limit=limit,
+        )
+        return writer.build_markdown()
+
+    def export_module_markdown(
+        self,
+        *,
+        entity_type: str,
+        output_path: str | Path,
+        source: str = "fantasy",
+        title: str | None = None,
+        limit: int | None = None,
+    ) -> Path:
+        rendered = self.render_module_markdown(
+            entity_type=entity_type,
+            source=source,
+            title=title,
+            limit=limit,
+        )
+        path = Path(output_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(rendered, encoding="utf-8")
+        return path
+
+    def export_module_homebrewery(
+        self,
+        *,
+        entity_type: str,
+        output_path: str | Path,
+        source: str = "fantasy",
+        title: str | None = None,
+        limit: int | None = None,
+    ) -> Path:
+        markdown = self.render_module_markdown(
+            entity_type=entity_type,
+            source=source,
+            title=title,
+            limit=limit,
+        )
+        rendered = HomebreweryRenderer().render_markdown(markdown)
+        path = Path(output_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(rendered, encoding="utf-8")
+        return path
+
+    def _writer_markdown(self, writer: Any) -> str:
+        if hasattr(writer, "build_markdown"):
+            return writer.build_markdown()
+        return "\n".join(writer.build_document_lines()) + "\n"

@@ -1,0 +1,15 @@
+#### {{ entity.name | default("Unknown Spell") }}
+*{{ entity | spell_level_school }}*
+**Casting Time:** :: {{ entity.time | default([]) | spell_time }}
+**Range:** :: {{ entity.range | default({}) | spell_range }}
+**Components:** {{ entity.components | default({}) | spell_components }}
+**Duration:** {{ entity.duration | default([]) | spell_duration }}
+
+{{ entity.entries | default([]) | render_entries }}
+{% set higher = higher_level_entries(entity) %}
+{% if higher %}
+
+**At Higher Levels.**
+
+{{ higher | render_entries }}
+{% endif %}

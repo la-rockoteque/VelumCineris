@@ -1,0 +1,15 @@
+#### {{ entity.name | default("Unknown Item") }}
+
+*{{ entity.type | default("Item") }}, {{ entity.rarity | default("common") }}*
+{% if entity.value is defined %}
+
+**Cost:** {{ entity.value }} gp
+{% endif %}
+{% if entity.weight is defined %}
+
+**Weight:** {{ entity.weight }} lb.
+{% endif %}
+{% if entity.entries %}
+
+{{ entity.entries | render_entries }}
+{% endif %}

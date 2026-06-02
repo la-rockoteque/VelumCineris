@@ -1,0 +1,95 @@
+### {{ entity.name | default("Unknown Monster") }}
+
+*{{ monster_size_type_alignment(entity) }}*
+
+────────────────────────────────────────
+
+**Armor Class:** {{ entity.ac | default([]) | armor_class }}
+
+**Hit Points:** {{ entity.hp | default({}) | hit_points }}
+
+**Speed:** {{ entity.speed | default({}) | movement_speed }}
+
+────────────────────────────────────────
+
+{{ monster_ability_rows(entity) }}
+
+────────────────────────────────────────
+{% if entity.save %}
+
+**Saving Throws:** {{ join_mapping(entity.save, upper_keys=True) }}
+{% endif %}
+{% if entity.skill %}
+
+**Skills:** {{ join_mapping(entity.skill) }}
+{% endif %}
+{% if entity.resist %}
+
+**Damage Resistances:** {{ entity.resist | join_values }}
+{% endif %}
+{% if entity.immune %}
+
+**Damage Immunities:** {{ entity.immune | join_values }}
+{% endif %}
+{% if entity.conditionImmune %}
+
+**Condition Immunities:** {{ entity.conditionImmune | join_values }}
+{% endif %}
+{% if entity.senses or entity.passive %}
+
+**Senses:** {{ monster_senses(entity) }}
+{% endif %}
+{% if entity.languages %}
+
+**Languages:** {{ entity.languages | join_values("—") }}
+{% endif %}
+
+**Challenge:** {{ entity.cr | default("0") }} ({{ monster_xp(entity.cr | default("0")) }} XP)
+
+────────────────────────────────────────
+{% for trait in entity.trait | default([]) %}
+
+**{{ trait.name }}**
+
+{{ trait.entries | default([]) | render_entries }}
+{% endfor %}
+{% if entity.action %}
+
+#### Actions
+{% for action in entity.action %}
+
+**{{ action.name }}**
+
+{{ action.entries | default([]) | render_entries }}
+{% endfor %}
+{% endif %}
+{% if entity.bonus %}
+
+#### Bonus Actions
+{% for bonus in entity.bonus %}
+
+**{{ bonus.name }}**
+
+{{ bonus.entries | default([]) | render_entries }}
+{% endfor %}
+{% endif %}
+{% if entity.reaction %}
+
+#### Reactions
+{% for reaction in entity.reaction %}
+
+**{{ reaction.name }}**
+
+{{ reaction.entries | default([]) | render_entries }}
+{% endfor %}
+{% endif %}
+{% if entity.legendary %}
+
+#### Legendary Actions
+{% for legendary in entity.legendary %}
+
+**{{ legendary.name }}**
+
+{{ legendary.entries | default([]) | render_entries }}
+{% endfor %}
+{% endif %}

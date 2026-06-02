@@ -2,11 +2,17 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from Book.core.markdown import PAGE_BREAK_MARKER, normalize_markdown
+
 
 class HomebreweryRenderer:
-    """Render book writer lines as Homebrewery source markdown."""
+    """Render canonical book markdown as Homebrewery source markdown."""
+
+    def render_markdown(self, markdown: str) -> str:
+        return self.render(normalize_markdown(markdown).splitlines())
 
     def render(self, lines: Iterable[str]) -> str:
+        """Compatibility line adapter for older tests/callers."""
         rendered_lines: list[str] = []
         previous_empty = False
 
@@ -29,7 +35,7 @@ class HomebreweryRenderer:
         return "\n".join(rendered_lines) + "\n"
 
     def _render_line(self, line: str) -> str:
-        if line == "---":
+        if line in {"---", PAGE_BREAK_MARKER}:
             return "\\page"
         if line.startswith("COVER_TAGLINE: "):
             return f"##### {line[15:]}"

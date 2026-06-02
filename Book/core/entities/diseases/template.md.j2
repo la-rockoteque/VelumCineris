@@ -1,0 +1,7 @@
+#### {{ entity.name | default("Unknown Disease") }}
+{% if entity.type %}
+
+*{{ entity.type }}*
+{% endif %}
+
+{{ entity.entries | default([]) | render_entries }}

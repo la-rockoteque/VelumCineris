@@ -10,6 +10,7 @@ from Book.core.writers.campaign_handbook import CampaignHandbookWriter
 from Book.core.writers.dmg import DMGWriter
 from Book.core.writers.monster_manual import MonsterManualWriter
 from Book.core.writers.divine_codex import DivineCodexWriter
+from Book.core.writers.module import ModuleWriter
 
 __all__ = [
     "BaseWriter",
@@ -20,4 +21,5 @@ __all__ = [
     "DMGWriter",
     "MonsterManualWriter",
     "DivineCodexWriter",
+    "ModuleWriter",
 ]

@@ -141,7 +141,7 @@ class SpeciesFormatter(BaseFormatter):
                 amount = choose.get("amount", 1)
                 if from_list:
                     abilities = ", ".join(
-                        _ABILITY_NAMES.get(ability[:3].lower(), ability)
+                        _ABILITY_NAMES.get(str(ability)[:3].lower(), str(ability))
                         for ability in from_list
                     )
                     parts.append(

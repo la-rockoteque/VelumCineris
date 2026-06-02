@@ -42,7 +42,6 @@ from Book.core.Helpers.styles import (
     HEADING_2,
     HEADING_3,
     HEADING_4,
-    HEADING_COLOR,
     MARGIN_BOTTOM,
     MARGIN_LEFT,
     MARGIN_RIGHT,
@@ -125,7 +124,7 @@ class GoogleDocsClient:
     def clear_document(self) -> None:
         """Clear all content from the document."""
         doc = self.get_document()
-        content = doc.get("body").get("content")
+        content = doc.get("body", {}).get("content", [])
 
         if len(content) <= 1:
             # Document is already empty
@@ -240,7 +239,9 @@ class GoogleDocsClient:
     def get_end_index(self) -> int:
         """Get the current end index of the document."""
         doc = self.get_document()
-        content = doc.get("body").get("content")
+        content = doc.get("body", {}).get("content", [])
+        if not content:
+            return 1
         return content[-1].get("endIndex", 1) - 1
 
     def insert_text(self, text: str, index: Optional[int] = None) -> int:

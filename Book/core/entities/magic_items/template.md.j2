@@ -1,0 +1,7 @@
+#### {{ entity.name | default("Unknown Magic Item") }}
+
+*{{ entity.type | default("Wondrous item") }}, {{ entity.rarity | default("uncommon") | item_rarity }}{{ attunement_text(entity.reqAttune | default("")) }}*
+{% if entity.entries %}
+
+{{ entity.entries | render_entries }}
+{% endif %}

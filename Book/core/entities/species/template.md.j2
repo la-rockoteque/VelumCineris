@@ -1,0 +1,72 @@
+{% set name = entity.name | default("Unknown Race") -%}
+{% set lore_pages = species_lore_pages(entity) -%}
+{{ "{{" }}imageMaskEdge1,--offset:2%,--rotation:90
+  ![Male {{ name }}]({{ species_image_url(entity) }}){height:100%;left:-10em}
+{{ "}}" }}
+
+\column
+
+## {{ name }}
+{% set subtitle = species_subtitle(entity) %}
+{% if subtitle %}
+
+*{{ subtitle }}*
+{% endif %}
+{% if entity.quote is defined and entity.quote %}
+
+*{{ entity.quote }}*
+{% endif %}
+{% for section in lore_pages.intro %}
+
+{{ section.entries | render_entries }}
+{% endfor %}
+{% for section in lore_pages.first %}
+
+#### {{ section.name }}
+___
+
+{{ section.entries | render_entries }}
+{% endfor %}
+
+{{ "{{" }}pageNumber,auto{{ "}}" }}
+{{ page_break() }}
+{% for section in lore_pages.second %}
+
+#### {{ section.name }}
+___
+
+{{ section.entries | render_entries }}
+{% endfor %}
+{% set raw_entries = entity.entries | default([]) %}
+{% set traits = trait_entries(raw_entries) %}
+{% set trait_lines = trait_text_entries(raw_entries, name) %}
+{% if entity.ability is defined or traits or trait_lines %}
+
+#### {{ name }} Traits
+___
+{% if entity.ability is defined and entity.ability %}
+
+**Ability Score Increase.** {{ ability_score_summary(entity.ability) }}
+{% endif %}
+{% for trait_line in trait_lines %}
+
+{{ trait_line }}
+{% endfor %}
+{% for trait in traits %}
+
+**{{ trait.name }}.**{% if trait.entries and trait.entries[0] is string %} {{ trait.entries[0] }}{% endif %}
+{% if trait.entries and trait.entries|length > 1 %}
+
+{{ trait.entries[1:] | render_entries }}
+
+{% elif trait.entries and trait.entries[0] is not string %}
+
+{{ trait.entries | render_entries }}
+
+{% endif %}
+{{ "\n" }}
+{% endfor %}
+{% endif %}
+
+{{ "{{" }}pageNumber,auto{{ "}}" }}
+{{ page_break() }}

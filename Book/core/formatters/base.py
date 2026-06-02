@@ -3,7 +3,7 @@ Base formatter class for all entity formatters.
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 
 
 class BaseFormatter(ABC):
@@ -14,7 +14,7 @@ class BaseFormatter(ABC):
         self.current_index = 1
 
     @abstractmethod
-    def format_entity(self, entity: Dict[str, Any]) -> List[str]:
+    def format_entity(self, entity: Dict[str, Any], /) -> List[str]:
         """
         Format an entity into text content.
 

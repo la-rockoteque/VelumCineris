@@ -1,0 +1,25 @@
+### {{ entity.name | default("Unknown Background") }}
+
+{{ entity.entries | default([]) | render_entries }}
+{% if entity.skillProficiencies %}
+
+**Skill Proficiencies:** {{ entity.skillProficiencies }}
+{% endif %}
+{% if entity.languageProficiencies %}
+
+**Languages:** {{ entity.languageProficiencies }}
+{% endif %}
+{% if entity.toolProficiencies %}
+
+**Tool Proficiencies:** {{ entity.toolProficiencies }}
+{% endif %}
+{% if entity.startingEquipment %}
+
+**Equipment:** {{ entity.startingEquipment }}
+{% endif %}
+{% for feature in entity.feature | default([]) %}
+
+**{{ feature.name }}**
+
+{{ feature.entries | default([]) | render_entries }}
+{% endfor %}

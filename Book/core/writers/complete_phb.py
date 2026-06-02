@@ -3,6 +3,7 @@ Complete Player's Handbook writer with species, classes (with nested subclasses)
 """
 
 from typing import List, Tuple, Optional, Callable
+from Book.core.markdown import normalize_markdown, page_break
 from Book.core.writers.base import BaseWriter
 
 
@@ -56,13 +57,14 @@ class CompletePHBWriter(BaseWriter):
             ("Languages", "language", None),
         ]
 
-    def build_document_lines(self) -> List[str]:
-        lines = []
+    def build_markdown(self) -> str:
+        parts = [self.write_cover_page(), self.write_table_of_contents()]
 
-        lines.extend(self.write_cover_page())
-        lines.extend(self.write_table_of_contents())
-
-        for section_name, entity_type, filter_func in self.get_sections():
+        sections = self.get_sections()
+        for chapter_number, (section_name, entity_type, filter_func) in enumerate(
+            sections,
+            start=1,
+        ):
             print(f"Processing section: {section_name}...")
 
             try:
@@ -71,31 +73,37 @@ class CompletePHBWriter(BaseWriter):
                 if filter_func:
                     entities = filter_func(entities)
 
-                formatter = self.get_formatter(entity_type)
-                section_lines = self.write_section_with_error_handling(
-                    section_name, entities, formatter
+                section_markdown = self.write_section_with_error_handling(
+                    section_name,
+                    entities,
+                    entity_type,
+                    chapter_number=chapter_number,
                 )
-                lines.extend(section_lines)
+                parts.append(section_markdown)
             except Exception as e:
                 print(f"  Error processing {section_name}: {e}")
                 continue
 
         if self.source == "modern":
             print("Processing section: Classes (with subclasses)...")
-            lines.extend(self.write_classes_with_subclasses())
+            parts.append(self.write_classes_with_subclasses(chapter_number=len(sections) + 1))
 
-        return lines
+        return normalize_markdown("\n".join(parts))
 
-    def write_classes_with_subclasses(self) -> List[str]:
+    def build_document_lines(self) -> List[str]:
+        return self.build_markdown().splitlines()
+
+    def write_classes_with_subclasses(self, *, chapter_number: int | None = None) -> str:
         """
         Write classes section with subclasses nested under each class.
 
         Returns:
-            List of formatted text lines
+            Canonical markdown string
         """
         lines = []
+        if chapter_number is not None:
+            lines.extend(self.write_section_cover_page("Classes", chapter_number).splitlines())
 
-        # Section header
         lines.append("# Classes")
         lines.append("")
 
@@ -105,15 +113,15 @@ class CompletePHBWriter(BaseWriter):
             all_subclasses = self.book_api.load_entities("subclass", source=self.source)
         except Exception as e:
             print(f"  Error loading classes/subclasses: {e}")
-            return lines
+            return "\n".join(lines)
 
-        # Get formatters
+        # Get renderers
         try:
-            class_formatter = self.get_formatter("class")
-            subclass_formatter = self.get_formatter("subclass")
+            class_renderer = self.get_entity_renderer("class")
+            subclass_renderer = self.get_entity_renderer("subclass")
         except Exception as e:
-            print(f"  Error getting formatters: {e}")
-            return lines
+            print(f"  Error getting renderers: {e}")
+            return "\n".join(lines)
 
         # Process each class
         success_count = 0
@@ -123,9 +131,7 @@ class CompletePHBWriter(BaseWriter):
             try:
                 class_name = cls.get("name", "Unknown Class")
 
-                # Format the class
-                class_lines = class_formatter.format_entity(cls)
-                lines.extend(class_lines)
+                lines.extend(class_renderer.render_markdown(cls).splitlines())
 
                 # Find subclasses for this class
                 class_subclasses = [
@@ -141,8 +147,7 @@ class CompletePHBWriter(BaseWriter):
                     # Format each subclass
                     for subclass in class_subclasses:
                         try:
-                            subclass_lines = subclass_formatter.format_entity(subclass)
-                            lines.extend(subclass_lines)
+                            lines.extend(subclass_renderer.render_markdown(subclass).splitlines())
                         except Exception as e:
                             print(f"  Warning: Error formatting subclass {subclass.get('name', 'unknown')}: {e}")
 
@@ -159,9 +164,9 @@ class CompletePHBWriter(BaseWriter):
 
         # Add page break after section
         lines.append("")
-        lines.append("---")
+        lines.append(page_break())
         lines.append("")
 
         print(f"  Added {success_count} classes with subclasses ({error_count} errors)")
 
-        return lines
+        return normalize_markdown("\n".join(lines))

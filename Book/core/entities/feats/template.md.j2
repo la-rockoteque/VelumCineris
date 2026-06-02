@@ -1,0 +1,7 @@
+#### {{ entity.name | default("Unknown Feat") }}
+{% if entity.prerequisite %}
+
+*Prerequisite: {{ entity.prerequisite | prerequisite_text }}*
+{% endif %}
+
+{{ entity.entries | default([]) | render_entries }}

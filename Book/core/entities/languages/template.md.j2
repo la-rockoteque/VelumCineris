@@ -1,0 +1,15 @@
+#### {{ entity.name | default("Unknown Language") }}
+
+*{{ entity.type | default("Standard") }} language*
+{% if entity.script %}
+
+**Script:** {{ entity.script }}
+{% endif %}
+{% if entity.typicalSpeakers %}
+
+**Typical Speakers:** {{ entity.typicalSpeakers | join_values }}
+{% endif %}
+{% if entity.entries %}
+
+{{ entity.entries | render_entries }}
+{% endif %}
