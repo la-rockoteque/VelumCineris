@@ -12,7 +12,10 @@ from FiveETools.core.fantasy import (
     spells,
 )
 from FiveETools.core.modern import conditions
+from FiveETools.datasets.json_loader import build_mapped_rows
 from FiveETools.datasets import species as species_dataset
+from FiveETools.mappers.background_mapper import map_background_row
+from FiveETools.mappers.feat_mapper import map_feat_row
 
 SectionBuilder = Callable[[str], list[dict[str, Any]]]
 EntityBuilder = Callable[[str], list[dict[str, Any]]]
@@ -49,6 +52,36 @@ def _build_deity(source_code: str) -> list[dict[str, Any]]:
     return dieties.build_diety_list(source_code=source_code)
 
 
+def _build_feat(source_code: str) -> list[dict[str, Any]]:
+    return build_mapped_rows(
+        sheets_client=sources.fantasy_sheets,
+        sheet_name="feats",
+        source_code=source_code,
+        default_source=sources.DEFAULT_SOURCE,
+        resolve_source_context=sources.resolve_source_context,
+        row_mapper=map_feat_row,
+        name_column="Name",
+        filter_by_source=False,
+    )
+
+
+def _build_background(source_code: str) -> list[dict[str, Any]]:
+    return build_mapped_rows(
+        sheets_client=sources.fantasy_sheets,
+        sheet_name="backgrounds",
+        source_code=source_code,
+        default_source=sources.DEFAULT_SOURCE,
+        resolve_source_context=sources.resolve_source_context,
+        row_mapper=map_background_row,
+        mapper_kwargs_builder=lambda source, json_source: {
+            "source": source,
+            "json_source": json_source,
+        },
+        name_column="Name",
+        filter_by_source=False,
+    )
+
+
 SECTION_BUILDERS: dict[str, SectionBuilder] = {
     "race": _build_race,
     "spell": _build_spell,
@@ -57,6 +90,8 @@ SECTION_BUILDERS: dict[str, SectionBuilder] = {
     "disease": _build_disease,
     "language": _build_language,
     "deity": _build_deity,
+    "feat": _build_feat,
+    "background": _build_background,
 }
 
 SECTION_ORDER: tuple[str, ...] = tuple(SECTION_BUILDERS.keys())
@@ -70,6 +105,8 @@ ENTITY_BUILDERS: dict[str, EntityBuilder] = {
     "disease": _build_disease,
     "language": _build_language,
     "deity": _build_deity,
+    "feat": _build_feat,
+    "background": _build_background,
 }
 
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Any
 
 
@@ -9,6 +10,28 @@ def _stringify_entries(entries: Any) -> str:
     if entries is None:
         return ""
     return str(entries)
+
+
+def _strip_fivetools_tags(value: Any) -> str:
+    return re.sub(r"\{@(?:skill|language) ([^}]+)\}", r"\1", str(value or ""))
+
+
+def _map_background_entry(entry: Any) -> str:
+    if not isinstance(entry, dict):
+        return str(entry)
+    if entry.get("type") == "list":
+        lines = []
+        for item in entry.get("items", []):
+            if not isinstance(item, dict):
+                lines.append(f"- {item}")
+                continue
+            name = item.get("name", "")
+            value = _strip_fivetools_tags(item.get("entry", ""))
+            lines.append(f"- **{name}:** {value}" if name else f"- {value}")
+        return "\n".join(lines)
+    name = entry.get("name", "")
+    body = "\n".join(str(value) for value in entry.get("entries", []) if value)
+    return f"### {name}\n{body}".strip() if name else body
 
 
 def _map_spell(spell: dict[str, Any]) -> str:
@@ -64,6 +87,28 @@ def _map_class(class_data: dict[str, Any]) -> str:
     ).strip()
 
 
+def _map_feat(feat: dict[str, Any]) -> str:
+    name = feat.get("name", "Unnamed Feat")
+    return "\n".join(
+        [
+            f"## {str(name).title()}",
+            _stringify_entries(feat.get("entries", [])),
+        ]
+    ).strip()
+
+
+def _map_background(background: dict[str, Any]) -> str:
+    name = background.get("name", "Unnamed Background")
+    entries = "\n\n".join(
+        block
+        for block in (
+            _map_background_entry(entry) for entry in background.get("entries", [])
+        )
+        if block
+    )
+    return "\n".join([f"## {name}", entries]).strip()
+
+
 def _map_item(item: dict[str, Any]) -> str:
     name = item.get("name", "Unnamed Item")
     value = item.get("value", "")
@@ -100,6 +145,8 @@ _MAPPERS = {
     "spell": _map_spell,
     "species": _map_species,
     "class": _map_class,
+    "feat": _map_feat,
+    "background": _map_background,
     "item": _map_item,
     "magic_item": _map_magic_item,
 }
@@ -114,4 +161,3 @@ def map_entity_markdown(entity_type: str, entity: dict[str, Any]) -> str:
 
 def list_mappable_entity_types() -> tuple[str, ...]:
     return tuple(_MAPPERS.keys())
-

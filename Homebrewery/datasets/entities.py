@@ -8,14 +8,24 @@ from FiveETools.datasets import (
     resolve_source_code as resolve_fivetools_source_code,
 )
 
-SUPPORTED_SETTINGS: tuple[str, ...] = ("modern",)
-SUPPORTED_ENTITY_TYPES: tuple[str, ...] = ("spell", "species", "class", "item", "magic_item")
+SUPPORTED_SETTINGS: tuple[str, ...] = ("fantasy", "modern")
+SUPPORTED_ENTITY_TYPES: tuple[str, ...] = (
+    "spell",
+    "species",
+    "class",
+    "feat",
+    "background",
+    "item",
+    "magic_item",
+)
 
 
 def normalize_setting(setting: str) -> str:
     normalized = normalize_fivetools_setting(setting)
     if normalized not in SUPPORTED_SETTINGS:
-        raise ValueError(f"Unknown setting '{setting}'. Expected one of: {sorted(SUPPORTED_SETTINGS)}")
+        raise ValueError(
+            f"Unknown setting '{setting}'. Expected one of: {sorted(SUPPORTED_SETTINGS)}"
+        )
     return normalized
 
 
@@ -29,8 +39,11 @@ def normalize_entity_type(entity_type: str) -> str:
 
 
 def resolve_source_code(setting: str, source_code: str | None = None) -> str:
-    normalize_setting(setting)
-    return resolve_fivetools_source_code(setting="modern", source_code=source_code)
+    normalized_setting = normalize_setting(setting)
+    return resolve_fivetools_source_code(
+        setting=normalized_setting,
+        source_code=source_code,
+    )
 
 
 def load_entities(

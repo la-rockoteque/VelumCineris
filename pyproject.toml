@@ -51,6 +51,11 @@ dependencies = [
     "markdown-it-py (>=3.0.0,<5.0.0)"
 ]
 
+[project.scripts]
+download-wordnet = "scripts.download_wordnet:main"
+check-architecture = "scripts.check_import_boundaries:main"
+homebrewery = "Homebrewery.cli:main"
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -59,7 +64,3 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 pypdf2 = "^3.0.1"
 pytest = "^9.0.2"
-
-[tool.poetry.scripts]
-download-wordnet = "scripts.download_wordnet:main"
-check-architecture = "scripts.check_import_boundaries:main"
