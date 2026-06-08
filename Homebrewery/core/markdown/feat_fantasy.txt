@@ -1,0 +1,500 @@
+# Feats
+
+## Threshold Touched
+*Prerequisite: Wisdom 13 or higher*
+You can interfere with planar movement near you.
+### Prevent Teleport
+When a creature within 10 feet attempts to teleport you may use your reaction to negate the effect.
+### Threshold Sense
+You have advantage on Wisdom checks to detect planar effects.
+
+---
+
+## Veil-Breath Adept
+*Prerequisite: Exposure to the Veil*
+You can survive and function within the Veil without protective equipment.
+### Veil Adaptation
+You can breathe and survive in the Veil without the need for a spacesuit or sealed environment.
+### Environmental Immunity
+You are immune to suffocation and atmospheric pressure effects caused by the Veil.
+
+---
+
+## Polyglot Of The Trade
+You have learned the common transactional tongues of the world.
+### Trade Pidgin Fluency
+You can speak read and write Trade Pidgin.
+### Marillic Fluency
+You can speak read and write Marillic.
+
+---
+
+## Strength Manifest
+Your physical force expresses itself with certainty.
+### Forceful Presence
+You count as one size larger when determining carrying capacity and pushing dragging or lifting.
+### Braced Might
+You have advantage on Strength checks made to resist being moved.
+
+---
+
+## Dexterity Manifest
+Your movements resolve with unnatural precision.
+### Reactive Footing
+You gain a +1 bonus to initiative rolls.
+### Controlled Motion
+You ignore difficult terrain during the first 10 feet of movement each turn.
+
+---
+
+## Constitution Manifest
+Your endurance stabilizes your form.
+### Hardened Frame
+When you roll a Hit Die you regain additional hit points equal to your proficiency bonus.
+### Steady Pulse
+You have advantage on Constitution saves against exhaustion.
+
+---
+
+## Intelligence Manifest
+Your cognition accelerates and stabilizes.
+### Analytical Recall
+You gain proficiency in one Intelligence-based skill of your choice.
+### Logical Defense
+You gain advantage on one Intelligence saving throw per long rest.
+
+---
+
+## Wisdom Manifest
+Your perception aligns with reality.
+### Heightened Awareness
+You gain proficiency in Perception or Insight.
+### Grounded Mind
+You have advantage on saving throws against being charmed or frightened once per long rest.
+
+---
+
+## Charisma Manifest
+Your presence asserts itself without effort.
+### Commanding Tone
+You gain proficiency in Persuasion or Intimidation.
+### Social Anchor
+You can reroll one failed Charisma check per long rest.
+
+---
+
+## Aeronaut Pilot
+*Prerequisite: Vehicle proficiency or training*
+You are trained to command aerial vessels.
+### Aerial Vehicles
+You gain proficiency with airships and zeppelins.
+### Emergency Handling
+When piloting an airship you have advantage on checks to avoid collisions crashes or loss of control.
+
+---
+
+## Abacus Savant
+*Prerequisite: Proficiency with Abacus*
+You have mastered the disciplined use of the Abacus.
+### Tool Mastery
+You gain proficiency with Abacus.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Abacus.
+
+---
+
+## Alchemical Practitioner
+*Prerequisite: Proficiency with Alchemist Supplies*
+You have mastered the disciplined use of the Alchemist Supplies.
+### Tool Mastery
+You gain proficiency with Alchemist Supplies.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Alchemist Supplies.
+
+---
+
+## Master Brewer
+*Prerequisite: Proficiency with Brewers Supplies*
+You have mastered the disciplined use of the Brewers Supplies.
+### Tool Mastery
+You gain proficiency with Brewers Supplies.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Brewers Supplies.
+
+---
+
+## Calligraphic Scholar
+*Prerequisite: Proficiency with Calligraphers Supplies*
+You have mastered the disciplined use of the Calligraphers Supplies.
+### Tool Mastery
+You gain proficiency with Calligraphers Supplies.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Calligraphers Supplies.
+
+---
+
+## Master Carpenter
+*Prerequisite: Proficiency with Carpenters Tools*
+You have mastered the disciplined use of the Carpenters Tools.
+### Tool Mastery
+You gain proficiency with Carpenters Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Carpenters Tools.
+
+---
+
+## Cartographic Adept
+*Prerequisite: Proficiency with Cartographers Tools*
+You have mastered the disciplined use of the Cartographers Tools.
+### Tool Mastery
+You gain proficiency with Cartographers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Cartographers Tools.
+
+---
+
+## Cobbler Artisan
+*Prerequisite: Proficiency with Cobblers Tools*
+You have mastered the disciplined use of the Cobblers Tools.
+### Tool Mastery
+You gain proficiency with Cobblers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Cobblers Tools.
+
+---
+
+## Culinary Artisan
+*Prerequisite: Proficiency with Cooks Utensils*
+You have mastered the disciplined use of the Cooks Utensils.
+### Tool Mastery
+You gain proficiency with Cooks Utensils.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Cooks Utensils.
+
+---
+
+## Master Of Disguise
+*Prerequisite: Proficiency with Disguise Kit*
+You have mastered the disciplined use of the Disguise Kit.
+### Tool Mastery
+You gain proficiency with Disguise Kit.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Disguise Kit.
+
+---
+
+## Forgery Savant
+*Prerequisite: Proficiency with Forgery Kit*
+You have mastered the disciplined use of the Forgery Kit.
+### Tool Mastery
+You gain proficiency with Forgery Kit.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Forgery Kit.
+
+---
+
+## Glasswright
+*Prerequisite: Proficiency with Glassblowers Tools*
+You have mastered the disciplined use of the Glassblowers Tools.
+### Tool Mastery
+You gain proficiency with Glassblowers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Glassblowers Tools.
+
+---
+
+## Herbal Adept
+*Prerequisite: Proficiency with Herbalism Kit*
+You have mastered the disciplined use of the Herbalism Kit.
+### Tool Mastery
+You gain proficiency with Herbalism Kit.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Herbalism Kit.
+
+---
+
+## Jeweler Savant
+*Prerequisite: Proficiency with Jewelers Tools*
+You have mastered the disciplined use of the Jewelers Tools.
+### Tool Mastery
+You gain proficiency with Jewelers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Jewelers Tools.
+
+---
+
+## Leather Artisan
+*Prerequisite: Proficiency with Leatherworkers Tools*
+You have mastered the disciplined use of the Leatherworkers Tools.
+### Tool Mastery
+You gain proficiency with Leatherworkers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Leatherworkers Tools.
+
+---
+
+## Stone Mason
+*Prerequisite: Proficiency with Masons Tools*
+You have mastered the disciplined use of the Masons Tools.
+### Tool Mastery
+You gain proficiency with Masons Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Masons Tools.
+
+---
+
+## Navigator Savant
+*Prerequisite: Proficiency with Navigators Tools*
+You have mastered the disciplined use of the Navigators Tools.
+### Tool Mastery
+You gain proficiency with Navigators Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Navigators Tools.
+
+---
+
+## Painter Savant
+*Prerequisite: Proficiency with Painters Supplies*
+You have mastered the disciplined use of the Painters Supplies.
+### Tool Mastery
+You gain proficiency with Painters Supplies.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Painters Supplies.
+
+---
+
+## Poison Savant
+*Prerequisite: Proficiency with Poisoners Kit*
+You have mastered the disciplined use of the Poisoners Kit.
+### Tool Mastery
+You gain proficiency with Poisoners Kit.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Poisoners Kit.
+
+---
+
+## Pottery Artisan
+*Prerequisite: Proficiency with Potters Tools*
+You have mastered the disciplined use of the Potters Tools.
+### Tool Mastery
+You gain proficiency with Potters Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Potters Tools.
+
+---
+
+## Smith Artisan
+*Prerequisite: Proficiency with Smiths Tools*
+You have mastered the disciplined use of the Smiths Tools.
+### Tool Mastery
+You gain proficiency with Smiths Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Smiths Tools.
+
+---
+
+## Tinker Savant
+*Prerequisite: Proficiency with Tinkers Tools*
+You have mastered the disciplined use of the Tinkers Tools.
+### Tool Mastery
+You gain proficiency with Tinkers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Tinkers Tools.
+
+---
+
+## Weaver Artisan
+*Prerequisite: Proficiency with Weavers Tools*
+You have mastered the disciplined use of the Weavers Tools.
+### Tool Mastery
+You gain proficiency with Weavers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Weavers Tools.
+
+---
+
+## Woodcarver Artisan
+*Prerequisite: Proficiency with Woodcarvers Tools*
+You have mastered the disciplined use of the Woodcarvers Tools.
+### Tool Mastery
+You gain proficiency with Woodcarvers Tools.
+### Expert Handling
+Once per long rest you have advantage on one ability check using Woodcarvers Tools.
+
+---
+
+## Veil-Habituated
+You have adapted to prolonged exposure to the Veil.
+### Veil Mitigation
+Environmental hazards from the Veil are treated as one step less severe.
+### Rest Assimilation
+Short rests taken in the Veil restore one additional Hit Die.
+### Veil Sense
+You sense thinning or breaches in the Veil within 30 feet.
+
+---
+
+## Iterative Reasoning
+You solve problems through refinement and reassessment.
+### Refined Attempt
+After failing an Intelligence check you may retry after 1 minute using a different approach.
+### False Assumption
+On a success the DM reveals one misleading factor avoided.
+
+---
+
+## Productive Error
+Failure produces insight rather than loss.
+### Degraded Success
+When you fail a tool check by 5 or less you achieve a temporary or degraded result.
+### Learning Curve
+You gain advantage on the next check with the same tool within 1 hour.
+
+---
+
+## Conversational Inertia
+You understand how conversations accumulate momentum.
+### Momentum Gain
+After a successful Charisma check the next related Charisma check in the scene has advantage.
+### Soft Failure
+After a failed Charisma check hostile escalation requires an additional trigger.
+
+---
+
+## Improvised Standardization
+You normalize chaos and substandard conditions.
+### Field Normalization
+Improvised or poor tool setups count as proper equipment.
+### Emergency Repair
+You can restore a broken tool to limited function without materials.
+
+---
+
+## Operational Planner
+You think in supply chains and preparation.
+### Reduced Setup
+During downtime reduce group travel or setup time by 25 percent.
+### Supply Buffer
+Once per journey negate one resource depletion event.
+
+---
+
+## Parallel Focus
+You divide attention between overlapping demands.
+### Split Focus
+You may concentrate on one spell and one non-spell effect simultaneously.
+### Unstable Focus
+Failing a concentration save ends only one effect chosen randomly.
+
+---
+
+## Preemptive Read
+You read intent before action.
+### Early Read
+At the start of combat ask one yes-or-no question about enemy capabilities. Answer must be truthful but minimal.
+
+---
+
+## Maker’S Signature
+Your work carries identity and consequence.
+### Recognizable Craft
+Items you create are identifiable as yours.
+### Reputation Weight
+NPC reactions shift based on familiarity with your work.
+
+---
+
+## Ordonnant Scarred
+You were altered by contact with higher law.
+### Rule Enforcement
+Once per day declare an outcome invalid if it contradicts an established rule previously demonstrated in play.
+
+---
+
+## Environmental Calibration
+You rapidly adapt to unfamiliar or hostile terrain.
+### Adaptive Posture
+After 10 minutes in a new environment you ignore one terrain-based penalty.
+### Situational Memory
+You have advantage on checks to navigate or operate in that environment for the next 24 hours.
+
+---
+
+## Deferred Impact
+You act with delayed intent.
+### Held Consequence
+Once per combat you may declare that a successful attack or effect resolves at the end of the target’s next turn instead of immediately.
+### Pressure Window
+Until it resolves the target has disadvantage on its next saving throw.
+
+---
+
+## Cognitive Offload
+You externalize mental strain.
+### Stress Buffer
+When you fail a mental saving throw you may delay the effect until the end of your next turn.
+### Mental Triage
+If you use this feature you have disadvantage on Intelligence checks until your next short rest.
+
+---
+
+## Situational Authority
+Your confidence fills uncertainty.
+### Command the Moment
+When no clear leader is present you gain advantage on one Charisma check to direct a group.
+### Stabilize Crowd
+Once per long rest you can prevent a neutral crowd from turning hostile.
+
+---
+
+## Material Intuition
+You understand matter by touch and failure.
+### Read the Grain
+After handling an object you learn one property relevant to crafting or breaking it.
+### Waste Reduction
+Failed crafting attempts consume half the usual materials.
+
+---
+
+## Momentum Banking
+You convert success into future advantage.
+### Stored Momentum
+When you succeed on a check by 5 or more you may store momentum.
+### Release Momentum
+Before your next long rest you may spend it to gain advantage on a related check.
+
+---
+
+## Boundary Sense
+You feel the edges of reality.
+### Planar Tension
+You always know when you are within 60 feet of a planar boundary or weakened veil.
+### Stability Check
+You have advantage on saves against forced teleportation.
+
+---
+
+## Operational Redundancy
+You plan for failure as a certainty.
+### Fallback Plan
+Once per long rest when a plan fails the group may immediately attempt an alternate approach without time loss.
+### Distributed Load
+Exhaustion from travel affects one fewer creature of your choice.
+
+---
+
+## Narrative Anchoring
+You remember what should not change.
+### Anchor Event
+Once per arc you may declare one established fact immune to retcon or contradiction.
+### Continuity Sense
+You immediately notice when events diverge from established truth.
+
+---
+
+## Witness Of Collapse
+You have seen systems fail.
+### Predict Failure
+Once per day you may ask the DM what element of a situation is most likely to fail first.
+### Prepared Response
+Your first reaction to that failure has advantage.

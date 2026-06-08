@@ -1,0 +1,746 @@
+# Backgrounds
+
+## Veil Navigator
+- **Skill Proficiencies:** Perception, Survival
+- **Tool Proficiencies:** Navigator’s Tools
+- **Languages:** Trade Pidgin, Marillic
+- **Equipment:** Navigator’s tools, sextant, travel clothes
+
+### Veilway Familiarity
+You know established safe routes through the Veil and can secure passage without checks under normal conditions.
+
+### Veil Passage
+You can find safe Veil routes.
+
+### Local Trust
+Veil guides treat you as known.
+
+---
+
+## Skelbraith Pilot
+- **Skill Proficiencies:** Perception, Vehicle (Air)
+- **Tool Proficiencies:** Navigator’s Tools; Vehicles (Air)
+- **Languages:** Trade Pidgin
+- **Equipment:** Pilot harness, charts, goggles
+
+### Open Skies Access
+You can secure basic airship passage or temporary piloting work in Skelbraith ports.
+
+### Dock Access
+You can find airship work.
+
+### Flight Trust
+Crews treat you as trained.
+
+---
+
+## Erelian Graduate
+- **Skill Proficiencies:** Arcana, History
+- **Languages:** Erelian
+- **Equipment:** Academic robes, thesis notes
+
+### Scholarly Standing
+Academic institutions recognize your training and credentials.
+
+### Library Access
+You gain access to restricted archives.
+
+### Peer Recognition
+Scholars take you seriously.
+
+---
+
+## Aestari Remote Royalty
+- **Skill Proficiencies:** Insight, Persuasion
+- **Languages:** Aestari, Trade Pidgin
+- **Equipment:** Signet ring, formal attire
+
+### Distant Authority
+Your lineage is recognized though politically remote.
+
+### Ceremonial Respect
+Lesser nobles show deference.
+
+### Audience Rights
+You can request formal hearings.
+
+---
+
+## Aestari Low Nobility
+- **Skill Proficiencies:** Persuasion, History
+- **Languages:** Aestari
+- **Equipment:** Modest finery, family ledger
+
+### Familiar Name
+Your family is known but not powerful.
+
+### Social Entry
+You can enter noble functions.
+
+### Courtesy Shield
+Insults are socially risky.
+
+---
+
+## Varnhallan Businessman
+- **Skill Proficiencies:** Persuasion, Insight
+- **Tool Proficiencies:** Forgery Kit
+- **Languages:** Trade Pidgin
+- **Equipment:** Contracts, ledger, seal
+
+### Commercial Leverage
+Merchants treat you as a serious negotiator.
+
+### Trade Credit
+You can secure short-term credit.
+
+### Market Sense
+You know who to talk to.
+
+---
+
+## Varnhallan Warehouse Worker
+- **Skill Proficiencies:** Athletics, Perception
+- **Tool Proficiencies:** Carpenters Tools
+- **Equipment:** Work gloves, pry bar
+
+### Industrial Familiarity
+You know how goods move and who controls them.
+
+### Backroom Access
+Workers share info.
+
+### Shift Cover
+You can find labor fast.
+
+---
+
+## Vexholmic General
+- **Skill Proficiencies:** History, Intimidation
+- **Tool Proficiencies:** Vehicles (Land)
+- **Languages:** Vexholmic
+- **Equipment:** Insignia, maps, sidearm
+
+### Chain of Command
+Veterans recognize your authority.
+
+### Command Respect
+Soldiers defer.
+
+### Strategic Access
+You can requisition info.
+
+---
+
+## Vexholmic Soldier
+- **Skill Proficiencies:** Athletics, Survival
+- **Tool Proficiencies:** Smith’s Tools
+- **Languages:** Vexholmic
+- **Equipment:** Uniform, weapon kit
+
+### Unit Brotherhood
+Soldiers recognize shared service.
+
+### Veteran Bond
+Military folk trust you.
+
+### Camp Access
+You find shelter.
+
+---
+
+## Vexholmic Deserter
+- **Skill Proficiencies:** Stealth, Survival
+- **Tool Proficiencies:** Disguise Kit
+- **Languages:** Vexholmic
+- **Equipment:** Stolen papers, cloak
+
+### Living Off-Grid
+You know how to disappear from authority.
+
+### Safe Routes
+You know escape paths.
+
+### False Papers
+You find forgeries.
+
+---
+
+## Arochi Friend
+- **Skill Proficiencies:** Insight, Performance
+- **Languages:** Arochi
+- **Equipment:** Tokens, shared gifts
+
+### Cross-Cultural Trust
+Arochi communities treat you as kin.
+
+### Shared Shelter
+You find refuge.
+
+### Cultural Bridge
+Missteps are forgiven.
+
+---
+
+## Cindralis Apprentice
+- **Skill Proficiencies:** Arcana, Investigation
+- **Tool Proficiencies:** Alchemist Supplies
+- **Languages:** Erelian
+- **Equipment:** Notes, reagents
+
+### Workshop Access
+Cindralis workshops accept you.
+
+### Mentor Access
+You can seek guidance.
+
+### Tool Use
+Facilities are open.
+
+---
+
+## Mobster
+- **Skill Proficiencies:** Deception, Intimidation
+- **Tool Proficiencies:** Forgery Kit
+- **Languages:** Trade Pidgin
+- **Equipment:** Hidden weapon, cash
+
+### Underworld Standing
+Criminals know your reputation.
+
+### Street Network
+You get rumors.
+
+### Protection
+Minor criminals hesitate.
+
+---
+
+## Silent Choir Cultist
+- **Skill Proficiencies:** Religion, Insight
+- **Languages:** Marillic
+- **Equipment:** Symbol, ritual texts
+
+### Hushed Communion
+Cult members recognize you.
+
+### Ritual Shelter
+You find safe houses.
+
+### Shared Signs
+You identify members.
+
+---
+
+## Silent Witness Consuit
+- **Skill Proficiencies:** Investigation, Insight
+- **Tool Proficiencies:** Calligrapher’s Supplies
+- **Languages:** Marillic
+- **Equipment:** Sealed records, badge
+
+### Testimonial Authority
+Your testimony carries weight.
+
+### Official Hearings
+You can be heard.
+
+### Record Access
+You view sealed logs.
+
+---
+
+## Black Tower Conduit
+- **Skill Proficiencies:** Arcana, Religion
+- **Tool Proficiencies:** Alchemist Supplies
+- **Languages:** Erelian
+- **Equipment:** Focus crystal, robes
+
+### Tower Channel
+Black Tower agents recognize your mark.
+
+### Arcane Access
+You enter restricted zones.
+
+### Energy Handling
+You move materials.
+
+---
+
+## Serevan Communist
+- **Skill Proficiencies:** Persuasion, History
+- **Languages:** Trade Pidgin
+- **Equipment:** Pamphlets, red armband, notebook
+
+### Collective Network
+Grassroots cells recognize you as part of the movement.
+
+### Cell Support
+You can find shelter among sympathizers.
+
+### Shared Cause
+Workers are willing to listen.
+
+---
+
+## Serevan Revolutionist
+- **Skill Proficiencies:** Athletics, Intimidation
+- **Tool Proficiencies:** Disguise Kit
+- **Languages:** Trade Pidgin
+- **Equipment:** Hidden weapon, coded notes
+
+### Insurgent Access
+Revolutionary cells provide aid.
+
+### Safe Houses
+You know hidden refuges.
+
+### Coordinated Action
+Cells relay messages.
+
+---
+
+## Imperatum
+- **Skill Proficiencies:** Insight, Intimidation
+- **Languages:** Imperial
+- **Equipment:** Seal, formal attire
+
+### Imperial Bearing
+Imperial institutions treat you as legitimate authority.
+
+### Official Channels
+You can invoke protocol.
+
+### Legal Deference
+Minor officials comply.
+
+---
+
+## Emrelan Chosen One
+- **Skill Proficiencies:** Religion, Insight
+- **Languages:** Emrelan
+- **Equipment:** Relic token, robes
+
+### Prophetic Mark
+Believers treat you as divinely marked.
+
+### Sacred Hospitality
+Temples shelter you.
+
+### Portent Recognition
+Omens are shared.
+
+---
+
+## Morenna's Underling
+- **Skill Proficiencies:** Stealth, Deception
+- **Tool Proficiencies:** Poisoner’s Kit
+- **Languages:** Trade Pidgin
+- **Equipment:** Hidden blade, vial
+
+### Shadow Patronage
+Morenna’s agents offer protection.
+
+### Underworld Cover
+Criminals hesitate.
+
+### Silent Orders
+Messages reach you.
+
+---
+
+## Netherade's Don
+- **Skill Proficiencies:** Persuasion, Insight
+- **Tool Proficiencies:** Forgery Kit
+- **Languages:** Trade Pidgin
+- **Equipment:** Ledger, seal, guards
+
+### Criminal Authority
+Criminal groups recognize your dominance.
+
+### Territorial Respect
+Rivals negotiate.
+
+### Resource Flow
+Favors move.
+
+---
+
+## Brasselan Warrior
+- **Skill Proficiencies:** Athletics, Intimidation
+- **Tool Proficiencies:** Smith’s Tools
+- **Languages:** Brasselan
+- **Equipment:** Weapon kit, armor token
+
+### Warrior Reputation
+Brasselan respect martial honor.
+
+### Challenge Rights
+You may issue formal challenges.
+
+### Camp Respect
+Warriors listen.
+
+---
+
+## Brasselan Nordic Nomad
+- **Skill Proficiencies:** Survival, Nature
+- **Tool Proficiencies:** Navigator’s Tools
+- **Languages:** Brasselan
+- **Equipment:** Furs, sled tools
+
+### Nomad Routes
+Nomads share paths and warnings.
+
+### Trail Lore
+You find safe routes.
+
+### Clan Welcome
+Camps host you.
+
+---
+
+## Weft Warden
+- **Skill Proficiencies:** Arcana, Insight
+- **Languages:** Marillic
+- **Equipment:** Sigil, woven token
+
+### Pattern Oversight
+Wardens recognize your authority.
+
+### Pattern Access
+You enter Weft sites.
+
+### Anomaly Notice
+Alerts reach you.
+
+---
+
+## Vorraki Security Officer
+- **Skill Proficiencies:** Athletics, Perception
+- **Tool Proficiencies:** Manacles
+- **Languages:** Vorraki
+- **Equipment:** Badge, restraints
+
+### Enforcement Trust
+Security forces recognize your training.
+
+### Authority Presence
+Civilians comply.
+
+### Backup Access
+You call guards.
+
+---
+
+## Underground Ring Fighter
+- **Skill Proficiencies:** Athletics, Acrobatics
+- **Languages:** Trade Pidgin
+- **Equipment:** Wraps, scars
+
+### Fighter Reputation
+Fight circles recognize you.
+
+### Match Access
+You find bouts.
+
+### Wager Interest
+Bettors approach.
+
+---
+
+## Dreadmere Emissary
+- **Skill Proficiencies:** Persuasion, Insight
+- **Languages:** Dreadmere
+- **Equipment:** Sealed letters, cloak
+
+### Shadow Diplomacy
+Dreadmere authorities grant passage.
+
+### Official Audience
+You can speak.
+
+### Political Cover
+Guards hesitate.
+
+---
+
+## Concordian Urbanite
+- **Skill Proficiencies:** Insight, Perception
+- **Languages:** Trade Pidgin
+- **Equipment:** City map, keys, modest clothes
+
+### Urban Familiarity
+You know how Concordian cities function day to day.
+
+### Street Sense
+You can find services quickly.
+
+### Civic Awareness
+You know which offices matter.
+
+---
+
+## Verdant Cradle Honorary
+- **Skill Proficiencies:** Nature, Survival
+- **Languages:** Verdant
+- **Equipment:** Living token, woven cloak
+
+### Sacred Guest
+Verdant Cradle guardians recognize you as protected.
+
+### Sanctuary
+You may rest safely.
+
+### Guided Paths
+Wardens assist.
+
+---
+
+## Ocean's Captain
+- **Skill Proficiencies:** Athletics, Perception
+- **Tool Proficiencies:** Navigator’s Tools; Vehicles (Water)
+- **Languages:** Trade Pidgin
+- **Equipment:** Captain’s coat, charts
+
+### Command of the Deck
+Sailors recognize your authority.
+
+### Crew Respect
+Orders followed.
+
+### Port Standing
+Harbormasters listen.
+
+---
+
+## Underwater Explorer
+- **Skill Proficiencies:** Athletics, Survival
+- **Tool Proficiencies:** Diving Gear
+- **Equipment:** Weighted gear, journal
+
+### Depth Acclimation
+You know underwater travel norms.
+
+### Pressure Acclimation
+You manage depth.
+
+### Salvage Routes
+You find sites.
+
+---
+
+## Veil Explorer
+- **Skill Proficiencies:** Arcana, Survival
+- **Languages:** Trade Pidgin
+- **Equipment:** Veil charts, seals
+
+### Veil Navigation
+Explorers recognize your experience.
+
+### Safe Entry
+You find known crossings.
+
+### Hazard Lore
+You identify risks.
+
+---
+
+## Erelian Linguist
+- **Skill Proficiencies:** History, Insight
+- **Languages:** Erelian, Trade Pidgin
+- **Equipment:** Lexicons, notes
+
+### Linguistic Authority
+Scholars respect your language mastery.
+
+### Translation Access
+You mediate.
+
+### Script Insight
+You spot errors.
+
+---
+
+## Erelian Magic Initiate
+- **Skill Proficiencies:** Arcana, Religion
+- **Tool Proficiencies:** Calligrapher’s Supplies
+- **Languages:** Erelian
+- **Equipment:** Primer, focus
+
+### Arcane Induction
+Arcane circles recognize your initiation.
+
+### Ritual Access
+You observe rites.
+
+### Minor Instruction
+Mages advise.
+
+---
+
+## Songscript Erudit
+- **Skill Proficiencies:** Performance, History
+- **Tool Proficiencies:** Musical Instrument
+- **Languages:** Marillic
+- **Equipment:** Scores, tuning tools
+
+### Living Archive
+Erudits share songs and scripts.
+
+### Cultural Access
+You learn rare works.
+
+### Performance Shelter
+Artists host you.
+
+---
+
+## Varnhallan Spy
+- **Skill Proficiencies:** Deception, Stealth
+- **Tool Proficiencies:** Disguise Kit
+- **Languages:** Trade Pidgin
+- **Equipment:** False papers, tools
+
+### Commercial Cover
+You hide within trade networks.
+
+### Cover Identities
+You blend.
+
+### Quiet Signals
+Contacts warn you.
+
+---
+
+## Vexholmic Spy
+- **Skill Proficiencies:** Stealth, Investigation
+- **Tool Proficiencies:** Forgery Kit
+- **Languages:** Vexholmic
+- **Equipment:** Codes, cloak
+
+### Military Intelligence
+Military cells recognize you.
+
+### Secure Channels
+Messages pass.
+
+### Restricted Zones
+Guards hesitate.
+
+---
+
+## Skelbraith Spy
+- **Skill Proficiencies:** Perception, Deception
+- **Tool Proficiencies:** Navigator’s Tools
+- **Languages:** Trade Pidgin
+- **Equipment:** Charts, hidden marks
+
+### Aerial Surveillance
+Sky routes conceal your work.
+
+### Hidden Routes
+You bypass notice.
+
+### Signal Lore
+You read signs.
+
+---
+
+## Serevan Enforcer
+- **Skill Proficiencies:** Athletics, Intimidation
+- **Tool Proficiencies:** Manacles
+- **Languages:** Trade Pidgin
+- **Equipment:** Uniform, baton
+
+### Movement Enforcement
+Cells rely on you for force.
+
+### Crowd Control
+People disperse.
+
+### Order Calls
+Backup arrives.
+
+---
+
+## Concordian Order Member
+- **Skill Proficiencies:** Religion, Insight
+- **Languages:** Concordian
+- **Equipment:** Insignia, texts
+
+### Doctrinal Standing
+Orders recognize your vows.
+
+### Ritual Access
+You attend rites.
+
+### Counsel
+Clergy advise.
+
+---
+
+## Concordian Nurse
+- **Skill Proficiencies:** Medicine, Insight
+- **Tool Proficiencies:** Herbalism Kit
+- **Languages:** Concordian
+- **Equipment:** Bandages, salves
+
+### Triage Authority
+People trust your care.
+
+### Emergency Aid
+You are admitted.
+
+### Medical Trust
+Patients cooperate.
+
+---
+
+## Vexholmic Battle Healer
+- **Skill Proficiencies:** Medicine, Athletics
+- **Tool Proficiencies:** Herbalism Kit
+- **Languages:** Vexholmic
+- **Equipment:** Field kit, insignia
+
+### Field Triage
+Troops rely on you under fire.
+
+### Combat Access
+You move freely.
+
+### Triage Priority
+Wounded defer.
+
+---
+
+## Vessels Artisan
+- **Skill Proficiencies:** Arcana, Investigation
+- **Tool Proficiencies:** Potter’s Tools
+- **Languages:** Erelian
+- **Equipment:** Clay vessels, molds
+
+### Conduit Craft
+Artisans recognize your specialty.
+
+### Workshop Access
+You use facilities.
+
+### Commission Trust
+Clients seek you.
+
+---
+
+## Chainbreaker
+- **Skill Proficiencies:** Athletics, Intimidation
+- **Tool Proficiencies:** Smith’s Tools
+- **Languages:** Trade Pidgin
+- **Equipment:** Broken chain, tools
+
+### Symbol of Revolt
+The oppressed recognize you.
+
+### Rally Effect
+People listen.
+
+### Hidden Aid
+Safe houses appear.
