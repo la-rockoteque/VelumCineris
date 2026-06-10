@@ -6,6 +6,7 @@ from typing import Any
 from Book.core.entities.base import EntityMarkdownRenderer
 from Book.core.entities.backgrounds import BackgroundMarkdownRenderer
 from Book.core.entities.classes import ClassMarkdownRenderer
+from Book.core.entities.deities import DeityMarkdownRenderer
 from Book.core.entities.diseases import DiseaseMarkdownRenderer
 from Book.core.entities.feats import FeatMarkdownRenderer
 from Book.core.entities.items import ItemMarkdownRenderer
@@ -25,6 +26,7 @@ _RENDERER_CLASSES: dict[str, type[EntityMarkdownRenderer]] = {
     "feat": FeatMarkdownRenderer,
     "class": ClassMarkdownRenderer,
     "subclass": SubclassMarkdownRenderer,
+    "deity": DeityMarkdownRenderer,
     "item": ItemMarkdownRenderer,
     "magicitem": MagicItemMarkdownRenderer,
     "language": LanguageMarkdownRenderer,
@@ -42,3 +44,7 @@ def get_entity_renderer(entity_type: str) -> EntityMarkdownRenderer:
 
 def render_entity_markdown(entity_type: str, entity: dict[str, Any]) -> str:
     return get_entity_renderer(entity_type).render_markdown(entity)
+
+
+def list_entity_types() -> tuple[str, ...]:
+    return tuple(_RENDERER_CLASSES.keys())

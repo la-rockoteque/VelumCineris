@@ -43,6 +43,10 @@ class BookAPI:
             "magicitem": {"fantasy": "FiveETools.core.fantasy.magic_items", "modern": "FiveETools.core.modern.magic_items"},
             "language": {"fantasy": "FiveETools.core.fantasy.languages", "modern": "FiveETools.core.modern.languages"},
             "disease": {"fantasy": "FiveETools.core.fantasy.diseases", "modern": "FiveETools.core.modern.diseases"},
+            "deity": {
+                "fantasy": "FiveETools.core.fantasy.dieties",
+                "modern": "FiveETools.core.modern.dieties",
+            },
         }
 
         # Entity type to list variable name mapping
@@ -59,6 +63,7 @@ class BookAPI:
             "magicitem": "magic_items_list",
             "language": "language_list",
             "disease": "disease_list",
+            "deity": "diety_list",
         }
 
     def load_entities(

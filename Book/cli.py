@@ -10,8 +10,8 @@ if __package__ in (None, ""):
         sys.path.insert(0, str(REPO_ROOT))
 
 from Book.datasets import list_sources
+from Book.core.entities import list_entity_types
 from Book.exports import list_book_types
-from Book.mappers.formatter_registry import list_entity_types
 from Book.services import BookGenerationService
 
 

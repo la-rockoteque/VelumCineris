@@ -1,0 +1,28 @@
+## {{ name }}
+{% if epithet %}
+##### *{{ epithet }}*
+{% endif %}
+
+{{ "{{" }}{{ image_mask }},--offset:5%,--rotation:{{ image_rotation }}
+![{{ name }}]({{ image_url }}){position:absolute,top:0,{{ image_position }},height:100%}
+{{ "}}" }}
+{% if quote %}
+
+{{ "{{quote" }}
+{{ quote | clean_5etools }}
+{{ "}}" }}
+{% endif %}
+
+|   |  |
+|:-:|:-|
+{% for label, value in metadata if value %}
+| **{{ label }}** | {{ value }} |
+{% endfor %}
+{% if description %}
+
+{{ description | clean_5etools }}
+{% endif %}
+{% if entries %}
+
+{{ entries | render_entries }}
+{% endif %}

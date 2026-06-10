@@ -44,4 +44,3 @@ def get_formatter(entity_type: str) -> BaseFormatter:
 
 def list_entity_types() -> tuple[str, ...]:
     return tuple(_FORMATTERS.keys())
-

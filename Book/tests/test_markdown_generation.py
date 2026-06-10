@@ -4,9 +4,10 @@ from typing import Any, Callable
 
 from Book.core.Helpers.book_api import BookAPI
 from Book.core.Helpers.google_docs_client import GoogleDocsClient
-from Book.core.entities import render_entity_markdown
+from Book.core.entities import list_entity_types, render_entity_markdown
 from Book.core.markdown import PAGE_BREAK_MARKER
 from Book.core.renderers import HomebreweryRenderer
+from Book.core.writers.divine_codex import DivineCodexWriter
 from Book.core.writers.base import BaseWriter
 from Book.services import BookGenerationService
 
@@ -146,6 +147,127 @@ def test_service_renders_and_exports_standalone_module(tmp_path, monkeypatch) ->
 
     assert markdown_path.read_text(encoding="utf-8") == markdown
     assert "\\page" in homebrewery_path.read_text(encoding="utf-8")
+
+
+def test_service_renders_deities_only_module(monkeypatch) -> None:
+    service = BookGenerationService()
+    book_api = _FakeBookAPI()
+    book_api.datasets["deity"] = [
+        {
+            "name": "Heraclus",
+            "epithet": "The First Flame",
+            "pantheon": "The Old Gods",
+            "domains": ["Light", "Life"],
+            "alignment": "Lawful Good",
+            "description": "Heraclus guards the dawn.",
+            "lore": "The first temples faced east.",
+        }
+    ]
+    monkeypatch.setattr(service, "create_book_api", lambda *, source: book_api)
+
+    markdown = service.render_module_markdown(entity_type="deity", title="Deities")
+
+    assert markdown.startswith("# Deities\n")
+    assert "## Heraclus\n##### *The First Flame*" in markdown
+    assert (
+        "{{imageMaskEdge5,--offset:5%,--rotation:90\n"
+        "![Heraclus](https://raw.githubusercontent.com/la-rockoteque/Vestigium/"
+        "refs/heads/main/assets/art/Dieties/Heraclus.png)"
+        "{position:absolute,top:0,left:-20%,height:100%}\n}}"
+    ) in markdown
+    assert "| **Domains** | Light, Life |" in markdown
+    assert "### Stories and Lore" not in markdown
+    assert "The first temples faced east." not in markdown
+
+
+def test_deity_markdown_resolves_existing_art_filename_aliases() -> None:
+    markdown = render_entity_markdown(
+        "deity",
+        {
+            "name": "The Legislator",
+            "epithet": "Pillar of Stability",
+            "_image_side": "left",
+        },
+    )
+
+    assert (
+        "{{imageMaskEdge5,--offset:5%,--rotation:90\n"
+        "![The Legislator](https://raw.githubusercontent.com/la-rockoteque/Vestigium/"
+        "refs/heads/main/assets/art/Dieties/Legislator.png)"
+        "{position:absolute,top:0,left:-20%,height:100%}\n}}"
+    ) in markdown
+
+
+def test_divine_codex_sorts_deities_and_builds_appendices() -> None:
+    class _DeityBookAPI:
+        def load_entities(self, entity_type: str, source: str) -> list[dict[str, Any]]:
+            assert entity_type == "deity"
+            return [
+                {
+                    "name": "Zars",
+                    "alignment": "Chaotic-Good",
+                    "domains": ["War", "Glory"],
+                    "pantheon": "Children",
+                },
+                {
+                    "name": "Artémiz",
+                    "alignment": "Lawful Good",
+                    "domains": ["Hunt; Nature"],
+                    "pantheon": "Old Gods",
+                },
+                {
+                    "name": "Omnis",
+                    "alignment": "Neutral",
+                },
+            ]
+
+    writer = DivineCodexWriter(book_api=_DeityBookAPI())
+    markdown = writer.build_markdown()
+
+    assert writer.get_sections() == [("Deities", "deity", None)]
+    assert "deity" in list_entity_types()
+    assert markdown.index("## Artémiz") < markdown.index("## Omnis") < markdown.index("## Zars")
+    assert "{{frontCover}}" in markdown
+    assert "# Divine Codex\n## Dieties, worships and rituals" in markdown
+    assert "{{insideCover}}" in markdown
+    assert "{{toc,wide" in markdown
+    assert "<!-- PAGE_BREAK -->" not in markdown
+    assert "\\page" in markdown
+    assert "# APPENDIX D\n## Deities by domain" in markdown
+    assert "### Hunt\n\n- Artémiz" in markdown
+    assert "### Nature\n\n- Artémiz" in markdown
+    assert "### Unspecified\n\n- Omnis" in markdown
+    assert "# APPENDIX E\n## Deities by alignment" in markdown
+    assert "### Lawful\n\n#### Good\n\n- Artémiz" in markdown
+    assert "\\column\n\n### Neutral\n\n#### Neutral\n\n- Omnis" in markdown
+    assert "# APPENDIX F\n## Deities by pantheon" in markdown
+    assert "### Children\n\n- Zars" in markdown
+    assert not markdown.rstrip().endswith("\\page")
+    assert "\\page\n\n## Omnis" in markdown
+
+
+def test_divine_codex_paginates_long_deity_blocks() -> None:
+    writer = DivineCodexWriter(book_api=object())
+    markdown, used_height = writer._paginate_markdown(
+        "\n\n".join(
+            [
+                "## First Deity\n##### *First Epithet*",
+                "{{imageMaskEdge3,--offset:5%,--rotation:270\n"
+                "![First](https://example.com/first.png)"
+                "{position:absolute,top:0,right:-20%,height:100%}\n}}",
+                "A" * 1200,
+                "## Second Deity",
+                "{{imageMaskEdge5,--offset:5%,--rotation:90\n"
+                "![Second](https://example.com/second.png)"
+                "{position:absolute,top:0,left:-20%,height:100%}\n}}",
+            ]
+        ),
+        used_height=50,
+    )
+
+    assert markdown.count("\\page") >= 1
+    assert "<!-- PAGE_BREAK -->" not in markdown
+    assert used_height < 1320
 
 
 def test_homebrewery_renderer_uses_page_break_marker() -> None:
